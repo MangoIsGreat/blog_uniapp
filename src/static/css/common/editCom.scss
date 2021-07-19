@@ -1,0 +1,14 @@
+// 首页滑动列表样式修改
+.cl-scroller__wrap {
+  padding-bottom: 120rpx;
+  box-sizing: border-box;
+}
+
+// 下拉刷新样式
+.uni-scroll-view-refresh-inner {
+  box-shadow: none;
+}
+
+.uni-scroll-view-refresh__spinner > circle {
+  color: #00c58e !important;
+}

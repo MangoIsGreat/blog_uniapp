@@ -1,0 +1,74 @@
+// 主题色
+$primary-color: #00c58e;
+
+// 全局背景色
+$global-bg-color: #eff2f5;
+
+// 标题色
+$title-color: #080c0f;
+// 文章描述色
+$article-desc-color: #3a4354;
+// 文章详情色
+$article-info-color: #283243;
+
+// 列表标题字体大小
+$title-list-font-size: 32rpx;
+// 列表描述字体大小
+$title-list-desc-font-size: 24rpx;
+// 列表文章字体大小
+$title-list-info-font-size: 30rpx;
+
+// 边框
+$border-line: 1px solid #DEDFE6;
+
+// 文本信息显示不下省略号代替
+@mixin ellipsis() {
+  text-overflow: ellipsis; /*省略号 */
+  white-space: nowrap; /*溢出时不换行 */
+  overflow: hidden; /*溢出时隐藏 */
+}
+
+// 文本信息两行显示不下省略号代替
+@mixin ellipsis2() {
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
+  -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+  -webkit-line-clamp: 2; /** 显示的行数 **/
+  overflow: hidden; /** 隐藏超出的内容 **/
+}
+
+// 设置列表文章大标题
+@mixin setBigTitle(
+  $color: $title-color,
+  $lineHeight: 40rpx,
+  $fontSize: $title-list-font-size,
+  $fontWeight: 700
+) {
+  color: $color;
+  line-height: $lineHeight;
+  font-size: $fontSize;
+  font-weight: $fontWeight;
+}
+
+// 设置列表文章小标题
+@mixin setSmallTitle(
+  $color: $article-desc-color,
+  $lineHeight: 28rpx,
+  $fontSize: $title-list-desc-font-size
+) {
+  color: $color;
+  line-height: $lineHeight;
+  font-size: $fontSize;
+}
+
+// 设置列表文章详情
+@mixin setArticleInfo(
+  $color: $article-info-color,
+  $lineHeight: 44rpx,
+  $fontSize: $title-list-info-font-size
+) {
+  color: $color;
+  line-height: $lineHeight;
+  font-size: $fontSize;
+}
