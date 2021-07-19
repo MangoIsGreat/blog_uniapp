@@ -26,6 +26,9 @@
               @scrolltolower="onUp"
             >
               <cl-loading-mask :loading="loading" text="加载中">
+                <!-- 热门推荐 -->
+                <HeaderList />
+
                 <view
                   v-for="(item2, index2) in item.data"
                   :key="index2"
@@ -52,6 +55,7 @@
 <script>
 import Search from "@/components/Search/index.vue";
 import ListItem from "./components/ListItem.vue";
+import HeaderList from "./components/HeaderList.vue";
 
 export default {
   name: "home",
@@ -121,6 +125,7 @@ export default {
   components: {
     Search,
     ListItem,
+    HeaderList,
   },
   onLoad() {
     this.refresh();
