@@ -1,39 +1,101 @@
 <template>
-  <view>
-    <view class="top"></view>
-    <scroll-view class="scroll-view_H" scroll-x="true">
-      <view id="demo1" class="scroll-view-item_H uni-bg-red">A</view>
-      <view id="demo2" class="scroll-view-item_H uni-bg-green">B</view>
-      <view id="demo3" class="scroll-view-item_H uni-bg-blue">C</view>
+  <view class="demo-scroller">
+    <!-- 搜索框 -->
+    <Search />
+    <!-- 列表 -->
+    <scroll-view
+      class="scroll-view-wrapper"
+      :scroll-y="true"
+      :refresher-enabled="true"
+      refresher-default-style="black"
+      :upper-threshold="100"
+      :lower-threshold="100"
+      @scrolltoupper="onDown"
+      @scrolltolower="onUp"
+    >
+      <cl-loading-mask :loading="pageLoading" text="加载中">
+        <HeaderList />
+
+        <view
+          v-for="(item, index) in list"
+          :key="index"
+          class="scroll-view-item"
+        >
+          <ListItem />
+        </view>
+
+        <cl-loadmore
+          v-if="list.length > 0"
+          :loading="loading"
+          background-color="#EFF2F5"
+          :finish="isFinish"
+          :divider="false"
+        ></cl-loadmore>
+      </cl-loading-mask>
     </scroll-view>
   </view>
 </template>
 
 <script>
+import Search from "@/components/Search/index.vue";
+import ListItem from "./components/ListItem.vue";
+import HeaderList from "./components/HeaderList.vue";
+
 export default {
+  name: "find",
   data() {
-    return {};
+    return {
+      list: [],
+      loading: false,
+      isFinish: true,
+      pageLoading: true,
+    };
+  },
+
+  components: {
+    Search,
+    ListItem,
+    HeaderList,
+  },
+
+  onLoad() {
+    this.onDown();
+  },
+
+  methods: {
+    onUp() {
+      this.loading = true;
+      this.isFinish = false;
+
+      setTimeout(() => {
+        this.list.push(...new Array(20).fill(1));
+        this.loading = false;
+        this.isFinish = true;
+      }, 1000);
+    },
+
+    onDown() {
+      setTimeout(() => {
+        this.list = new Array(20).fill(1);
+        this.pageLoading = false;
+      }, 1000);
+    },
   },
 };
 </script>
 
 <style lang="scss">
-.top {
-  height: 30px;
-  width: 100%;
-}
+page,
+.demo-scroller {
+  height: 100%;
+  overflow: hidden;
 
-.scroll-view_H {
-  width: 2000px;
-  height: 80px;
-  background-color: pink;
-  display: flex;
+  .scroll-view-wrapper {
+    height: calc(100% - 140rpx);
+  }
 
-  .scroll-view-item_H {
-    width: 200px;
-    height: 100%;
-    background-color: skyblue;
-    margin-right: 20px;
+  .item {
+    margin: 20rpx;
   }
 }
 </style>

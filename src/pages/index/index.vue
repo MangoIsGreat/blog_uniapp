@@ -18,10 +18,10 @@
             <scroll-view
               class="scroll-view-wrapper"
               :scroll-y="true"
-              :refresher-enabled="true"
+              :refresher-enabled="isRefresh"
               refresher-default-style="black"
-              :upper-threshold="100"
-              :lower-threshold="100"
+              :upper-threshold="150"
+              :lower-threshold="150"
               @scrolltoupper="onDown"
               @scrolltolower="onUp"
             >
@@ -115,6 +115,7 @@ export default {
       labels,
       list,
       loading: true,
+      isRefresh: true, // 是否开启下拉刷新
     };
   },
   components: {
@@ -125,7 +126,24 @@ export default {
     this.refresh();
   },
   methods: {
+    // refresherrefresh() {
+    //   this.isRefresh = true;
+    // },
+
+    // refresherrestore() {
+    //   this.isRefresh = false;
+    // },
+
+    // refresherabort() {
+    //   this.isRefresh = false;
+    // },
+
     onDown() {
+      // this.isRefresh = true;
+      // setTimeout(() => {
+      //   this.isRefresh = false;
+      // }, 1500);
+
       console.log("====>");
       console.log("down");
       this.refresh({

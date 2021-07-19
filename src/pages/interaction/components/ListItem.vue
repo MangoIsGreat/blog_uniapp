@@ -30,9 +30,9 @@
       </view>
     </view>
     <view class="list-row-bottom">
-      <text class="iconfont icon-dianzan"> 点赞</text>
-      <text class="iconfont icon-pinglun"> 评论</text>
-      <text class="iconfont icon-fenxiang"> 分享</text>
+      <text class="iconfont icon-dianzan">点赞</text>
+      <text class="iconfont icon-pinglun">评论</text>
+      <text class="iconfont icon-fenxiang">分享</text>
     </view>
   </view>
 </template>
