@@ -1,9 +1,15 @@
 <template>
-  <view class="content">
+  <view class="home-content">
     <!-- 搜索框 -->
     <search />
     <!-- Tabs选项卡 -->
-    <cl-tabs color="#00c58e" class="tabs" v-model="current" :labels="labels" :border="false">
+    <cl-tabs
+      color="#00c58e"
+      class="tabs"
+      v-model="current"
+      :labels="labels"
+      :border="false"
+    >
       <!-- 自定义内容区域 -->
       <swiper class="container" @change="onChangeSwiper" :current="current">
         <swiper-item v-for="(item, index) in list" :key="index">
@@ -48,6 +54,7 @@ import Search from "@/components/Search/index.vue";
 import ListItem from "./components/ListItem.vue";
 
 export default {
+  name: "home",
   data() {
     const labels = [
       {
@@ -114,8 +121,7 @@ export default {
     Search,
     ListItem,
   },
-  onLoad() {},
-  mounted() {
+  onLoad() {
     this.refresh();
   },
   methods: {
@@ -197,7 +203,7 @@ page {
   // #endif
 }
 
-.content {
+.home-content {
   height: 100%;
   overflow: hidden;
 

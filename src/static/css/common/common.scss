@@ -19,7 +19,7 @@ $title-list-desc-font-size: 24rpx;
 $title-list-info-font-size: 30rpx;
 
 // 边框
-$border-line: 1px solid #DEDFE6;
+$border-line: 1px solid #dedfe6;
 
 // 文本信息显示不下省略号代替
 @mixin ellipsis() {
@@ -40,9 +40,9 @@ $border-line: 1px solid #DEDFE6;
 
 // 设置列表文章大标题
 @mixin setBigTitle(
+  $fontSize: $title-list-font-size,
   $color: $title-color,
   $lineHeight: 40rpx,
-  $fontSize: $title-list-font-size,
   $fontWeight: 700
 ) {
   color: $color;
@@ -71,4 +71,29 @@ $border-line: 1px solid #DEDFE6;
   color: $color;
   line-height: $lineHeight;
   font-size: $fontSize;
+}
+
+// 设置背景图片
+@mixin setBgImg(
+  $width,
+  $height,
+  $borderRadius: 6rpx,
+  $repeat: no-repeat,
+  $bgPosition: center,
+  $bgSize: cover
+) {
+  width: $width;
+  height: $height;
+  border-radius: $borderRadius;
+  background-repeat: $repeat;
+  background-position: $bgPosition;
+  background-size: $bgSize;
+}
+
+// 设置头像
+@mixin setAvatar($width, $height, $marginRight: 20rpx, $borderRadious: 50%) {
+  width: $width;
+  height: $height;
+  border-radius: $borderRadious;
+  margin-right: $marginRight;
 }
