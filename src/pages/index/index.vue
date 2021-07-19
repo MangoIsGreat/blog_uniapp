@@ -1,49 +1,212 @@
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view>
-			<text class="title">{{title}}</text>
-		</view>
-	</view>
+  <view class="content">
+    <!-- 搜索框 -->
+    <search />
+    <!-- Tabs选项卡 -->
+    <cl-tabs v-model="current" :labels="labels" :border="false">
+      <!-- 自定义内容区域 -->
+      <swiper class="container" @change="onChangeSwiper" :current="current">
+        <swiper-item v-for="(item, index) in list" :key="index">
+          <!-- 是否预加载 -->
+          <template v-if="item.loaded || index == current">
+            <cl-scroller :ref="`scroller-${index}`" @down="onDown" @up="onUp">
+              <!-- 首次加载框，可有可无 -->
+              <cl-loading-mask :loading="loading" text="加载中">
+                <!-- 列表 -->
+                <view class="list">
+                  <cl-list-item
+                    v-for="(item2, index2) in item.data"
+                    :key="index2"
+                    :label="`${item.label} - ${index2}`"
+                  >
+                    <cl-icon name="cl-icon-arrow-right"></cl-icon>
+                  </cl-list-item>
+
+                  <!-- 加载更多 -->
+                  <cl-loadmore
+                    v-if="item.data.length > 0"
+                    :loading="item.loading"
+                    :finish="item.finished"
+                    :divider="false"
+                  ></cl-loadmore>
+                </view>
+              </cl-loading-mask>
+            </cl-scroller>
+          </template>
+        </swiper-item>
+      </swiper>
+    </cl-tabs>
+  </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				title: 'Hello'
-			}
-		},
-		onLoad() {
+import Search from "@/components/Search/index.vue";
 
-		},
-		methods: {
+export default {
+  data() {
+    const labels = [
+      {
+        label: "热门",
+        value: 1,
+        loaded: true,
+      },
+      {
+        label: "猜你喜欢",
+        value: 2,
+      },
+      {
+        label: "女装",
+        value: 3,
+      },
+      {
+        label: "美妆个护",
+        value: 4,
+      },
+      {
+        label: "食品",
+        value: 5,
+      },
+      {
+        label: "母婴",
+        value: 6,
+      },
+      {
+        label: "数码家电",
+        value: 7,
+      },
+      {
+        label: "家居家装",
+        value: 8,
+      },
+      {
+        label: "内衣",
+        value: 9,
+      },
+    ];
 
-		}
-	}
+    const list = labels.map((e) => {
+      return {
+        ...e,
+        status: e.value,
+        data: [],
+        finished: false,
+        loading: false,
+        pagination: {
+          page: 1,
+          size: 20,
+        },
+      };
+    });
+
+    return {
+      current: 0,
+      labels,
+      list,
+      loading: true,
+    };
+  },
+  components: {
+    Search,
+  },
+  onLoad() {},
+  mounted() {
+    this.refresh();
+  },
+  methods: {
+    onDown() {
+      console.log("====>");
+      console.log("down");
+      this.refresh({
+        page: 1,
+      }).done(() => {
+        this.$refs[`scroller-${this.current}`][0].end();
+      });
+    },
+
+    onUp() {
+      console.log("====>");
+      console.log("up");
+      const { pagination, finished } = this.list[this.current];
+
+      if (!finished) {
+        this.refresh({
+          page: pagination.page + 1,
+        });
+      }
+    },
+
+    onChangeSwiper(e) {
+      this.current = e.detail.current;
+
+      if (!this.list[this.current].loaded) {
+        this.loading = true;
+        this.list[this.current].loaded = true;
+      }
+
+      setTimeout(() => {
+        this.refresh({
+          page: 1,
+        });
+      }, 500);
+    },
+
+    refresh(params = {}) {
+      const item = this.list[this.current];
+
+      let data = {
+        ...item.pagination,
+        status: item.status,
+        sort: "desc",
+        order: "createTime",
+        ...params,
+      };
+
+      return new Promise((resolve) => {
+        item.loading = true;
+
+        console.log("Refresh");
+
+        setTimeout(() => {
+          item.data = new Array(data.page == 1 ? 10 : data.page * 10).fill(1);
+          item.pagination.page = data.page;
+          item.finished = false;
+          item.loading = false;
+          this.loading = false;
+          resolve();
+        }, 500);
+      });
+    },
+  },
+};
 </script>
 
-<style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
+<style lang="scss">
+page {
+  // #ifdef H5
+  height: 100%;
+  // #endif
 
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin: 200rpx auto 50rpx auto;
-	}
+  // #ifndef H5
+  height: 100vh;
+  // #endif
+}
 
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
+.content {
+  height: 100%;
+  overflow: hidden;
 
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
-	}
+  .container {
+    height: 100%;
+    background-color: #f7f7f7;
+  }
+
+  .list {
+    padding: 20rpx;
+
+    .cl-list-item {
+      margin-bottom: 20rpx;
+      border-radius: 10rpx;
+    }
+  }
+}
 </style>
