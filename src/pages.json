@@ -36,7 +36,17 @@
 			"navigationBarBackgroundColor": "#F9F9F9"
 		}
 
-	}],
+	}    ,{
+            "path" : "pages/userInfo/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

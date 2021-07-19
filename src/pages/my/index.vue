@@ -1,6 +1,6 @@
 <template>
   <view class="my-content">
-    <cl-list-item class="avatar-item" justify="start">
+    <cl-list-item class="avatar-item" justify="start" @click="toPage('/pages/userInfo/index')">
       <view class="cs-block">
         <cl-avatar
         class="avatar"
@@ -56,6 +56,14 @@
 <script>
 export default {
   name: "my",
+  methods: {
+      toPage(path) {
+        uni.navigateTo({
+            url: path,
+            success: res => {},fail: () => {},complete: () => {}
+        });
+      }
+  }
 };
 </script>
 
