@@ -12,3 +12,14 @@
 .uni-scroll-view-refresh__spinner > circle {
   color: #00c58e !important;
 }
+
+// 资讯页Tabs组件样式修改
+.news-content {
+  .cl-tabs__bar-box {
+    display: flex;
+
+    .cl-tabs__bar-item {
+      flex: 1;
+    }
+  }
+}
