@@ -1,7 +1,7 @@
 <template>
   <view class="find-wrapper">
     <!-- 搜索框 -->
-    <Search />
+    <Search @openTagPage="openTagPage" />
     <!-- 列表 -->
     <scroll-view
       class="scroll-view-wrapper"
@@ -63,6 +63,14 @@ export default {
   },
 
   methods: {
+    openTagPage() {
+      uni.navigateTo({
+        url: "/pages/tagManagement/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
     onUp() {
       this.loading = true;
       this.isFinish = false;

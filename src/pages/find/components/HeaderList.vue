@@ -26,7 +26,18 @@
           </view>
           <view class="desc">每日更新</view>
         </view>
-        <image class="pic" mode="center" :src="item.pic" @error="imageError"></image>
+        <image
+          class="pic"
+          v-if="item.pic == 'pic1'"
+          src="../../../static/img/ranking-list01.png"
+          @error="imageError"
+        ></image>
+        <image
+          class="pic"
+          v-else
+          src="../../../static/img/ranking-list02.png"
+          @error="imageError"
+        ></image>
       </view>
     </view>
     <view class="recommend-group">
@@ -83,12 +94,12 @@ export default {
         rankingType: [
           {
             type: "文章榜",
-            pic: "../../assets/img/ranking-list01.png",
+            pic: "pic1",
             icon: "icon-bangdan",
           },
           {
             type: "作者榜",
-            pic: "../../assets/img/ranking-list02.png",
+            pic: "pic2",
             icon: "icon-huangguan",
           },
         ],

@@ -28,6 +28,7 @@
           @error="imageError"
         ></image>
       </view>
+      <view class="tag-type">#下班打卡#</view>
     </view>
     <view class="list-row-bottom">
       <text class="iconfont icon-dianzan">点赞</text>
@@ -99,6 +100,12 @@ export default {
         width: 220rpx;
         height: 220rpx;
       }
+    }
+
+    .tag-type {
+      margin: 6rpx 0;
+      color: $primary-color;
+      font-size: 28rpx;
     }
   }
 

@@ -7,9 +7,9 @@
         :show-search-button="false"
         placeholder="搜索得到"
         @focus="focus"
-		@blur="blur"
+        @blur="blur"
       ></cl-search>
-      <view class="tag">
+      <view class="tag" @click="tagClick">
         <i class="iconfont icon-shezhi"></i>
         <text>标签</text>
       </view>
@@ -36,6 +36,9 @@ export default {
     },
     blur() {
       console.log("blur");
+    },
+    tagClick() {
+      this.$emit("openTagPage");
     },
   },
 };
@@ -79,7 +82,7 @@ export default {
   .top-box {
     height: 88rpx;
     // #ifndef H5
-   height: 140rpx;
+    height: 140rpx;
     // #endif
   }
 }

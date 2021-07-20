@@ -1,7 +1,7 @@
 <template>
   <view class="home-content">
     <!-- 搜索框 -->
-    <search />
+    <search @openTagPage="openTagPage" />
     <!-- Tabs选项卡 -->
     <cl-tabs
       color="#00c58e"
@@ -33,6 +33,7 @@
                   v-for="(item2, index2) in item.data"
                   :key="index2"
                   class="scroll-view-item"
+                  @click="toArtPage"
                 >
                   <ListItem />
                 </view>
@@ -131,17 +132,23 @@ export default {
     this.refresh();
   },
   methods: {
-    // refresherrefresh() {
-    //   this.isRefresh = true;
-    // },
+    openTagPage() {
+      uni.navigateTo({
+        url: "/pages/tagManagement/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
 
-    // refresherrestore() {
-    //   this.isRefresh = false;
-    // },
-
-    // refresherabort() {
-    //   this.isRefresh = false;
-    // },
+    toArtPage() {
+      uni.navigateTo({
+        url: "/pages/articlePage/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
 
     onDown() {
       // this.isRefresh = true;

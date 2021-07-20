@@ -6,7 +6,9 @@
     ></cl-avatar>
     <view class="list-item-content">
       <view class="list-item-content-title">
-        赞了你在文章列举几种常见的前端代理方案列举几种常见的前端代理方案里的评论
+        <text class="name">亚非</text>赞了你在文章<text class="article"
+          >列举几种常见的前端代理方案列举几种常见的前端代理方案</text
+        >里的评论
       </view>
       <view class="list-item-content-time">2月前</view>
     </view>
@@ -43,6 +45,11 @@ export default {
     .list-item-content-title {
       margin-bottom: 10rpx;
       @include setSmallTitle($article-desc-color, 40rpx, 28rpx);
+
+      .name,
+      .article {
+        color: $primary-color;
+      }
     }
 
     .list-item-content-time {

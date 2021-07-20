@@ -36,107 +36,100 @@
 			"navigationBarBackgroundColor": "#F9F9F9"
 		}
 
-	}    ,{
-            "path" : "pages/userInfo/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-            }
-            
-        }
-        ,{
-            "path" : "pages/messageCenter/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "消息中心",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/commentInfo/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "评论",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/dianzanInfo/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "赞",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/attentionInfo/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "关注",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/sysInfo/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "系统",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/likeListPage/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "赞过的",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/readedArticle/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "阅读过的文章",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/collectionArtPage/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "收藏集",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/collectionArtList/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "文章收藏",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/tagManagement/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "标签管理",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	}, {
+		"path": "pages/userInfo/index",
+		"style": {
+			"navigationBarTitleText": "",
+			"enablePullDownRefresh": false,
+			"navigationStyle": "custom"
+		}
+
+	}, {
+		"path": "pages/messageCenter/index",
+		"style": {
+			"navigationBarTitleText": "消息中心",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/commentInfo/index",
+		"style": {
+			"navigationBarTitleText": "评论",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/dianzanInfo/index",
+		"style": {
+			"navigationBarTitleText": "赞",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/attentionInfo/index",
+		"style": {
+			"navigationBarTitleText": "关注",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/sysInfo/index",
+		"style": {
+			"navigationBarTitleText": "系统",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/likeListPage/index",
+		"style": {
+			"navigationBarTitleText": "赞过的",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/readedArticle/index",
+		"style": {
+			"navigationBarTitleText": "阅读过的文章",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/collectionArtPage/index",
+		"style": {
+			"navigationBarTitleText": "收藏集",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/collectionArtList/index",
+		"style": {
+			"navigationBarTitleText": "文章收藏",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/tagManagement/index",
+		"style": {
+			"navigationBarTitleText": "标签管理",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/publishIdea/index",
+		"style": {
+			"navigationBarTitleText": "动态发布",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/articlePage/index",
+		"style": {
+			"navigationBarTitleText": "",
+			"enablePullDownRefresh": false,
+			"navigationStyle": "custom"
+		}
+
+	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

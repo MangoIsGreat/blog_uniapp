@@ -1,0 +1,79 @@
+<template>
+  <view class="nav-bar-wrapper">
+    <view
+      class="nav-bar-body"
+      :style="{ paddingTop: statusBarHeight * 2 + 10 + 'rpx' }"
+    >
+      <text class="iconfont icon-xiangzuo"></text>
+      <text class="title"
+        >Java中一个组件被遗忘的强大功能，强大到你难以置信</text
+      >
+      <text class="iconfont icon-shenglvehao"></text>
+    </view>
+    <view class="top-box"></view>
+  </view>
+</template>
+
+<script>
+export default {
+  name: "navBar",
+  data() {
+    return {
+      statusBarHeight: 0,
+    };
+  },
+  created() {
+    const systemInfo = uni.getSystemInfoSync();
+    this.statusBarHeight = systemInfo.statusBarHeight;
+  },
+};
+</script>
+
+<style lang="scss">
+@import "@/static/css/common/common.scss";
+
+.nav-bar-wrapper {
+  width: 100%;
+  position: relative;
+  background-color: #f9f9f9;
+
+  .nav-bar-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0 30rpx;
+    box-sizing: border-box;
+    display: flex;
+
+    .icon-xiangzuo,
+    .icon-shenglvehao {
+      width: 40rpx;
+      line-height: 56rpx;
+      font-weight: 600;
+    }
+
+    .icon-xiangzuo {
+      color: $primary-color;
+    }
+
+    .icon-shenglvehao {
+      color: $article-desc-color;
+    }
+
+    .title {
+      flex: 1;
+      padding: 0 30rpx;
+      box-sizing: border-box;
+      @include ellipsis();
+    }
+  }
+}
+
+.top-box {
+  height: 88rpx;
+  // #ifndef H5
+  height: 140rpx;
+  // #endif
+}
+</style>

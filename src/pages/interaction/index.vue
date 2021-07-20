@@ -55,7 +55,7 @@
       </swiper>
     </cl-tabs>
     <!-- 互动页快捷交流按钮 -->
-    <view class="chat">
+    <view class="chat" @click="publishIdea">
       <text class="iconfont icon-pinglun1"></text>
     </view>
   </view>
@@ -142,6 +142,14 @@ export default {
     this.getStatusBarHeight();
   },
   methods: {
+    publishIdea() {
+      uni.navigateTo({
+        url: "/pages/publishIdea/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
     getStatusBarHeight() {
       const systemInfo = uni.getSystemInfoSync();
       this.statusBarHeight = systemInfo.statusBarHeight;
