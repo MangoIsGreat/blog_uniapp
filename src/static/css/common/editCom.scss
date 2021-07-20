@@ -23,3 +23,25 @@
     }
   }
 }
+
+// 用户信息页Tabs组件样式修改
+.userInfo {
+  .cl-tabs__header {
+    margin-bottom: 16rpx;
+    border-top: $border-line;
+    border-bottom: $border-line;
+
+    .cl-tabs__bar-box {
+      display: flex;
+
+      .cl-tabs__bar-item {
+        flex: 1;
+        color: $article-desc-color;
+
+        .cl-tabs__label {
+          font-size: 30rpx;
+        }
+      }
+    }
+  }
+}
