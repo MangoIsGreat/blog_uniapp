@@ -39,7 +39,11 @@
       </view>
       <text slot="append" class="right">176篇</text>
     </cl-list-item>
-    <cl-list-item class="list-item" label="收藏集">
+    <cl-list-item
+      @click="toPage('/pages/collectionArtPage/index')"
+      class="list-item"
+      label="收藏集"
+    >
       <view slot="icon">
         <text class="iconfont icon-dianzan1"></text>
       </view>
@@ -55,14 +59,18 @@
       </view>
       <text slot="append" class="right">633篇</text>
     </cl-list-item>
-    <cl-list-item class="list-item" label="标签管理">
+    <cl-list-item
+      @click="toPage('/pages/tagManagement/index')"
+      class="list-item"
+      label="标签管理"
+    >
       <view slot="icon">
         <text class="iconfont icon-biaoqian"></text>
       </view>
       <text slot="append" class="right">12个</text>
     </cl-list-item>
-    <cl-list-item justify="center" class="list-item-config">
-      <text class="logout" @click="logOut">退出账号</text>
+    <cl-list-item @click="logOut" justify="center" class="list-item-config">
+      <text class="logout">退出账号</text>
     </cl-list-item>
     <cl-action-sheet ref="action-sheet"></cl-action-sheet>
   </view>

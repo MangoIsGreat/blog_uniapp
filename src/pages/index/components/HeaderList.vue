@@ -1,5 +1,10 @@
 <template>
-  <view :style="{ borderBottom: '14rpx solid #EFF2F5' }">
+  <view
+    :style="{
+      backgroundColor: '#fff',
+      borderBottom: '14rpx solid #EFF2F5',
+    }"
+  >
     <view
       :style="{
         display: 'flex',

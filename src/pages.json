@@ -118,6 +118,24 @@
             }
             
         }
+        ,{
+            "path" : "pages/collectionArtList/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "文章收藏",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/tagManagement/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "标签管理",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -1,5 +1,5 @@
 <template>
-  <view class="news-content">
+  <view class="tag-management-content">
     <!-- Tabs选项卡 -->
     <cl-tabs
       color="#00c58e"
@@ -7,7 +7,6 @@
       v-model="current"
       :labels="labels"
       :border="false"
-      :style="{ paddingTop: statusBarHeight * 2 + 10 + 'rpx' }"
     >
       <!-- 自定义内容区域 -->
       <swiper class="container" @change="onChangeSwiper" :current="current">
@@ -30,7 +29,26 @@
                   :key="index2"
                   class="scroll-view-item"
                 >
-                  <ListItem />
+                  <cl-list-item
+                    @click="toPage('/pages/collectionArtList/index')"
+                    class="scroll-view-item-list"
+                    justify="start"
+                  >
+                    <view class="left">
+                      <cl-avatar
+                        class="avatar"
+                        src="https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/avatar/1.jpg"
+                      ></cl-avatar>
+                      <view class="cs-block">
+                        <view class="name">前端</view>
+                        <view class="desc">152人已关注 · 42篇文章</view>
+                      </view>
+                    </view>
+
+                    <text slot="append">
+                      <cl-button class="like-btn" round>+关注</cl-button>
+                    </text>
+                  </cl-list-item>
                 </view>
 
                 <cl-loadmore
@@ -49,28 +67,18 @@
 </template>
 
 <script>
-import ListItem from "./components/ListItem.vue";
-
 export default {
-  name: "news",
+  name: "tag-management",
   data() {
     const labels = [
       {
-        label: "热门",
+        label: "全部标签",
         value: 1,
         loaded: true,
       },
       {
-        label: "猜你喜欢",
+        label: "已关注标签",
         value: 2,
-      },
-      {
-        label: "女装",
-        value: 3,
-      },
-      {
-        label: "美妆个护",
-        value: 4,
       },
     ];
 
@@ -96,20 +104,10 @@ export default {
       isRefresh: true, // 是否开启下拉刷新
     };
   },
-  components: {
-    ListItem,
-  },
   onLoad() {
     this.refresh();
-
-    // 获取状态栏高度
-    this.getStatusBarHeight();
   },
   methods: {
-    getStatusBarHeight() {
-      const systemInfo = uni.getSystemInfoSync();
-      this.statusBarHeight = systemInfo.statusBarHeight;
-    },
     // refresherrefresh() {
     //   this.isRefresh = true;
     // },
@@ -195,6 +193,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/static/css/common/common.scss";
+
 page {
   // #ifdef H5
   height: 100%;
@@ -205,7 +205,7 @@ page {
   // #endif
 }
 
-.news-content {
+.tag-management-content {
   height: 100%;
   overflow: hidden;
 
@@ -217,8 +217,41 @@ page {
       background-color: #f7f7f7;
 
       .scroll-view-wrapper {
-        height: calc(100% - 80rpx);
-        padding-top: 16rpx;
+        height: 100%;
+
+        .scroll-view-item {
+          border-bottom: $border-line;
+
+          .scroll-view-item-list {
+            padding: 20rpx 0;
+
+            .like-btn {
+              .cl-button__text {
+                color: $primary-color;
+              }
+            }
+
+            .left {
+              display: flex;
+
+              .avatar {
+                margin-right: 18rpx;
+              }
+            }
+
+            .cs-block {
+              .name {
+                margin-bottom: 8rpx;
+                @include setSmallTitle($title-color, 36rpx, 28rpx);
+                font-weight: 600;
+              }
+
+              .desc {
+                color: $article-desc-color;
+              }
+            }
+          }
+        }
       }
     }
   }

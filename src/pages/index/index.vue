@@ -239,6 +239,7 @@ page {
 
       .scroll-view-wrapper {
         height: calc(100% - 140rpx);
+        padding-top: 16rpx;
       }
     }
   }

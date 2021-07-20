@@ -1,3 +1,10 @@
+@import "@/static/css/common/common.scss";
+
+// tabs组件全局添加下边框线
+.cl-tabs__header {
+  border-bottom: $border-line;
+}
+
 // 首页滑动列表样式修改
 .cl-scroller__wrap {
   padding-bottom: 120rpx;
@@ -20,6 +27,7 @@
 
     .cl-tabs__bar-item {
       flex: 1;
+      font-size: 34rpx;
     }
   }
 }
@@ -52,3 +60,18 @@
 //     color: #dd524d;
 //   }
 // }
+
+// 标签管理组件样式修改
+.tag-management-content {
+  .cl-tabs__bar-box {
+    display: flex;
+
+    .cl-tabs__bar-item {
+      flex: 1;
+
+      .cl-tabs__label {
+        font-size: 32rpx;
+      }
+    }
+  }
+}
