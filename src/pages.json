@@ -46,6 +46,51 @@
             }
             
         }
+        ,{
+            "path" : "pages/messageCenter/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "消息中心",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/commentInfo/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "评论",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/dianzanInfo/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "赞",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/attentionInfo/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "关注",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/sysInfo/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "系统",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

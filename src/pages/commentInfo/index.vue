@@ -1,8 +1,5 @@
 <template>
-  <view class="find-wrapper">
-    <!-- 搜索框 -->
-    <Search />
-    <!-- 列表 -->
+  <view class="comment-info-wrapper">
     <scroll-view
       class="scroll-view-wrapper"
       :scroll-y="true"
@@ -13,36 +10,25 @@
       @scrolltoupper="onDown"
       @scrolltolower="onUp"
     >
-      <cl-loading-mask :loading="pageLoading" text="加载中">
-        <HeaderList />
+      <view v-for="(item, index) in list" :key="index" class="scroll-view-item">
+        <ListItem />
+      </view>
 
-        <view
-          v-for="(item, index) in list"
-          :key="index"
-          class="scroll-view-item"
-        >
-          <ListItem />
-        </view>
-
-        <cl-loadmore
-          v-if="list.length > 0"
-          :loading="loading"
-          background-color="#EFF2F5"
-          :finish="isFinish"
-          :divider="false"
-        ></cl-loadmore>
-      </cl-loading-mask>
+      <cl-loadmore
+        v-if="list.length > 0"
+        :loading="loading"
+        background-color="#EFF2F5"
+        :finish="isFinish"
+        :divider="false"
+      ></cl-loadmore>
     </scroll-view>
   </view>
 </template>
 
 <script>
-import Search from "@/components/Search/index.vue";
 import ListItem from "./components/ListItem.vue";
-import HeaderList from "./components/HeaderList.vue";
 
 export default {
-  name: "find",
   data() {
     return {
       list: [],
@@ -51,17 +37,12 @@ export default {
       pageLoading: true,
     };
   },
-
   components: {
-    Search,
     ListItem,
-    HeaderList,
   },
-
   onLoad() {
     this.onDown();
   },
-
   methods: {
     onUp() {
       this.loading = true;
@@ -86,12 +67,12 @@ export default {
 
 <style lang="scss">
 page,
-.find-wrapper {
+.comment-info-wrapper {
   height: 100%;
   overflow: hidden;
 
   .scroll-view-wrapper {
-    height: calc(100% - 140rpx);
+    height: 100%;
   }
 
   .item {

@@ -1,9 +1,13 @@
 <template>
   <view class="my-content">
-    <cl-list-item class="avatar-item" justify="start" @click="toPage('/pages/userInfo/index')">
+    <cl-list-item
+      class="avatar-item"
+      justify="start"
+      @click="toPage('/pages/userInfo/index')"
+    >
       <view class="cs-block">
         <cl-avatar
-        class="avatar"
+          class="avatar"
           src="https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/avatar/1.jpg"
         ></cl-avatar>
         <view class="author">
@@ -16,39 +20,43 @@
         <text class="iconfont icon-xiangyou"></text>
       </view>
     </cl-list-item>
-    <cl-list-item class="list-item" label="消息中心">
-        <view slot="icon">
-            <text class="iconfont icon-xiaoxi"></text>
-        </view>
+    <cl-list-item
+      @click="toPage('/pages/messageCenter/index')"
+      class="list-item"
+      label="消息中心"
+    >
+      <view slot="icon">
+        <text class="iconfont icon-xiaoxi"></text>
+      </view>
     </cl-list-item>
     <cl-list-item class="list-item" label="我赞过的">
-        <view slot="icon">
-            <text class="iconfont icon-dianzan1"></text>
-        </view>
-        <text slot="append" class="right">176篇</text>
+      <view slot="icon">
+        <text class="iconfont icon-dianzan1"></text>
+      </view>
+      <text slot="append" class="right">176篇</text>
     </cl-list-item>
     <cl-list-item class="list-item" label="收藏集">
-        <view slot="icon">
-            <text class="iconfont icon-dianzan1"></text>
-        </view>
-        <text slot="append" class="right">20个</text>
+      <view slot="icon">
+        <text class="iconfont icon-dianzan1"></text>
+      </view>
+      <text slot="append" class="right">20个</text>
     </cl-list-item>
     <cl-list-item class="list-item" label="阅读过的文章">
-        <view slot="icon">
-            <text class="iconfont icon-yanjing"></text>
-        </view>
-        <text slot="append" class="right">633篇</text>
+      <view slot="icon">
+        <text class="iconfont icon-yanjing"></text>
+      </view>
+      <text slot="append" class="right">633篇</text>
     </cl-list-item>
     <cl-list-item class="list-item" label="标签管理">
-        <view slot="icon">
-            <text class="iconfont icon-biaoqian"></text>
-        </view>
-        <text slot="append" class="right">12个</text>
+      <view slot="icon">
+        <text class="iconfont icon-biaoqian"></text>
+      </view>
+      <text slot="append" class="right">12个</text>
     </cl-list-item>
     <cl-list-item class="list-item-config" label="设置">
-        <view slot="icon">
-            <text class="iconfont icon-shezhi"></text>
-        </view>
+      <view slot="icon">
+        <text class="iconfont icon-shezhi"></text>
+      </view>
     </cl-list-item>
   </view>
 </template>
@@ -57,13 +65,15 @@
 export default {
   name: "my",
   methods: {
-      toPage(path) {
-        uni.navigateTo({
-            url: path,
-            success: res => {},fail: () => {},complete: () => {}
-        });
-      }
-  }
+    toPage(path) {
+      uni.navigateTo({
+        url: path,
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
+  },
 };
 </script>
 
@@ -71,62 +81,63 @@ export default {
 @import "@/static/css/common/common.scss";
 
 .my-content {
-    .avatar-item {
-        margin: 40rpx 0;
+  .avatar-item {
+    margin: 40rpx 0;
 
-        .cs-block {
-            display: flex;
-            padding: 36rpx;
-            box-sizing: border-box;
-    
-            .avatar {
-                margin-right: 20rpx;
-            }
-    
-            .author {
-                .name {
-                    @include setBigTitle(36rpx, $title-color, 44rpx, 500);
-                    margin-bottom: 16rpx;
-                }
-    
-                .job {
-                    @include setSmallTitle();
-                }
-            }
+    .cs-block {
+      display: flex;
+      padding: 36rpx;
+      box-sizing: border-box;
+
+      .avatar {
+        margin-right: 20rpx;
+      }
+
+      .author {
+        .name {
+          @include setBigTitle(36rpx, $title-color, 44rpx, 500);
+          margin-bottom: 16rpx;
         }
+
+        .job {
+          @include setSmallTitle();
+        }
+      }
+    }
+  }
+
+  .list-item {
+    border-bottom: $border-line;
+
+    .iconfont {
+      font-size: 36rpx;
     }
 
-    .list-item {
-        border-bottom: $border-line;
-
-        .iconfont {
-            font-size: 36rpx;
-        }
-
-        .icon-xiaoxi {
-            color: #3274F6;
-        }
-
-        .icon-dianzan1 {
-            color: #66C439;
-        }
-
-        .icon-yanjing,.icon-biaoqian {
-            color: #ACB4BE;
-        }
-        
-        .right {
-            color: $article-desc-color;
-        }
+    .icon-xiaoxi {
+      color: #3274f6;
     }
 
-    .list-item-config {
-        margin-top: 40rpx;
-
-        .iconfont {
-            font-size: 36rpx;
-            color: #ACB4BE;
-        }
+    .icon-dianzan1 {
+      color: #66c439;
     }
+
+    .icon-yanjing,
+    .icon-biaoqian {
+      color: #acb4be;
+    }
+
+    .right {
+      color: $article-desc-color;
+    }
+  }
+
+  .list-item-config {
+    margin-top: 40rpx;
+
+    .iconfont {
+      font-size: 36rpx;
+      color: #acb4be;
+    }
+  }
 }
 </style>
