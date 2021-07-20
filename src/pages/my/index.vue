@@ -29,7 +29,11 @@
         <text class="iconfont icon-xiaoxi"></text>
       </view>
     </cl-list-item>
-    <cl-list-item class="list-item" label="我赞过的">
+    <cl-list-item
+      @click="toPage('/pages/likeListPage/index')"
+      class="list-item"
+      label="我赞过的"
+    >
       <view slot="icon">
         <text class="iconfont icon-dianzan1"></text>
       </view>
@@ -41,7 +45,11 @@
       </view>
       <text slot="append" class="right">20个</text>
     </cl-list-item>
-    <cl-list-item class="list-item" label="阅读过的文章">
+    <cl-list-item
+      @click="toPage('/pages/readedArticle/index')"
+      class="list-item"
+      label="阅读过的文章"
+    >
       <view slot="icon">
         <text class="iconfont icon-yanjing"></text>
       </view>
@@ -53,11 +61,10 @@
       </view>
       <text slot="append" class="right">12个</text>
     </cl-list-item>
-    <cl-list-item class="list-item-config" label="设置">
-      <view slot="icon">
-        <text class="iconfont icon-shezhi"></text>
-      </view>
+    <cl-list-item justify="center" class="list-item-config">
+      <text class="logout" @click="logOut">退出账号</text>
     </cl-list-item>
+    <cl-action-sheet ref="action-sheet"></cl-action-sheet>
   </view>
 </template>
 
@@ -71,6 +78,23 @@ export default {
         success: (res) => {},
         fail: () => {},
         complete: () => {},
+      });
+    },
+    logOut() {
+      this.$refs["action-sheet"].open({
+        list: [
+          {
+            label: "您确定要退出登录吗？",
+            disabled: true,
+            size: "26rpx",
+          },
+          {
+            label: "退出登录",
+          },
+        ],
+        callback: ({ action }) => {
+          console.log(action);
+        },
       });
     },
   },
@@ -133,6 +157,11 @@ export default {
 
   .list-item-config {
     margin-top: 40rpx;
+    @include setSmallTitle(#dd524d, 80rpx);
+
+    .logout {
+      font-size: 32rpx;
+    }
 
     .iconfont {
       font-size: 36rpx;

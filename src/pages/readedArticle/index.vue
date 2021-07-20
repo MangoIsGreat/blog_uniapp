@@ -1,5 +1,6 @@
 <template>
-  <view class="dianzan-info-wrapper">
+  <view class="find-wrapper">
+    <!-- 列表 -->
     <scroll-view
       class="scroll-view-wrapper"
       :scroll-y="true"
@@ -10,17 +11,23 @@
       @scrolltoupper="onDown"
       @scrolltolower="onUp"
     >
-      <view v-for="(item, index) in list" :key="index" class="scroll-view-item">
-        <ListItem />
-      </view>
+      <cl-loading-mask :loading="pageLoading" text="加载中">
+        <view
+          v-for="(item, index) in list"
+          :key="index"
+          class="scroll-view-item"
+        >
+          <ListItem />
+        </view>
 
-      <cl-loadmore
-        v-if="list.length > 0"
-        :loading="loading"
-        background-color="#fff"
-        :finish="isFinish"
-        :divider="false"
-      ></cl-loadmore>
+        <cl-loadmore
+          v-if="list.length > 0"
+          :loading="loading"
+          background-color="#EFF2F5"
+          :finish="isFinish"
+          :divider="false"
+        ></cl-loadmore>
+      </cl-loading-mask>
     </scroll-view>
   </view>
 </template>
@@ -29,6 +36,7 @@
 import ListItem from "./components/ListItem.vue";
 
 export default {
+  name: "find",
   data() {
     return {
       list: [],
@@ -37,12 +45,15 @@ export default {
       pageLoading: true,
     };
   },
+
   components: {
     ListItem,
   },
+
   onLoad() {
     this.onDown();
   },
+
   methods: {
     onUp() {
       this.loading = true;
@@ -67,15 +78,12 @@ export default {
 
 <style lang="scss">
 page,
-.dianzan-info-wrapper {
+.find-wrapper {
   height: 100%;
   overflow: hidden;
 
   .scroll-view-wrapper {
     height: 100%;
-    padding: 0 20rpx;
-    box-sizing: border-box;
-    background-color: #fff;
   }
 
   .item {

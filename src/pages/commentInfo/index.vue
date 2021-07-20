@@ -17,7 +17,7 @@
       <cl-loadmore
         v-if="list.length > 0"
         :loading="loading"
-        background-color="#EFF2F5"
+        background-color="#fff"
         :finish="isFinish"
         :divider="false"
       ></cl-loadmore>
@@ -73,6 +73,9 @@ page,
 
   .scroll-view-wrapper {
     height: 100%;
+    padding: 0 20rpx;
+    box-sizing: border-box;
+    background-color: #fff;
   }
 
   .item {

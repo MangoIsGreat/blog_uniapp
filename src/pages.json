@@ -91,6 +91,33 @@
             }
             
         }
+        ,{
+            "path" : "pages/likeListPage/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "赞过的",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/readedArticle/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "阅读过的文章",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/collectionArtPage/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "收藏集",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

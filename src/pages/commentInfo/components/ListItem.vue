@@ -1,28 +1,19 @@
 <template>
   <view class="list-item-wrapper">
-    <view class="list-item-wrapper-title"
-      >一款阿里开源解析excel框架插件"easy-excel"一款阿里开源解析excel框架插件一款阿里开源解析excel框架插件</view
-    >
-    <view class="list-item-wrapper-content">
-      <view class="item-wrapper-content-article">
-        <view class="article">
-          背景面试题:后台传给前端十万条数据,你作为前端如何渲染到页面上?
-          回答者A：我有句话不知当讲不当讲,这什么鬼需求。 背景
-          面试题:后台传给前端十万条数据,你作为前端如何渲染到页面上?
-          回答者A：我有句话不知当讲不当讲,这什么鬼需求。
-        </view>
-        <view class="author-line">
-          <text class="author-line-name">橘颂Java</text>
-          <text class="author-line-time">1小时前</text>
-          <text class="author-line-zan">0点赞·0评论</text>
-        </view>
+    <cl-avatar
+      class="avatar"
+      src="https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/avatar/1.jpg"
+    ></cl-avatar>
+    <view class="list-item-content">
+      <view class="list-item-content-title">
+        <text class="name">稀土君</text>评论了你的文章<text class="article"
+          >列举几种常见的前端代理方案列举几种常见的前端代理方案</text
+        >
       </view>
-      <image
-        class="item-wrapper-content-pic"
-        mode="center"
-        src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77cd95ab46b5478eb8327a450f36e5c1~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
-        @error="imageError"
-      ></image>
+      <view class="list-item-content-content"
+        >人生苦短，珍惜时间，赶紧学习。人生苦短，珍惜时间，赶紧学习。人生苦短，珍惜时间，赶紧学习。</view
+      >
+      <view class="list-item-content-time">2月前</view>
     </view>
   </view>
 </template>
@@ -41,77 +32,40 @@ export default {
 @import "@/static/css/common/common.scss";
 
 .list-item-wrapper {
-  padding: 30rpx;
+  display: flex;
+  padding: 30rpx 0;
   box-sizing: border-box;
-  margin-bottom: 16rpx;
-  background-color: #fff;
+  border-bottom: $border-line;
 
-  .list-item-wrapper-title {
-    width: 100%;
-    margin-bottom: 18rpx;
-    @include setBigTitle();
-    @include ellipsis();
+  .avatar {
+    width: 80rpx;
+    margin-right: 16rpx;
   }
 
-  .list-item-wrapper-content {
-    display: flex;
+  .list-item-content {
+    flex: 1;
 
-    .item-wrapper-content-article {
-      flex: 1;
-      padding-right: 30rpx;
-      box-sizing: border-box;
+    .list-item-content-title {
+      margin-bottom: 10rpx;
+      @include setSmallTitle($article-desc-color, 40rpx, 28rpx);
 
-      .author-line {
-        margin-top: 16rpx;
-        @include setSmallTitle();
-
-        .author-line-name {
-          padding-right: 18rpx;
-          border-right: $border-line;
-        }
-
-        .author-line-time {
-          padding: 0 18rpx;
-          border-right: $border-line;
-        }
-
-        .author-line-zan {
-          padding: 0 18rpx;
-        }
+      .name {
+        @include setSmallTitle($title-color, 40rpx, 28rpx);
+        font-weight: 600;
       }
 
       .article {
-        @include ellipsis2();
-        @include setArticleInfo();
+        @include setSmallTitle($primary-color, 40rpx, 28rpx);
       }
     }
 
-    .item-wrapper-content-pic {
-      width: 168rpx;
-      height: 128rpx;
-    }
-  }
-
-  .bottom-line {
-    display: flex;
-    justify-content: space-between;
-    @include setSmallTitle();
-
-    .operate {
-      display: flex;
-      .operate-dianzan {
-        margin-right: 20rpx;
-      }
-
-      .iconfont {
-        margin-right: 6rpx;
-      }
+    .list-item-content-content {
+      margin-bottom: 12rpx;
+      @include setSmallTitle($article-desc-color, 40rpx, 28rpx);
     }
 
-    .lang-type {
-      padding: 8rpx;
-      background-color: #f4f5f5;
-      border-radius: 8rpx;
+    .list-item-content-time {
+      @include setSmallTitle($article-desc-color, 26rpx, 26rpx);
     }
   }
 }
