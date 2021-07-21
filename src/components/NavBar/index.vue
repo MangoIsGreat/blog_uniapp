@@ -4,7 +4,7 @@
       class="nav-bar-body"
       :style="{ paddingTop: statusBarHeight * 2 + 10 + 'rpx' }"
     >
-      <text class="iconfont icon-xiangzuo"></text>
+      <text @click="goBack" class="iconfont icon-xiangzuo"></text>
       <text class="title"
         >Java中一个组件被遗忘的强大功能，强大到你难以置信</text
       >
@@ -26,6 +26,11 @@ export default {
     const systemInfo = uni.getSystemInfoSync();
     this.statusBarHeight = systemInfo.statusBarHeight;
   },
+  methods: {
+    goBack() {
+      uni.navigateBack();
+    },
+  },
 };
 </script>
 
@@ -36,15 +41,19 @@ export default {
   width: 100%;
   position: relative;
   background-color: #f9f9f9;
+  border-bottom: $border-line;
+  z-index: 99999;
 
   .nav-bar-body {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     padding: 0 30rpx;
     box-sizing: border-box;
     display: flex;
+    background-color: #f9f9f9;
+    z-index: 99999;
 
     .icon-xiangzuo,
     .icon-shenglvehao {

@@ -129,6 +129,14 @@
 			"navigationStyle": "custom"
 		}
 
+	}, {
+		"path": "pages/publishComment/index",
+		"style": {
+			"navigationBarTitleText": "",
+			"enablePullDownRefresh": false,
+			"navigationStyle": "custom"
+		}
+
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

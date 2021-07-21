@@ -2,6 +2,7 @@
   <view class="publish-idea-wrapper">
     <!-- 输入框 -->
     <cl-textarea
+      ref="input"
       v-model="value"
       :style="{ border: 'none', marginBottom: '20rpx' }"
       placeholder="告诉你一个秘密，发布动态不能少于5个字哦，另外添加合适的话题会被更多的人看见~"
@@ -28,6 +29,9 @@ export default {
       value: "",
       urls: null,
     };
+  },
+  onReady() {
+    this.$refs.input.focus = true;
   },
 };
 </script>

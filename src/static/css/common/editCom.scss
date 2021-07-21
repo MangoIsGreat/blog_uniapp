@@ -5,6 +5,11 @@
   border-bottom: $border-line;
 }
 
+// 全局bth组件高度更改
+.cl-button {
+  height: 54rpx;
+}
+
 // 首页滑动列表样式修改
 .cl-scroller__wrap {
   padding-bottom: 120rpx;

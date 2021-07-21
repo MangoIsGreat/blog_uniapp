@@ -35,6 +35,7 @@
 
                 <view v-if="current == 0">
                   <view
+                    @click="toArtPage"
                     v-for="(item2, index2) in item.data"
                     :key="index2"
                     class="scroll-view-item"
@@ -116,6 +117,14 @@ export default {
     this.refresh();
   },
   methods: {
+    toArtPage() {
+      uni.navigateTo({
+        url: "/pages/articlePage/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
     // refresherrefresh() {
     //   this.isRefresh = true;
     // },

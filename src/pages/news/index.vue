@@ -26,6 +26,7 @@
             >
               <cl-loading-mask :loading="loading" text="加载中">
                 <view
+                  @click="toArtPage"
                   v-for="(item2, index2) in item.data"
                   :key="index2"
                   class="scroll-view-item"
@@ -106,6 +107,14 @@ export default {
     this.getStatusBarHeight();
   },
   methods: {
+    toArtPage() {
+      uni.navigateTo({
+        url: "/pages/articlePage/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
     getStatusBarHeight() {
       const systemInfo = uni.getSystemInfoSync();
       this.statusBarHeight = systemInfo.statusBarHeight;

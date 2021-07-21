@@ -13,6 +13,7 @@
     >
       <cl-loading-mask :loading="pageLoading" text="加载中">
         <view
+          @click="toArtPage"
           v-for="(item, index) in list"
           :key="index"
           class="scroll-view-item"
@@ -55,6 +56,14 @@ export default {
   },
 
   methods: {
+    toArtPage() {
+      uni.navigateTo({
+        url: "/pages/articlePage/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
     onUp() {
       this.loading = true;
       this.isFinish = false;
@@ -83,7 +92,7 @@ page,
   overflow: hidden;
 
   .scroll-view-wrapper {
-	  height: 100%;
+    height: 100%;
   }
 
   .item {

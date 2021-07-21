@@ -17,6 +17,7 @@
         <HeaderList />
 
         <view
+          @click="toArtPage"
           v-for="(item, index) in list"
           :key="index"
           class="scroll-view-item"
@@ -63,6 +64,14 @@ export default {
   },
 
   methods: {
+    toArtPage() {
+      uni.navigateTo({
+        url: "/pages/articlePage/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
     openTagPage() {
       uni.navigateTo({
         url: "/pages/tagManagement/index",

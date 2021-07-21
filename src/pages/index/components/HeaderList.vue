@@ -30,6 +30,7 @@
       </view>
     </view>
     <view
+      @click="toArtPage"
       v-for="(item, index) in hotListData"
       :key="index"
       :style="{
@@ -85,6 +86,16 @@ export default {
     return {
       hotListData: [1, 1, 1],
     };
+  },
+  methods: {
+    toArtPage() {
+      uni.navigateTo({
+        url: "/pages/articlePage/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
   },
 };
 </script>
