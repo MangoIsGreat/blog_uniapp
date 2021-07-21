@@ -2,6 +2,7 @@
   <view class="header-content">
     <view class="content-type">
       <view
+        @click="toast"
         v-for="(item, index) in headerData.activityType"
         :key="index"
         class="content-type-item"
@@ -44,15 +45,14 @@
     <view class="recommend-group">
       <view class="recommend-group-header">
         <view class="recommend-group-header-start">
-          推荐技术团队
+          推荐大牛
         </view>
-        <view class="recommend-group-header-end">
-          全部技术团队<text class="iconfont icon-xiangyou"></text>
-        </view>
+        <view class="recommend-group-header-end"></view>
       </view>
       <view class="recommend-group-body">
         <view class="recommend-group-body-innerBox">
           <image
+            @click="toPage('/pages/userInfo/index')"
             v-for="(item, index) in groupList"
             :key="index"
             class="group-item"
@@ -65,6 +65,8 @@
     <view class="hot-recommend">
       <text class="iconfont icon-tubiaozhuanqu-05"></text>热门推荐
     </view>
+    <!-- 提示 -->
+    <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
 
@@ -115,6 +117,12 @@ export default {
     },
     toPage(path) {
       uni.navigateTo({ url: path });
+    },
+    toast() {
+      this.$refs["toast"].open({
+        message: "需求正在开发中,敬请期待~",
+        position: "middle",
+      });
     },
   },
 };

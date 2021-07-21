@@ -28,7 +28,7 @@
                   v-for="(item2, index2) in item.data"
                   :key="index2"
                   class="scroll-view-item"
-                  @click="toArtPage"
+                  @click="toUserInfo"
                 >
                   <ListItem />
                 </view>
@@ -123,18 +123,9 @@ export default {
     this.refresh();
   },
   methods: {
-    openTagPage() {
+    toUserInfo() {
       uni.navigateTo({
-        url: "/pages/tagManagement/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
-      });
-    },
-
-    toArtPage() {
-      uni.navigateTo({
-        url: "/pages/articlePage/index",
+        url: "/pages/userInfo/index",
         success: (res) => {},
         fail: () => {},
         complete: () => {},
@@ -242,7 +233,7 @@ page {
         padding-top: 16rpx;
 
         .scroll-view-item {
-            border-bottom: $border-line;
+          border-bottom: $border-line;
         }
       }
     }

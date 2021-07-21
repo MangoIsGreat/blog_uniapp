@@ -3,6 +3,7 @@
     <view class="swiper-box">
       <view class="swiper-innerBox">
         <view
+          @click="toDetailPage"
           class="swiper-item"
           v-for="(item, index) in publicInfoData"
           :key="index"
@@ -38,6 +39,11 @@ export default {
     return {
       publicInfoData: [1, 1, 1],
     };
+  },
+  methods: {
+    toDetailPage() {
+      uni.navigateTo({ url: "/pages/interactionPage/index" });
+    },
   },
 };
 </script>

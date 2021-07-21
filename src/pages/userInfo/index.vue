@@ -1,14 +1,12 @@
 <template>
   <view class="userInfo">
     <view class="bgImg"></view>
-    <view class="goBack">
-      <view>
-        <view @Click="goback">
-          <i class="icon iconfont icon-xiangyou"></i>
-        </view>
-        <view align="end">
-          <i class="icon iconfont icon-fenxiang"></i>
-        </view>
+    <view class="goBack" :style="{ top: statusBarHeight * 2 + 20 + 'rpx' }">
+      <view @click="goback">
+        <i class="icon iconfont icon-xiangzuo"></i>
+      </view>
+      <view @click="toggleShare(true)">
+        <i class="icon iconfont icon-fenxiang"></i>
       </view>
     </view>
     <view
@@ -88,11 +86,14 @@
         </swiper-item>
       </swiper>
     </cl-tabs>
+    <!-- 分享 -->
+    <Share :visible="isShare" @share="toggleShare" />
   </view>
 </template>
 
 <script>
 import ListItem from "./components/ListItem.vue";
+import Share from "@/components/Share/index.vue";
 
 export default {
   data() {
@@ -136,19 +137,33 @@ export default {
       list,
       loading: true,
       isRefresh: true, // 是否开启下拉刷新
+      statusBarHeight: 0, // 状态栏高度
+      isShare: false, // 是否分享
     };
   },
   components: {
     ListItem,
+    Share,
   },
   onLoad() {
     this.refresh();
+
+    // 获取状态栏高度
+    this.getStatusBarHeight();
   },
   methods: {
+    toggleShare(value) {
+      this.isShare = value;
+    },
+    getStatusBarHeight() {
+      const systemInfo = uni.getSystemInfoSync();
+      this.statusBarHeight = systemInfo.statusBarHeight;
+    },
     toArtPage() {
       uni.navigateTo({ url: "/pages/articlePage/index" });
     },
     goback() {
+      console.log("goBack0000")
       uni.navigateBack();
     },
     onDown() {
@@ -233,6 +248,8 @@ export default {
   }
 
   .goBack {
+    display: flex;
+    justify-content: space-between;
     position: absolute;
     top: 0;
     left: 0;
@@ -244,7 +261,7 @@ export default {
     .icon {
       font-size: 42rpx;
       font-weight: 700;
-      color: #8f918f;
+      color: #283243;
     }
   }
 

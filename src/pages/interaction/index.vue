@@ -35,11 +35,12 @@
                 <ScrollX />
 
                 <view
+                  @click="toInteractionPage"
                   v-for="(item2, index2) in item.data"
                   :key="index2"
                   class="scroll-view-item"
                 >
-                  <ListItem />
+                  <ListItem @share="toggleShare" />
                 </view>
 
                 <cl-loadmore
@@ -58,12 +59,15 @@
     <view class="chat" @click="publishIdea">
       <text class="iconfont icon-pinglun1"></text>
     </view>
+    <!-- 分享 -->
+    <Share :visible="isShare" @share="toggleShare" />
   </view>
 </template>
 
 <script>
 import ListItem from "./components/ListItem.vue";
 import ScrollX from "./components/ScrollX.vue";
+import Share from "@/components/Share/index.vue";
 
 export default {
   name: "interaction",
@@ -128,11 +132,13 @@ export default {
       list,
       loading: true,
       statusBarHeight: 0, // 状态栏高度
+      isShare: false, // 是否分享
     };
   },
   components: {
     ListItem,
     ScrollX,
+    Share,
   },
   onLoad() {
     // 首页刷新数据
@@ -142,9 +148,20 @@ export default {
     this.getStatusBarHeight();
   },
   methods: {
+    toggleShare(value) {
+      this.isShare = value;
+    },
     publishIdea() {
       uni.navigateTo({
         url: "/pages/publishIdea/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
+    toInteractionPage() {
+      uni.navigateTo({
+        url: "/pages/interactionPage/index",
         success: (res) => {},
         fail: () => {},
         complete: () => {},

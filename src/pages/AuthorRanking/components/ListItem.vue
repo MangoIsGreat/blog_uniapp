@@ -33,6 +33,9 @@ export default {
 
 .list-item-wrapper {
   display: flex;
+  padding: 20rpx;
+  box-sizing: border-box;
+  background-color: #fff;
 
   .avatar {
     width: 80rpx;
@@ -42,6 +45,8 @@ export default {
   }
 
   .author-content {
+    flex: 1;
+
     .author-content-line {
       display: flex;
       justify-content: space-between;
@@ -49,10 +54,12 @@ export default {
 
       .author-content-line-author {
         .content-line-author-name {
+          margin-bottom: 8rpx;
           @include setBigTitle();
         }
 
         .content-line-author-job {
+          margin-bottom: 10rpx;
           @include setSmallTitle();
         }
       }
