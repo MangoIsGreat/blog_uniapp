@@ -1,49 +1,6 @@
 <template>
-  <view class="userInfo">
-    <view class="bgImg"></view>
-    <view class="goBack">
-      <view>
-        <view @Click="goback">
-          <i class="icon iconfont icon-xiangyou"></i>
-        </view>
-        <view align="end">
-          <i class="icon iconfont icon-fenxiang"></i>
-        </view>
-      </view>
-    </view>
-    <view
-      :style="{
-        backgroundImage:
-          'url(https://user-gold-cdn.xitu.io/2020/1/18/16fb901f1bac3975?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1)',
-      }"
-      class="avatar"
-    ></view>
-    <view class="detailInfo">
-      <view class="nameLine">
-        <view>
-          <view class="name">橘猫很方</view>
-          <view class="job">前端开发工程师</view>
-        </view>
-        <view align="end">
-          <cl-button size="small" type="primary" plain>编辑</cl-button>
-        </view>
-      </view>
-      <view class="desc">你会变强的！</view>
-      <view class="fansBox">
-        <view class="item like">
-          <view class="num">25</view>
-          <view class="word">关注</view>
-        </view>
-        <view class="item fans">
-          <view class="num">25</view>
-          <view class="word">关注者</view>
-        </view>
-        <view class="item value">
-          <view class="num">1</view>
-          <view class="word">活跃值</view>
-        </view>
-      </view>
-    </view>
+  <view class="author-ranking-wrapper">
+    <!-- Tabs选项卡 -->
     <cl-tabs
       color="#00c58e"
       class="tabs"
@@ -68,10 +25,10 @@
             >
               <cl-loading-mask :loading="loading" text="加载中">
                 <view
-                  @click="toArtPage"
                   v-for="(item2, index2) in item.data"
                   :key="index2"
                   class="scroll-view-item"
+                  @click="toArtPage"
                 >
                   <ListItem />
                 </view>
@@ -95,24 +52,45 @@
 import ListItem from "./components/ListItem.vue";
 
 export default {
+  name: "home",
   data() {
     const labels = [
       {
-        label: "动态",
+        label: "热门",
         value: 1,
         loaded: true,
       },
       {
-        label: "文章",
+        label: "猜你喜欢",
         value: 2,
       },
       {
-        label: "互动",
+        label: "女装",
         value: 3,
       },
       {
-        label: "其他",
+        label: "美妆个护",
         value: 4,
+      },
+      {
+        label: "食品",
+        value: 5,
+      },
+      {
+        label: "母婴",
+        value: 6,
+      },
+      {
+        label: "数码家电",
+        value: 7,
+      },
+      {
+        label: "家居家装",
+        value: 8,
+      },
+      {
+        label: "内衣",
+        value: 9,
       },
     ];
 
@@ -145,13 +123,30 @@ export default {
     this.refresh();
   },
   methods: {
+    openTagPage() {
+      uni.navigateTo({
+        url: "/pages/tagManagement/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
+
     toArtPage() {
-      uni.navigateTo({ url: "/pages/articlePage/index" });
+      uni.navigateTo({
+        url: "/pages/articlePage/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
     },
-    goback() {
-      uni.navigateBack();
-    },
+
     onDown() {
+      // this.isRefresh = true;
+      // setTimeout(() => {
+      //   this.isRefresh = false;
+      // }, 1500);
+
       console.log("====>");
       console.log("down");
       this.refresh({
@@ -221,91 +216,34 @@ export default {
 <style lang="scss">
 @import "@/static/css/common/common.scss";
 
-.userInfo {
-  position: relative;
+page {
+  // #ifdef H5
+  height: 100%;
+  // #endif
 
-  .bgImg {
-    height: 300rpx;
-    background-repeat: no-repeat;
-    background-position: center 6%;
-    background-size: cover;
-    background-image: url("../../static/img/bg.jpg");
-  }
+  // #ifndef H5
+  height: 100vh;
+  // #endif
+}
 
-  .goBack {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 90rpx;
-    padding: 0 30rpx;
-    box-sizing: border-box;
-
-    .icon {
-      font-size: 42rpx;
-      font-weight: 700;
-      color: #8f918f;
-    }
-  }
-
-  .avatar {
-    position: absolute;
-    top: 216rpx;
-    left: 28rpx;
-    border: 4rpx solid #fff;
-    @include setBgImg(160rpx, 160rpx, 50%);
-  }
-
-  .detailInfo {
-    background-color: #fff;
-    padding: 120rpx 24rpx 30rpx;
-
-    .nameLine {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 24rpx;
-
-      .name {
-        @include setBigTitle(32rpx, #000408, 48rpx, 700);
-      }
-
-      .job {
-        @include setSmallTitle(#aeb4bb, 48rpx, 28rpx);
-      }
-    }
-
-    .desc {
-      @include setSmallTitle(#aeb4bb, 48rpx, 28rpx);
-      margin-bottom: 40rpx;
-    }
-
-    .fansBox {
-      display: flex;
-
-      .item {
-        padding: 0 60rpx;
-
-        .num {
-          text-align: center;
-          @include setBigTitle(32rpx, #000408, 48rpx, 700);
-        }
-
-        .word {
-          @include setSmallTitle(#aeb4bb, 48rpx, 28rpx);
-        }
-      }
-    }
-  }
+.author-ranking-wrapper {
+  height: 100%;
+  overflow: hidden;
 
   .tabs {
     margin-bottom: 16rpx;
 
     .container {
-      height: 740rpx;
+      height: 100%;
       background-color: #f7f7f7;
 
       .scroll-view-wrapper {
         height: 100%;
+        padding-top: 16rpx;
+
+        .scroll-view-item {
+            border-bottom: $border-line;
+        }
       }
     }
   }

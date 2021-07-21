@@ -24,7 +24,7 @@
         ></text>
         <text>热门推荐</text>
       </view>
-      <view>
+      <view @click="toPage">
         <text>文章榜</text>
         <text class="iconfont icon-xiangyou"></text>
       </view>
@@ -91,6 +91,14 @@ export default {
     toArtPage() {
       uni.navigateTo({
         url: "/pages/articlePage/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
+    },
+    toPage() {
+      uni.navigateTo({
+        url: "/pages/ArtRanking/index",
         success: (res) => {},
         fail: () => {},
         complete: () => {},

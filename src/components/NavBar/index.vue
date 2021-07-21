@@ -8,7 +8,7 @@
       <text class="title"
         >Java中一个组件被遗忘的强大功能，强大到你难以置信</text
       >
-      <text class="iconfont icon-shenglvehao"></text>
+      <text @click="share" class="iconfont icon-shenglvehao"></text>
     </view>
     <view class="top-box"></view>
   </view>
@@ -29,6 +29,9 @@ export default {
   methods: {
     goBack() {
       uni.navigateBack();
+    },
+    share() {
+      this.$emit("share", true);
     },
   },
 };

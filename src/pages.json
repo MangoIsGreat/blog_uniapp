@@ -137,6 +137,20 @@
 			"navigationStyle": "custom"
 		}
 
+	}, {
+		"path": "pages/ArtRanking/index",
+		"style": {
+			"navigationBarTitleText": "文章榜",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/AuthorRanking/index",
+		"style": {
+			"navigationBarTitleText": "作者榜",
+			"enablePullDownRefresh": false
+		}
+
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

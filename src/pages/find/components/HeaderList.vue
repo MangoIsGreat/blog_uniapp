@@ -18,6 +18,7 @@
         v-for="(item, index) in headerData.rankingType"
         class="ranking-list-item"
         :key="index"
+        @click="toPage(item.path)"
       >
         <view class="content">
           <view class="title">
@@ -76,15 +77,15 @@ export default {
         activityType: [
           {
             type: "招聘",
-            icon: "icon-huati",
+            icon: "icon-lingdai",
           },
           {
             type: "话题",
-            icon: "icon-gonggao",
+            icon: "icon-huati",
           },
           {
             type: "字学",
-            icon: "icon-huati",
+            icon: "icon-pencil-draw-svgrepo-com",
           },
           {
             type: "活动",
@@ -96,11 +97,13 @@ export default {
             type: "文章榜",
             pic: "pic1",
             icon: "icon-bangdan",
+            path: "/pages/ArtRanking/index",
           },
           {
             type: "作者榜",
             pic: "pic2",
             icon: "icon-huangguan",
+            path: "/pages/AuthorRanking/index",
           },
         ],
       },
@@ -109,6 +112,9 @@ export default {
   methods: {
     imageError(e) {
       console.log(e);
+    },
+    toPage(path) {
+      uni.navigateTo({ url: path });
     },
   },
 };
@@ -149,6 +155,15 @@ export default {
 
         .icon-gonggao {
           color: #f7ce45;
+        }
+
+        .icon-pencil-draw-svgrepo-com {
+          color: #ce722c;
+          font-size: 56rpx;
+        }
+
+        .icon-lingdai {
+          color: #6097f2;
         }
 
         .name {

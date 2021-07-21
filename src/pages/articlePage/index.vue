@@ -1,15 +1,16 @@
 <template>
   <view class="article-page-wrapper">
-    <NavBar />
+    <NavBar @share="toggleShare" />
     <!-- 页面内容部分 -->
     <view class="content">
       <view class="content-article">
         <view class="content-article-author">
           <view class="content-article-author-name">
-            <cl-avatar
-              class="avatar"
-              src="https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/avatar/1.jpg"
-            ></cl-avatar>
+            <view @click="toAuthorPage" class="avatar">
+              <cl-avatar
+                src="https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/avatar/1.jpg"
+              ></cl-avatar>
+            </view>
             <view class="name-box">
               <view class="name">政采云前端团队</view>
               <view class="time">3小时前</view>
@@ -50,32 +51,99 @@
         </view>
       </view>
       <view class="content-more-art">
-		  
-	  </view>
-      <view class="content-comment"></view>
+        <view class="tit">相关文章</view>
+        <view
+          @click="toPage"
+          class="more-art-item"
+          v-for="(item, index) in moreArtList"
+          :key="index"
+        >
+          <view class="title">我在工作中是如何使用git的</view>
+          <view class="zan-num">2122 赞 · 167评论 · 政采云团队</view>
+        </view>
+      </view>
+      <view class="content-comment">
+        <view
+          class="comment-item"
+          v-for="(item, index) in commentsList"
+          :key="index"
+        >
+          <view class="avatar" @click="toAuthorPage">
+            <cl-avatar
+              src="https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/avatar/1.jpg"
+            ></cl-avatar>
+          </view>
+          <view class="comment-item-content">
+            <view class="head">
+              <view class="head-left">
+                <view class="name">橘猫哼方</view>
+                <view class="time">前端开发 · 1小时前</view>
+              </view>
+              <view class="head-right">
+                <text class="iconfont icon-dianzan"></text>
+                <text @click="chat" class="iconfont icon-pinglun"></text>
+              </view>
+            </view>
+            <view class="body">
+              行文风格很像阿里行文风格很像阿里行文风格很像阿里行文风格很像阿里行文风格很像阿里
+            </view>
+            <view class="reply">
+              <view
+                class="reply-item"
+                v-for="(item, index) in [1, 1]"
+                :key="index"
+              >
+                <text @click="toAuthorPage" class="reply-item-name"
+                  >手撕红黑树(作者)：</text
+                >
+                <text>这样回答这样回答这样回答这样回答这样回答这样回答</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
       <!-- 评论组件 -->
       <Comment />
     </view>
+    <!-- 底部弹框 -->
+    <Share @share="toggleShare" :visible="isShare" />
   </view>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar/index.vue";
 import Comment from "@/components/Comment/index.vue";
+import Share from "@/components/Share/index.vue";
 
 export default {
   data() {
     return {
       tagList: [1, 1, 1],
+      moreArtList: [1, 1, 1, 1, 1],
+      commentsList: [1, 1, 1, 1, 1],
+      isShare: false, // 是否分享
     };
   },
   components: {
     NavBar,
     Comment,
+    Share,
   },
   methods: {
     imageError(e) {
       console.log(e);
+    },
+    toPage() {
+      uni.navigateTo({ url: "/pages/articlePage/index" });
+    },
+    toAuthorPage() {
+      uni.navigateTo({ url: "/pages/userInfo/index" });
+    },
+    chat() {
+      uni.navigateTo({ url: "/pages/publishComment/index" });
+    },
+    toggleShare(value) {
+      this.isShare = value;
     },
   },
 };
@@ -146,12 +214,11 @@ page,
       }
 
       .content-article-footer {
-        margin-bottom: 20rpx;
         border-bottom: $border-line;
 
         .tag-item {
           @include setSmallTitle($article-desc-color, 28rpx, 28rpx);
-          padding: 8rpx 14rpx;
+          padding: 10rpx 14rpx;
           margin-right: 10rpx;
           background-color: #eee;
           padding: 0 30rpx;
@@ -168,10 +235,96 @@ page,
     }
 
     .content-more-art {
+      border-top: $border-line;
+      margin-bottom: 16rpx;
 
+      .tit {
+        padding: 0 30rpx;
+        box-sizing: border-box;
+        @include setSmallTitle($title-color, 80rpx, 32rpx);
+        border-bottom: $border-line;
+      }
+
+      .more-art-item {
+        border-bottom: $border-line;
+        padding: 30rpx;
+        box-sizing: border-box;
+
+        .title {
+          @include setSmallTitle($title-color, 28rpx, 28rpx);
+          margin-bottom: 18rpx;
+        }
+
+        .zan-num {
+          @include setSmallTitle();
+        }
+      }
     }
 
     .content-comment {
+      box-sizing: border-box;
+      border-top: $border-line;
+
+      .comment-item {
+        display: flex;
+        border-bottom: $border-line;
+        padding: 30rpx;
+        box-sizing: border-box;
+
+        .avatar {
+          width: 80rpx;
+          height: 80rpx;
+          margin-right: 12rpx;
+        }
+
+        .comment-item-content {
+          flex: 1;
+
+          .head {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10rpx;
+
+            .head-left {
+              .name {
+                @include setSmallTitle($primary-color, 28rpx, 28rpx);
+                margin-bottom: 10rpx;
+              }
+
+              .time {
+                @include setSmallTitle();
+              }
+            }
+
+            .head-right {
+              .icon-pinglun {
+                margin-left: 60rpx;
+              }
+            }
+          }
+
+          .body {
+            @include setSmallTitle($title-color, 38rpx, 28rpx);
+            margin-bottom: 12rpx;
+          }
+
+          .reply {
+            width: 100%;
+            padding: 12rpx;
+            box-sizing: border-box;
+            background-color: #f1f1f1;
+
+            .reply-item {
+              @include setSmallTitle($title-color, 38rpx, 28rpx);
+              margin-bottom: 8rpx;
+
+              .reply-item-name {
+                color: $primary-color;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
