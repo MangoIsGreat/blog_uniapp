@@ -160,6 +160,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/tagArtList/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "文章列表",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

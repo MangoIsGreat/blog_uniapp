@@ -1,5 +1,5 @@
 <template>
-  <view class="tag-management-content">
+  <view class="tag-article-content">
     <!-- Tabs选项卡 -->
     <cl-tabs
       color="#00c58e"
@@ -28,23 +28,9 @@
                   v-for="(item2, index2) in item.data"
                   :key="index2"
                   class="scroll-view-item"
+                  @click="toArtPage"
                 >
-                  <cl-list-item @click="toPage('/pages/tagArtList/index')" class="scroll-view-item-list" justify="start">
-                    <view class="left">
-                      <cl-avatar
-                        class="avatar"
-                        src="https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/avatar/1.jpg"
-                      ></cl-avatar>
-                      <view class="cs-block">
-                        <view class="name">前端</view>
-                        <view class="desc">152人已关注 · 42篇文章</view>
-                      </view>
-                    </view>
-
-                    <view slot="append">
-                      <cl-button class="like-btn" round>+关注</cl-button>
-                    </view>
-                  </cl-list-item>
+                  <ListItem />
                 </view>
 
                 <cl-loadmore
@@ -63,17 +49,19 @@
 </template>
 
 <script>
+import ListItem from "./components/ListItem.vue";
+
 export default {
-  name: "tag-management",
+  name: "home",
   data() {
     const labels = [
       {
-        label: "全部标签",
+        label: "最新",
         value: 1,
         loaded: true,
       },
       {
-        label: "已关注标签",
+        label: "最热",
         value: 2,
       },
     ];
@@ -100,25 +88,21 @@ export default {
       isRefresh: true, // 是否开启下拉刷新
     };
   },
+  components: {
+    ListItem,
+  },
   onLoad() {
     this.refresh();
   },
   methods: {
-    toPage(path) {
-      console.log(99999, path);
-      uni.navigateTo({ url: path });
+    toArtPage() {
+      uni.navigateTo({
+        url: "/pages/articlePage/index",
+        success: (res) => {},
+        fail: () => {},
+        complete: () => {},
+      });
     },
-    // refresherrefresh() {
-    //   this.isRefresh = true;
-    // },
-
-    // refresherrestore() {
-    //   this.isRefresh = false;
-    // },
-
-    // refresherabort() {
-    //   this.isRefresh = false;
-    // },
 
     onDown() {
       // this.isRefresh = true;
@@ -193,8 +177,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/static/css/common/common.scss";
-
 page {
   // #ifdef H5
   height: 100%;
@@ -205,7 +187,7 @@ page {
   // #endif
 }
 
-.tag-management-content {
+.tag-article-content {
   height: 100%;
   overflow: hidden;
 
@@ -218,40 +200,7 @@ page {
 
       .scroll-view-wrapper {
         height: 100%;
-
-        .scroll-view-item {
-          border-bottom: $border-line;
-
-          .scroll-view-item-list {
-            padding: 20rpx 0;
-
-            .like-btn {
-              .cl-button__text {
-                color: $primary-color;
-              }
-            }
-
-            .left {
-              display: flex;
-
-              .avatar {
-                margin-right: 18rpx;
-              }
-            }
-
-            .cs-block {
-              .name {
-                margin-bottom: 8rpx;
-                @include setSmallTitle($title-color, 36rpx, 28rpx);
-                font-weight: 600;
-              }
-
-              .desc {
-                color: $article-desc-color;
-              }
-            }
-          }
-        }
+        padding-top: 16rpx;
       }
     }
   }
