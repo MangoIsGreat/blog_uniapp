@@ -3290,11 +3290,6 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classname@^0.0.0:
-  version "0.0.0"
-  resolved "https://registry.npm.taobao.org/classname/download/classname-0.0.0.tgz#43d171b484e354c7a293a5b78004df6852db20d6"
-  integrity sha1-Q9FxtITjVMeik6W3gATfaFLbINY=
-
 clean-css@4.2.x:
   version "4.2.3"
   resolved "https://registry.nlark.com/clean-css/download/clean-css-4.2.3.tgz#507b5de7d97b48ee53d84adb0160ff6216380f78"
@@ -6612,6 +6607,11 @@ js-base64@^2.1.8:
   version "2.6.4"
   resolved "https://registry.nlark.com/js-base64/download/js-base64-2.6.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fjs-base64%2Fdownload%2Fjs-base64-2.6.4.tgz#f4e686c5de1ea1f867dbcad3d46d969428df98c4"
   integrity sha1-9OaGxd4eofhn28rT1G2WlCjfmMQ=
+
+js-base64@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.nlark.com/js-base64/download/js-base64-3.6.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fjs-base64%2Fdownload%2Fjs-base64-3.6.1.tgz#555aae398b74694b4037af1f8a5a6209d170efbe"
+  integrity sha1-VVquOYt0aUtAN68filpiCdFw774=
 
 js-message@1.0.7:
   version "1.0.7"
