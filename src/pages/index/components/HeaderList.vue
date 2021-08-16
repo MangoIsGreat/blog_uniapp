@@ -31,7 +31,7 @@
     </view>
     <view
       @click="toArtPage"
-      v-for="(item, index) in hotListData"
+      v-for="(item, index) in hotList"
       :key="index"
       :style="{
         display: 'flex',
@@ -52,7 +52,7 @@
             overflow: 'hidden',
           }"
         >
-          拖拽竟然还能这样玩拖拽竟然还能这样玩拖拽竟然还能这样玩
+          {{ item.title }}
         </view>
         <view
           :style="{
@@ -61,18 +61,20 @@
             lineHeight: '48rpx',
           }"
         >
-          41&nbsp;赞&nbsp;·&nbsp;30&nbsp;评论&nbsp;·&nbsp;yck
+          {{ item.blogLikeNum }}&nbsp;赞&nbsp;·&nbsp;{{
+            item.commentNum
+          }}&nbsp;评论&nbsp;·&nbsp;{{ item.User.nickname }}
         </view>
       </view>
       <view
+        v-if="item.titlePic"
         :style="{
           width: '130rpx',
           height: '130rpx',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           backgroundSize: 'cover',
-          backgroundImage:
-            'url(https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b43e630c545e47d186085fbcb0576e78~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp)',
+          backgroundImage: `url(${item.titlePic})`,
         }"
       ></view>
     </view>
@@ -82,10 +84,8 @@
 <script>
 export default {
   name: "home-headerList",
-  data() {
-    return {
-      hotListData: [1, 1, 1],
-    };
+  props: {
+    hotList: Array,
   },
   methods: {
     toArtPage() {

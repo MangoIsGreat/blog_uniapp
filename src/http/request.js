@@ -11,7 +11,7 @@ const request = async (options) => {
       options.header = {
         Authorization: encode(token),
         // "Content-Type": "application/json",
-        "Content-Type": "application/x-www-form-urlencoded",
+        "content-type": "application/x-www-form-urlencoded",
       };
     }
   } catch (err) {

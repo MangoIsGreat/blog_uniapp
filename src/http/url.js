@@ -2,10 +2,10 @@ let baseUrl = "";
 
 if (process.env.NODE_ENV === "production") {
   // 生产环境
-  baseUrl = "http://192.168.0.104:3001/v1";
+  baseUrl = "http://172.20.10.2:3001/v1";
 } else {
   // 开发环境
-  baseUrl = "http://192.168.0.104:3001/v1";
+  baseUrl = "http://172.20.10.2:3001/v1";
 }
 
 export default baseUrl;
