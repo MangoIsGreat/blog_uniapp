@@ -33,7 +33,7 @@
                   v-for="(item2, index2) in item.data"
                   :key="index2"
                   class="scroll-view-item"
-                  @click="toArtPage"
+                  @click="toArtPage(item2.id)"
                 >
                   <ListItem :listData="item2" />
                 </view>
@@ -159,9 +159,9 @@ export default {
       });
     },
 
-    toArtPage() {
+    toArtPage(id) {
       uni.navigateTo({
-        url: "/pages/articlePage/index",
+        url: `/pages/articlePage/index?id=${id}`,
         success: (res) => {},
         fail: () => {},
         complete: () => {},

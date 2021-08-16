@@ -5,7 +5,9 @@
       <view class="item-wrapper-content-article">
         <view class="author-line">
           <text class="author-line-name">{{ listData.User.nickname }}</text>
-          <text class="author-line-time">1小时前</text>
+          <text class="author-line-time">{{
+            listData.created_at | relativeTime
+          }}</text>
         </view>
         <view class="article">
           {{ listData.description }}

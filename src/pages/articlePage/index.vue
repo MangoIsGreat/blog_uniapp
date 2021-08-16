@@ -1,6 +1,6 @@
 <template>
   <view class="article-page-wrapper">
-    <NavBar @share="toggleShare" />
+    <NavBar :title="blogInfo.title" @share="toggleShare" />
     <!-- 页面内容部分 -->
     <view class="content">
       <view class="content-article">
@@ -8,58 +8,68 @@
           <view class="content-article-author-name">
             <view @click="toAuthorPage" class="avatar">
               <cl-avatar
-                src="https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/avatar/1.jpg"
+                :src="blogInfo.User && blogInfo.User.avatar"
               ></cl-avatar>
             </view>
             <view class="name-box">
-              <view class="name">政采云前端团队</view>
-              <view class="time">3小时前</view>
+              <view class="name">{{
+                blogInfo.User && blogInfo.User.nickname
+              }}</view>
+              <view class="time">{{ blogInfo.created_at | relativeTime }}</view>
             </view>
           </view>
-          <cl-button type="success" plain round>+ 关注</cl-button>
+          <cl-button
+            type="success"
+            plain
+            round
+            v-if="blogInfo.User && !blogInfo.User.isSelf"
+            @click="follow(blogInfo.User && blogInfo.User.id)"
+          >
+            <text v-if="blogInfo.User && !blogInfo.User.isAttention"
+              >+&nbsp;关注</text
+            >
+            <text v-if="blogInfo.User && blogInfo.User.isAttention"
+              >已关注</text
+            >
+          </cl-button>
         </view>
         <view class="content-article-title">
-          <view class="article-titke"
-            >如何搭建适合自己团队的构建部署平台如何搭建适合自己团队的构建部署平台</view
-          >
+          <view class="article-titke">{{ blogInfo.title }}</view>
           <image
+            v-if="blogInfo.titlePic"
             class="main-pic"
-            src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/691e53c30b044855a94a97817f0c6f5f~tplv-k3u1fbpfcp-watermark.image"
+            :src="blogInfo.titlePic"
             @error="imageError"
           ></image>
         </view>
-        <view class="content-article-body">
-          思维导图镇楼，先感谢大家对我上一篇文的积极点赞，助我完成KPI😄。
-          上一篇中给大家讲了Stream的前半部分知识——包括对Stream的整体概览及Stream的创建和Stream的转换流操作，并对Stream一些内部优化点做了简明的说明。
-          虽迟但到，今天就来继续给大家更Stream第二部分知识——终结操作，由于这部分的API内容繁多且复杂，所以我单开一篇给大家细细讲讲，我的文章很长，请大家忍耐一下。
-          正式开始之前，我们先来说说聚合方法本身的特性(接下来我将用聚合方法代指终结操作中的方法)：
-          聚合方法代表着整个流计算的最终结果，所以它的返回值都不是Stream。
-          聚合方法返回值可能为空，比如filter没有匹配到的情况，JDK8中用Optional来规避NPE。
-          聚合方法都会调用evaluate方法，这是一个内部方法，看源码的过程中可以用它来判定一个方法是不是聚合方法。
-          ok，知晓了聚合方法的特性，我为了便于理解，又将聚合方法分为几大类聚合方法代表着整个流计算的最终结果，所以它的返回值都不是Stream。
-          聚合方法返回值可能为空，比如filter没有匹配到的情况，JDK8中用Optional来规避NPE。
-          聚合方法都会调用evaluate方法，这是一个内部方法，看源码的过程中可以用它来判定一个方法是不是聚合方法。
-          ok，知晓了聚合方法的特性，我为了便于理解，又将聚合方法分为几大类
-        </view>
+        <view class="content-article-body" v-html="mdContent"></view>
         <view class="content-article-footer">
           <view class="tag">
-            <text class="tag-item" v-for="(item, index) in tagList" :key="index"
-              >前端</text
-            >
+            <text class="tag-item">{{
+              blogInfo.Tag && blogInfo.Tag.tagName
+            }}</text>
           </view>
-          <view class="zan">赞 96 · 阅读 2876</view>
+          <view class="zan"
+            >赞&nbsp;{{ blogInfo.blogLikeNum }}&nbsp;·&nbsp;阅读&nbsp;{{
+              blogInfo.blogReadNum
+            }}</view
+          >
         </view>
       </view>
       <view class="content-more-art">
         <view class="tit">相关文章</view>
         <view
-          @click="toPage"
+          @click="toPage(item.id)"
           class="more-art-item"
           v-for="(item, index) in moreArtList"
           :key="index"
         >
-          <view class="title">我在工作中是如何使用git的</view>
-          <view class="zan-num">2122 赞 · 167评论 · 政采云团队</view>
+          <view class="title">{{ item.title }}</view>
+          <view class="zan-num"
+            >{{ item.blogLikeNum }}&nbsp;赞&nbsp;·&nbsp;{{
+              item.commentNum
+            }}评论&nbsp;·&nbsp;{{ item.User && item.User.nickname }}</view
+          >
         </view>
       </view>
       <view class="content-comment">
@@ -69,44 +79,73 @@
           :key="index"
         >
           <view class="avatar" @click="toAuthorPage">
-            <cl-avatar
-              src="https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/avatar/1.jpg"
-            ></cl-avatar>
+            <cl-avatar :src="item.comment && item.comment.avatar"></cl-avatar>
           </view>
           <view class="comment-item-content">
             <view class="head">
               <view class="head-left">
-                <view class="name">橘猫哼方</view>
-                <view class="time">前端开发 · 1小时前</view>
+                <view class="name">{{
+                  item.comment && item.comment.nickname
+                }}</view>
+                <view class="time"
+                  >{{ item.comment && item.comment.profession }}&nbsp;·&nbsp;{{
+                    item.created_at | relativeTime
+                  }}</view
+                >
               </view>
               <view class="head-right">
-                <text class="iconfont icon-dianzan"></text>
-                <text @click="chat" class="iconfont icon-pinglun"></text>
+                <text
+                  @click="likeComment(item.id)"
+                  :class="[
+                    'iconfont',
+                    item.isLike ? 'icon-dianzan_' : 'icon-dianzan',
+                  ]"
+                  :style="{ color: item.isLike ? '#00c58e' : '#96909c' }"
+                  >&nbsp;{{ item.likeNum ? item.likeNum : "" }}</text
+                >
+                <text
+                  @click="
+                    chat(blogInfo.id, item.id, item.comment && item.comment.id)
+                  "
+                  class="iconfont icon-pinglun"
+                ></text>
               </view>
             </view>
             <view class="body">
-              行文风格很像阿里行文风格很像阿里行文风格很像阿里行文风格很像阿里行文风格很像阿里
+              {{ item.content }}
             </view>
-            <view class="reply">
+            <view class="reply" v-if="item.child.length">
               <view
                 class="reply-item"
-                v-for="(item, index) in [1, 1]"
-                :key="index"
+                v-for="(item2, index2) in item.child"
+                :key="index2"
+                @click="replyToReply(blogInfo.id, item.id, item2)"
               >
-                <text @click="toAuthorPage" class="reply-item-name"
-                  >手撕红黑树(作者)：</text
+                <text @click.stop="toAuthorPage" class="reply-item-name"
+                  >{{ item2.from.nickname
+                  }}<text
+                    v-if="
+                      item.userInfo &&
+                        item2.from &&
+                        item.userInfo.id === item2.from.id
+                    "
+                    >(作者)</text
+                  ></text
+                >回复<text @click.stop="toAuthorPage" class="reply-item-name"
+                  >{{ item2.to.nickname }}：</text
                 >
-                <text>这样回答这样回答这样回答这样回答这样回答这样回答</text>
+                <text>{{ item2.content }}</text>
               </view>
             </view>
           </view>
         </view>
       </view>
       <!-- 评论组件 -->
-      <Comment />
+      <Comment @makeLike="makeLike" :infoData="blogInfo" type="blogComment" />
     </view>
     <!-- 底部弹框 -->
     <Share @share="toggleShare" :visible="isShare" />
+    <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
 
@@ -114,14 +153,18 @@
 import NavBar from "@/components/NavBar/index.vue";
 import Comment from "@/components/Comment/index.vue";
 import Share from "@/components/Share/index.vue";
+import request from "@/http/request";
+import marked from "marked";
 
 export default {
   data() {
     return {
-      tagList: [1, 1, 1],
-      moreArtList: [1, 1, 1, 1, 1],
-      commentsList: [1, 1, 1, 1, 1],
+      blogInfo: {}, // 博客详情
+      moreArtList: [],
+      commentsList: [],
       isShare: false, // 是否分享
+      blogId: "", // 博客id
+      mdContent: "", // 博客内容
     };
   },
   components: {
@@ -129,18 +172,169 @@ export default {
     Comment,
     Share,
   },
+  onLoad(options) {
+    this.blogId = options.id;
+  },
+  onShow() {
+    // 获取博客信息
+    this.getBlogInfo();
+
+    // 获取相关文章
+    this.getMoreArt();
+
+    // 获取评论列表
+    this.getCommentList();
+  },
   methods: {
-    imageError(e) {
-      console.log(e);
+    async getBlogInfo() {
+      let data = {
+        id: this.blogId,
+      };
+
+      const blog = await request({
+        url: "/blog/article",
+        method: "GET",
+        data,
+      });
+
+      if (blog.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "博客数据请求失败！",
+        });
+      }
+
+      this.mdContent = marked(blog.data.data.content || "");
+
+      this.blogInfo = blog.data.data;
     },
-    toPage() {
-      uni.navigateTo({ url: "/pages/articlePage/index" });
+    async getMoreArt() {
+      let data = {
+        id: this.blogId,
+      };
+
+      const moreData = await request({
+        url: "/blog/hot",
+        method: "GET",
+        data,
+      });
+
+      if (moreData.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "更多博客数据请求失败！",
+        });
+      }
+
+      this.moreArtList = moreData.data.data.rows;
+    },
+    async getCommentList() {
+      let data = {
+        blog: this.blogId,
+      };
+
+      const commentList = await request({
+        url: "/bcomment/list",
+        method: "GET",
+        data,
+      });
+
+      if (commentList.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "获取评论列表失败！",
+        });
+      }
+
+      this.commentsList = commentList.data.data;
+    },
+    // 点赞博客
+    async makeLike() {
+      const data = await request({
+        url: "/blike/like",
+        method: "POST",
+        data: { blog: this.blogId },
+      });
+
+      if (data.data.error_code === 0) {
+        if (data.data.data === "ok") {
+          this.blogInfo.isLike = true;
+          this.blogInfo.blogLikeNum += 1;
+        } else if (data.data.data === "cancel") {
+          this.blogInfo.isLike = false;
+          this.blogInfo.blogLikeNum -= 1;
+        }
+      } else {
+        this.$refs["toast"].open({
+          message: "点赞失败！",
+        });
+      }
+    },
+    // 关注作者
+    async follow(id) {
+      const data = await request({
+        url: "/fans/follow",
+        method: "POST",
+        data: { leader: id },
+      });
+
+      if (data.data.error_code === 0) {
+        if (data.data.data.data === "ok") {
+          this.blogInfo.User.isAttention = true;
+        } else if (data.data.data.data === "cancel") {
+          this.blogInfo.User.isAttention = false;
+        }
+      } else {
+        this.$refs["toast"].open({
+          message: "关注失败！",
+        });
+      }
+    },
+    // 点赞评论
+    async likeComment(id) {
+      const data = await request({
+        url: "/clike/like",
+        method: "POST",
+        data: { commentId: id },
+      });
+
+      if (data.data.error_code === 0) {
+        if (data.data.data === "ok") {
+          this.commentsList.forEach((item) => {
+            if (item.id === id) {
+              item.isLike = true;
+              item.likeNum++;
+            }
+          });
+        } else if (data.data.data === "cancel") {
+          this.commentsList.forEach((item) => {
+            if (item.id === id) {
+              item.isLike = false;
+              item.likeNum--;
+            }
+          });
+        }
+      } else {
+        this.$refs["toast"].open({
+          message: "点赞失败！",
+        });
+      }
+    },
+    imageError(e) {
+      // console.log(e);
+    },
+    toPage(id) {
+      uni.navigateTo({ url: `/pages/articlePage/index?id=${id}` });
     },
     toAuthorPage() {
       uni.navigateTo({ url: "/pages/userInfo/index" });
     },
-    chat() {
-      uni.navigateTo({ url: "/pages/publishComment/index" });
+    chat(blogId, commentId, toCommentId) {
+      uni.navigateTo({
+        url: `/pages/publishComment/index?id=${blogId}&type=replyToComment&cId=${commentId}&toId=${toCommentId}`,
+      });
+    },
+    replyToReply(blogId, commentId, toCommentId) {
+      uni.navigateTo({
+        url: `/pages/publishComment/index?id=${blogId}&type=replyToComment&cId=${commentId}&toId=${toCommentId.from.id}`,
+      });
     },
     toggleShare(value) {
       this.isShare = value;
@@ -215,6 +409,10 @@ page,
 
       .content-article-footer {
         border-bottom: $border-line;
+
+        .tag {
+          margin-left: 20rpx;
+        }
 
         .tag-item {
           @include setSmallTitle($article-desc-color, 28rpx, 28rpx);
@@ -299,6 +497,11 @@ page,
             .head-right {
               .icon-pinglun {
                 margin-left: 60rpx;
+              }
+
+              .iconfont {
+                color: #96909c;
+                transition: all 0.2s;
               }
             }
           }

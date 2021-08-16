@@ -61,8 +61,10 @@
     "@vue/shared": "^3.0.0",
     "cl-uni": "^1.8.20",
     "core-js": "^3.6.5",
+    "dayjs": "^1.10.6",
     "flyio": "^0.6.2",
     "js-base64": "^3.6.1",
+    "marked": "^3.0.0",
     "regenerator-runtime": "^0.12.1",
     "vue": "^2.6.11",
     "vuex": "^3.2.0"

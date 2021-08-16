@@ -5,9 +5,7 @@
       :style="{ paddingTop: statusBarHeight * 2 + 10 + 'rpx' }"
     >
       <text @click="goBack" class="iconfont icon-xiangzuo"></text>
-      <text class="title"
-        >Java中一个组件被遗忘的强大功能，强大到你难以置信</text
-      >
+      <text class="title">{{ title }}</text>
       <text @click="share" class="iconfont icon-shenglvehao"></text>
     </view>
     <view class="top-box"></view>
@@ -17,6 +15,9 @@
 <script>
 export default {
   name: "navBar",
+  props: {
+    title: String,
+  },
   data() {
     return {
       statusBarHeight: 0,
@@ -78,12 +79,13 @@ export default {
       padding: 0 30rpx;
       box-sizing: border-box;
       @include ellipsis();
+      text-align: center;
     }
   }
 }
 
 .top-box {
-  height: 88rpx;
+  height: 120rpx !important;
   // #ifndef H5
   height: 140rpx;
   // #endif

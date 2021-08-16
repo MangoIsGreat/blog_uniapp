@@ -30,7 +30,7 @@
       </view>
     </view>
     <view
-      @click="toArtPage"
+      @click="toArtPage(item.id)"
       v-for="(item, index) in hotList"
       :key="index"
       :style="{
@@ -61,9 +61,11 @@
             lineHeight: '48rpx',
           }"
         >
-          {{ item.blogLikeNum }}&nbsp;赞&nbsp;·&nbsp;{{
-            item.commentNum
-          }}&nbsp;评论&nbsp;·&nbsp;{{ item.User.nickname }}
+          {{ item.blogReadNum }}阅读&nbsp;·&nbsp;{{
+            item.blogLikeNum
+          }}&nbsp;赞&nbsp;·&nbsp;{{ item.commentNum }}&nbsp;评论&nbsp;·&nbsp;{{
+            item.User.nickname
+          }}
         </view>
       </view>
       <view
@@ -88,9 +90,9 @@ export default {
     hotList: Array,
   },
   methods: {
-    toArtPage() {
+    toArtPage(id) {
       uni.navigateTo({
-        url: "/pages/articlePage/index",
+        url: `/pages/articlePage/index?id=${id}`,
         success: (res) => {},
         fail: () => {},
         complete: () => {},

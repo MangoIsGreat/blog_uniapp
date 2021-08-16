@@ -5,8 +5,8 @@
       :style="{ paddingTop: statusBarHeight * 2 + 10 + 'rpx' }"
     >
       <text @click="goBack" class="iconfont icon-xiangzuo"></text>
-      <text class="title">发评论</text>
-      <text @click="publish" class="publish">发送</text>
+      <text class="title">评论</text>
+      <text class="publish" @click="publish">发送</text>
     </view>
     <cl-textarea
       ref="input"
@@ -14,31 +14,102 @@
       v-model="value"
       placeholder="输入评论..."
     ></cl-textarea>
+    <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
 
 <script>
+import request from "@/http/request";
+
 export default {
   data() {
     return {
       value: "",
       statusBarHeight: 0,
+      id: "", // 动态id、博客id
+      type: "", // 评论类型
+      commentId: "", // 评论id
+      targetId: "", // 要评论的"评论"id
     };
   },
-  onLoad() {
-    const systemInfo = uni.getSystemInfoSync();
-    this.statusBarHeight = systemInfo.statusBarHeight;
+  onLoad(options) {
+    // 获取手机顶部navbar高度
+    this.getNavHeight();
+
+    // 获取评论类型
+    this.type = options.type;
+    // 获取评论/博客Id
+    this.id = options.id;
+    // 评论id
+    this.commentId = options.cId;
+    // 要回复的目标评论Id
+    this.targetId = options.toId;
   },
   onReady() {
+    // 输入框自动获取焦点
     this.$refs.input.focus = true;
   },
   methods: {
+    // 评论博客
+    async publish() {
+      switch (this.type) {
+        case "blogComment":
+          this.makeBlogComment();
+          break;
+        case "replyToComment":
+          this.makeReplyToComment();
+          break;
+        default:
+          break;
+      }
+    },
+    // 评论博客
+    async makeBlogComment() {
+      const data = await request({
+        url: "/bcomment/comment",
+        method: "POST",
+        data: { blog: this.id, content: this.value },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "评论失败！",
+        });
+      }
+
+      // 评论成功返回上一页
+      uni.navigateBack();
+    },
+    // 评论博客评论
+    async makeReplyToComment() {
+      const data = await request({
+        url: "/bcomment/reply",
+        method: "POST",
+        data: {
+          blog: this.id, // 博客id
+          content: this.value, // 评论内容
+          comment: this.commentId, // 评论id
+          toUid: this.targetId, // 要回复的"评论"&"评论回复"的id
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "评论失败！",
+        });
+      }
+
+      // 评论成功返回上一页
+      uni.navigateBack();
+    },
+    // 获取手机顶部navbar高度
+    getNavHeight() {
+      const systemInfo = uni.getSystemInfoSync();
+      this.statusBarHeight = systemInfo.statusBarHeight;
+    },
     goBack() {
       uni.navigateBack();
     },
-	publish() {
-		
-	}
   },
 };
 </script>
@@ -63,7 +134,7 @@ page,
       width: 80rpx;
       line-height: 56rpx;
       font-weight: 700;
-	  color: $primary-color;
+      color: $primary-color;
     }
 
     .title {

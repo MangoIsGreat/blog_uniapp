@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./App";
 import ClUni from "cl-uni";
+import "./plugins/timeFilter";
 
 Vue.config.productionTip = false;
 

@@ -9,12 +9,19 @@
       ></cl-input>
     </view>
     <view class="dianzan operate-item">
-      <text class="iconfont icon-dianzan"></text>
-      <text class="iconfont">67</text>
+      <text
+        @click="likeBlog"
+        :class="[
+          'iconfont',
+          infoData.isLike ? 'icon-dianzan_' : 'icon-dianzan',
+        ]"
+        :style="{ color: infoData.isLike ? '#00c58e' : '#96909c' }"
+      ></text>
+      <text class="iconfont">{{ infoData.blogLikeNum }}</text>
     </view>
     <view class="pinglun operate-item">
       <text class="iconfont icon-pinglun"></text>
-      <text class="iconfont">67</text>
+      <text class="iconfont">{{ infoData.commentNum }}</text>
     </view>
   </view>
 </template>
@@ -22,6 +29,7 @@
 <script>
 export default {
   name: "comment",
+  props: ["infoData", "type"],
   data() {
     return {
       value: "",
@@ -29,7 +37,13 @@ export default {
   },
   methods: {
     publish() {
-      uni.navigateTo({ url: "/pages/publishComment/index" });
+      uni.navigateTo({
+        url: `/pages/publishComment/index?id=${this.infoData.id}&type=${this.type}`,
+      });
+    },
+    // 点赞博客
+    likeBlog() {
+      this.$emit("makeLike");
     },
   },
 };
