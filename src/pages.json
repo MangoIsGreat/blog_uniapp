@@ -118,8 +118,9 @@
 	}, {
 		"path": "pages/publishIdea/index",
 		"style": {
-			"navigationBarTitleText": "动态发布",
-			"enablePullDownRefresh": false
+			"navigationBarTitleText": "",
+			"enablePullDownRefresh": false,
+			"navigationStyle": "custom"
 		}
 
 	}, {
@@ -184,6 +185,15 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "注册",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/themeList/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "话题列表",
                 "enablePullDownRefresh": false
             }
             

@@ -23,7 +23,7 @@
             <scroll-view
               class="scroll-view-wrapper"
               :scroll-y="true"
-              :refresher-enabled="true"
+              :refresher-enabled="isRefresh"
               refresher-default-style="black"
               :upper-threshold="100"
               :lower-threshold="100"
@@ -32,15 +32,19 @@
             >
               <cl-loading-mask :loading="loading" text="加载中">
                 <!-- 推荐 -->
-                <ScrollX />
+                <ScrollX v-if="current === 0" :hotList="hotList" />
 
                 <view
-                  @click="toInteractionPage"
+                  @click="toInteractionPage(item2.id)"
                   v-for="(item2, index2) in item.data"
                   :key="index2"
                   class="scroll-view-item"
                 >
-                  <ListItem @share="toggleShare" />
+                  <ListItem
+                    @likeDyn="likeDyn"
+                    :infoData="item2"
+                    @share="toggleShare"
+                  />
                 </view>
 
                 <cl-loadmore
@@ -61,6 +65,7 @@
     </view>
     <!-- 分享 -->
     <Share :visible="isShare" @share="toggleShare" />
+    <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
 
@@ -68,68 +73,17 @@
 import ListItem from "./components/ListItem.vue";
 import ScrollX from "./components/ScrollX.vue";
 import Share from "@/components/Share/index.vue";
+import request from "@/http/request";
 
 export default {
   name: "interaction",
   data() {
-    const labels = [
-      {
-        label: "热门",
-        value: 1,
-        loaded: true,
-      },
-      {
-        label: "猜你喜欢",
-        value: 2,
-      },
-      {
-        label: "女装",
-        value: 3,
-      },
-      {
-        label: "美妆个护",
-        value: 4,
-      },
-      {
-        label: "食品",
-        value: 5,
-      },
-      {
-        label: "母婴",
-        value: 6,
-      },
-      {
-        label: "数码家电",
-        value: 7,
-      },
-      {
-        label: "家居家装",
-        value: 8,
-      },
-      {
-        label: "内衣",
-        value: 9,
-      },
-    ];
-
-    const list = labels.map((e) => {
-      return {
-        ...e,
-        status: e.value,
-        data: [],
-        finished: false,
-        loading: false,
-        pagination: {
-          page: 1,
-          size: 20,
-        },
-      };
-    });
-
     return {
+      hotList: [], // 热门留言
+      isRefresh: true, // 能否下拉刷新
       current: 0,
-      labels,
-      list,
+      labels: [],
+      list: [],
       loading: true,
       statusBarHeight: 0, // 状态栏高度
       isShare: false, // 是否分享
@@ -140,14 +94,110 @@ export default {
     ScrollX,
     Share,
   },
-  onLoad() {
-    // 首页刷新数据
-    this.refresh();
-
+  onShow() {
     // 获取状态栏高度
     this.getStatusBarHeight();
+
+    // 获取labels数据
+    this.getLabels();
+
+    // 获取热门推荐数据
+    this.getHotList();
   },
   methods: {
+    // 点赞动态
+    async likeDyn(id) {
+      const data = await request({
+        url: "/dlike/like",
+        method: "POST",
+        data: {
+          dynamicId: id,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "点赞失败！",
+        });
+      }
+
+      if (data.data.data === "ok") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = true;
+            item.likeNum++;
+          }
+        });
+      } else if (data.data.data === "cancel") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = false;
+            item.likeNum--;
+          }
+        });
+      }
+    },
+    // 获取labels数据
+    async getLabels() {
+      const data = await request({
+        url: "/theme/list",
+        method: "GET",
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "标签类型数据请求失败！",
+        });
+      }
+
+      data.data.data.forEach((item) => {
+        item.label = item.themeName;
+        item.value = item.id;
+      });
+
+      this.labels = data.data.data;
+
+      const list = this.labels.map((e) => {
+        return {
+          ...e,
+          status: e.value,
+          data: [],
+          finished: false,
+          loading: false,
+          pagination: {
+            pageIndex: 1,
+            pageSize: 20,
+          },
+        };
+      });
+
+      this.list = list;
+
+      this.refresh();
+    },
+    // 获取热门推荐数据
+    async getHotList() {
+      if (this.current !== 0) return;
+
+      const favList = await request({
+        url: "/dynamic/favlist",
+        method: "GET",
+      });
+
+      if (favList.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "精选留言获取失败!",
+        });
+      }
+
+      favList.data.data.forEach((item) => {
+        if (item.picUrl) {
+          item.picUrl = JSON.parse(item.picUrl);
+        }
+      });
+
+      this.hotList = favList.data.data;
+    },
     toggleShare(value) {
       this.isShare = value;
     },
@@ -159,12 +209,9 @@ export default {
         complete: () => {},
       });
     },
-    toInteractionPage() {
+    toInteractionPage(id) {
       uni.navigateTo({
-        url: "/pages/interactionPage/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
+        url: `/pages/interactionPage/index?id=${id}`,
       });
     },
     getStatusBarHeight() {
@@ -172,23 +219,19 @@ export default {
       this.statusBarHeight = systemInfo.statusBarHeight;
     },
     onDown() {
-      console.log("====>");
-      console.log("down");
       this.refresh({
-        page: 1,
+        pageIndex: 1,
       }).done(() => {
         this.$refs[`scroller-${this.current}`][0].end();
       });
     },
 
     onUp() {
-      console.log("====>");
-      console.log("up");
       const { pagination, finished } = this.list[this.current];
 
       if (!finished) {
         this.refresh({
-          page: pagination.page + 1,
+          pageIndex: pagination.pageIndex + 1,
         });
       }
     },
@@ -203,30 +246,47 @@ export default {
 
       setTimeout(() => {
         this.refresh({
-          page: 1,
+          pageIndex: 1,
         });
       }, 500);
     },
 
-    refresh(params = {}) {
+    async refresh(params = {}) {
       const item = this.list[this.current];
 
       let data = {
         ...item.pagination,
-        status: item.status,
-        sort: "desc",
-        order: "createTime",
         ...params,
+        theme: item.themeName,
+        type: "",
       };
+
+      const list = await request({
+        url: "/dynamic/list",
+        method: "GET",
+        data,
+      });
+
+      if (list.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "列表数据请求失败！",
+        });
+      }
+
+      list.data.data.forEach((item) => {
+        if (item.picUrl) {
+          item.picUrl = JSON.parse(item.picUrl);
+        }
+      });
 
       return new Promise((resolve) => {
         item.loading = true;
 
-        console.log("Refresh");
-
         setTimeout(() => {
-          item.data = new Array(data.page == 1 ? 12 : data.page * 12).fill(1);
-          item.pagination.page = data.page;
+          data.pageIndex == 1
+            ? (item.data = list.data.data)
+            : item.data.push(...list.data.data);
+          item.pagination.pageIndex = data.pageIndex;
           item.finished = false;
           item.loading = false;
           this.loading = false;

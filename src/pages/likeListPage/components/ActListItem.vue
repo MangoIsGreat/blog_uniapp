@@ -6,7 +6,6 @@
           class="avatar"
           mode="center"
           src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77cd95ab46b5478eb8327a450f36e5c1~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
-          @error="imageError"
         ></image>
         <view class="list-row-header-content">
           <view class="list-row-header-content-tit">进击的小将</view>
@@ -25,7 +24,6 @@
           class="list-row-pic-item"
           mode="center"
           src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77cd95ab46b5478eb8327a450f36e5c1~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
-          @error="imageError"
         ></image>
       </view>
     </view>
@@ -45,11 +43,7 @@ export default {
       imgList: [1, 1, 1],
     };
   },
-  methods: {
-    imageError(e) {
-      console.log(e);
-    },
-  },
+  methods: {},
 };
 </script>
 

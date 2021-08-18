@@ -7,7 +7,9 @@
       v-model="current"
       :labels="labels"
       :border="false"
-      :style="{ paddingTop: statusBarHeight * 2 + 10 + 'rpx' }"
+      :style="{
+        paddingTop: statusBarHeight * 2 + 10 + 'rpx',
+      }"
     >
       <!-- 自定义内容区域 -->
       <swiper class="container" @change="onChangeSwiper" :current="current">

@@ -59,6 +59,12 @@ export default {
         case "replyToComment":
           this.makeReplyToComment();
           break;
+        case "replyToDynComment":
+          this.makeReplyToDynComment();
+          break;
+        case "dynComment":
+          this.makeDynComment();
+          break;
         default:
           break;
       }
@@ -80,6 +86,23 @@ export default {
       // 评论成功返回上一页
       uni.navigateBack();
     },
+    // 评论动态
+    async makeDynComment() {
+      const data = await request({
+        url: "/dcomment/comment",
+        method: "POST",
+        data: { dynamic: this.id, content: this.value },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "评论失败！",
+        });
+      }
+
+      // 评论成功返回上一页
+      uni.navigateBack();
+    },
     // 评论博客评论
     async makeReplyToComment() {
       const data = await request({
@@ -89,6 +112,28 @@ export default {
           blog: this.id, // 博客id
           content: this.value, // 评论内容
           comment: this.commentId, // 评论id
+          toUid: this.targetId, // 要回复的"评论"&"评论回复"的id
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "评论失败！",
+        });
+      }
+
+      // 评论成功返回上一页
+      uni.navigateBack();
+    },
+    // 评论动态评论
+    async makeReplyToDynComment() {
+      const data = await request({
+        url: "/dcomment/reply",
+        method: "POST",
+        data: {
+          dynamicId: this.id, // 博客id
+          content: this.value, // 评论内容
+          commentId: this.commentId, // 评论id
           toUid: this.targetId, // 要回复的"评论"&"评论回复"的id
         },
       });

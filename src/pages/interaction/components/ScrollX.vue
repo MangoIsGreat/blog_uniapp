@@ -3,26 +3,25 @@
     <view class="swiper-box">
       <view class="swiper-innerBox">
         <view
-          @click="toDetailPage"
+          @click="toDetailPage(item.id)"
           class="swiper-item"
-          v-for="(item, index) in publicInfoData"
+          v-for="(item, index) in hotList"
           :key="index"
         >
           <view class="swiper-item-innerBox">
             <view class="content">
               <view class="title">
                 <text class="tag">热</text>
-                【毕业季活动-你好，社会人开奖贴】你好，社会人你好，社会人你好，社会人你好，社会人
+                {{ item.content }}
               </view>
               <view class="line">
-                沸点小助手&nbsp;·&nbsp;点赞2&nbsp;·&nbsp;评论26
+                点赞{{ item.likeNum }}&nbsp;·&nbsp;评论{{ item.commNum }}
               </view>
             </view>
             <view
               class="pic"
               :style="{
-                backgroundImage:
-                  'url(https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/280f473c5c98480fb126994efbc882ba~tplv-k3u1fbpfcp-watermark.image)',
+                backgroundImage: `url(${item.picUrl[0]})`,
               }"
             ></view>
           </view>
@@ -35,14 +34,12 @@
 <script>
 export default {
   name: "ScrollX",
-  data() {
-    return {
-      publicInfoData: [1, 1, 1],
-    };
+  props: {
+    hotList: Array,
   },
   methods: {
-    toDetailPage() {
-      uni.navigateTo({ url: "/pages/interactionPage/index" });
+    toDetailPage(id) {
+      uni.navigateTo({ url: `/pages/interactionPage/index?id=${id}` });
     },
   },
 };

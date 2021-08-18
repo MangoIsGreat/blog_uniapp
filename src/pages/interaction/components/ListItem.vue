@@ -5,34 +5,47 @@
         <image
           class="avatar"
           mode="center"
-          src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77cd95ab46b5478eb8327a450f36e5c1~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
-          @error="imageError"
+          :src="infoData.userInfo && infoData.userInfo.avatar"
         ></image>
         <view class="list-row-header-content">
-          <view class="list-row-header-content-tit">进击的小将</view>
+          <view class="list-row-header-content-tit">{{
+            infoData.userInfo && infoData.userInfo.nickname
+          }}</view>
           <view class="list-row-header-content-desc">
-            iOS菜鸡&nbsp;·&nbsp;57分钟前
+            {{
+              infoData.userInfo && infoData.userInfo.profession
+            }}&nbsp;·&nbsp;{{ infoData.created_at | relativeTime }}
           </view>
         </view>
       </view>
       <view class="list-row-content">
-        今天的走势也符合之前的预期，两市又转换到了普跌行情，从日K线上看，仍然是横盘震荡格局，成交量继续萎缩，表明多空力量都比较谨慎。短期会在3550点附近横盘震荡，既不会持续大涨，也不会持续大跌，结构性行情还会持续，所以我觉得择股更重要！但是对于个股要放低收益预期，不然就是被套。
+        <text v-if="infoData.theme" class="tag-type"
+          >#{{ infoData.theme }}#</text
+        >&nbsp;{{ infoData.content }}
       </view>
       <view class="list-row-pic">
         <image
-          v-for="(item, index) in imgList"
+          v-for="(item, index) in infoData.picUrl"
           :key="index"
           class="list-row-pic-item"
           mode="center"
-          src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77cd95ab46b5478eb8327a450f36e5c1~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
-          @error="imageError"
+          :src="item"
         ></image>
       </view>
-      <view class="tag-type">#下班打卡#</view>
     </view>
     <view class="list-row-bottom">
-      <text class="iconfont icon-dianzan">点赞</text>
-      <text class="iconfont icon-pinglun">评论</text>
+      <text
+        :class="[
+          'iconfont',
+          infoData.isLike ? 'icon-dianzan_' : 'icon-dianzan',
+        ]"
+        :style="{ color: infoData.isLike ? '#00c58e' : '#96909c' }"
+        @click.stop="likeDyn(infoData.id)"
+        >{{ infoData.likeNum ? infoData.likeNum : "点赞" }}</text
+      >
+      <text class="iconfont icon-pinglun"
+        >&nbsp;{{ infoData.commNum ? infoData.commNum : "评论" }}</text
+      >
       <text @click.stop="share" class="iconfont icon-fenxiang">分享</text>
     </view>
   </view>
@@ -41,18 +54,19 @@
 <script>
 export default {
   name: "interaction-listItem",
+  props: {
+    infoData: Object,
+  },
   data() {
-    return {
-      imgList: [1, 1, 1],
-    };
+    return {};
   },
   methods: {
-    imageError(e) {
-      console.log(e);
-    },
     share() {
-      this.$emit('share', true);
-    }
+      this.$emit("share", true);
+    },
+    likeDyn(id) {
+      this.$emit("likeDyn", id);
+    },
   },
 };
 </script>
@@ -92,6 +106,11 @@ export default {
     .list-row-content {
       margin-bottom: 24rpx;
       @include setArticleInfo();
+
+      .tag-type {
+        color: $primary-color;
+        // font-size: 28rpx;
+      }
     }
 
     .list-row-pic {
@@ -103,12 +122,6 @@ export default {
         width: 220rpx;
         height: 220rpx;
       }
-    }
-
-    .tag-type {
-      margin: 6rpx 0;
-      color: $primary-color;
-      font-size: 28rpx;
     }
   }
 

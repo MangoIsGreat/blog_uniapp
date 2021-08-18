@@ -76,7 +76,6 @@ export default {
     ListItem,
     HeaderList,
   },
-  onLoad() {},
   onShow() {
     // 获取labels数据
     this.getLabels();
@@ -153,18 +152,12 @@ export default {
     openTagPage() {
       uni.navigateTo({
         url: "/pages/tagManagement/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
       });
     },
 
     toArtPage(id) {
       uni.navigateTo({
         url: `/pages/articlePage/index?id=${id}`,
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
       });
     },
 

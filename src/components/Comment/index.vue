@@ -17,11 +17,15 @@
         ]"
         :style="{ color: infoData.isLike ? '#00c58e' : '#96909c' }"
       ></text>
-      <text class="iconfont">{{ infoData.blogLikeNum }}</text>
+      <text class="iconfont">{{
+        infoData.blogLikeNum || infoData.likeNum
+      }}</text>
     </view>
     <view class="pinglun operate-item">
       <text class="iconfont icon-pinglun"></text>
-      <text class="iconfont">{{ infoData.commentNum }}</text>
+      <text class="iconfont">{{
+        infoData.commentNum || infoData.commNum
+      }}</text>
     </view>
   </view>
 </template>

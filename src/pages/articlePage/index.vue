@@ -39,7 +39,6 @@
             v-if="blogInfo.titlePic"
             class="main-pic"
             :src="blogInfo.titlePic"
-            @error="imageError"
           ></image>
         </view>
         <view class="content-article-body" v-html="mdContent"></view>
@@ -316,9 +315,6 @@ export default {
           message: "点赞失败！",
         });
       }
-    },
-    imageError(e) {
-      // console.log(e);
     },
     toPage(id) {
       uni.navigateTo({ url: `/pages/articlePage/index?id=${id}` });

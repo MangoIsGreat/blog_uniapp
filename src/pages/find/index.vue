@@ -13,16 +13,16 @@
       @scrolltoupper="onDown"
       @scrolltolower="onUp"
     >
-      <cl-loading-mask :loading="pageLoading" text="加载中">
+      <cl-loading-mask :loading="loading" text="加载中">
         <HeaderList />
 
         <view
-          @click="toArtPage"
+          @click="toArtPage(item.id)"
           v-for="(item, index) in list"
           :key="index"
           class="scroll-view-item"
         >
-          <ListItem />
+          <ListItem :listData="item" />
         </view>
 
         <cl-loadmore
@@ -34,6 +34,7 @@
         ></cl-loadmore>
       </cl-loading-mask>
     </scroll-view>
+    <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
 
@@ -41,6 +42,7 @@
 import Search from "@/components/Search/index.vue";
 import ListItem from "./components/ListItem.vue";
 import HeaderList from "./components/HeaderList.vue";
+import request from "@/http/request";
 
 export default {
   name: "find",
@@ -50,6 +52,8 @@ export default {
       loading: false,
       isFinish: true,
       pageLoading: true,
+      pageIndex: 1,
+      pageSize: 20,
     };
   },
 
@@ -63,39 +67,66 @@ export default {
     this.onDown();
   },
 
+  onShow() {},
+
   methods: {
-    toArtPage() {
+    // 获取热门推荐博客
+    async getHotBlogList() {
+      let data = {
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize,
+        tag: 10000,
+        rankingType: "new",
+      };
+
+      const list = await request({
+        url: "/blog/list",
+        method: "GET",
+        data,
+      });
+
+      if (list.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "热门推荐数据请求失败！",
+        });
+      }
+
+      this.pageIndex++;
+
+      return list.data.data.rows;
+    },
+
+    toArtPage(id) {
       uni.navigateTo({
-        url: "/pages/articlePage/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
+        url: `/pages/articlePage/index?id=${id}`,
       });
     },
+
     openTagPage() {
       uni.navigateTo({
         url: "/pages/tagManagement/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
       });
     },
-    onUp() {
+
+    async onUp() {
+      console.log("up====>");
       this.loading = true;
       this.isFinish = false;
 
-      setTimeout(() => {
-        this.list.push(...new Array(20).fill(1));
-        this.loading = false;
-        this.isFinish = true;
-      }, 1000);
+      const listData = await this.getHotBlogList();
+      this.list.push(...listData);
+      this.loading = false;
+      this.isFinish = true;
     },
 
-    onDown() {
-      setTimeout(() => {
-        this.list = new Array(20).fill(1);
-        this.pageLoading = false;
-      }, 1000);
+    async onDown() {
+      console.log("down===>");
+      this.pageIndex = 1;
+
+      const listData = await this.getHotBlogList();
+      console.log(444, listData);
+      this.list = listData;
+      this.pageLoading = false;
     },
   },
 };

@@ -16,11 +16,7 @@
 
 <script>
 export default {
-  methods: {
-    imageError(e) {
-      console.log(e);
-    },
-  },
+  methods: {},
 };
 </script>
 

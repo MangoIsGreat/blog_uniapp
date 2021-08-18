@@ -20,7 +20,6 @@
         class="item-wrapper-content-pic"
         mode="center"
         src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77cd95ab46b5478eb8327a450f36e5c1~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
-        @error="imageError"
       ></image>
     </view>
     <view class="bottom-line">
@@ -39,11 +38,7 @@
 
 <script>
 export default {
-  methods: {
-    imageError(e) {
-      console.log(e);
-    },
-  },
+  methods: {},
 };
 </script>
 

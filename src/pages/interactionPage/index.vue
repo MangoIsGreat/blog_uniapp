@@ -5,95 +5,249 @@
         <image
           class="avatar"
           mode="center"
-          src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77cd95ab46b5478eb8327a450f36e5c1~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
-          @error="imageError"
+          :src="dynInfo.User && dynInfo.User.avatar"
         ></image>
         <view class="list-row-header-content">
-          <view class="list-row-header-content-tit">进击的小将</view>
+          <view class="list-row-header-content-tit">{{
+            dynInfo.User && dynInfo.User.nickname
+          }}</view>
           <view class="list-row-header-content-desc">
-            iOS菜鸡&nbsp;·&nbsp;57分钟前
+            {{ dynInfo.User && dynInfo.User.profession }}&nbsp;·&nbsp;{{
+              dynInfo.created_at | relativeTime
+            }}
           </view>
         </view>
       </view>
       <view class="list-row-content">
-        今天的走势也符合之前的预期，两市又转换到了普跌行情，从日K线上看，仍然是横盘震荡格局，成交量继续萎缩，表明多空力量都比较谨慎。短期会在3550点附近横盘震荡，既不会持续大涨，也不会持续大跌，结构性行情还会持续，所以我觉得择股更重要！但是对于个股要放低收益预期，不然就是被套。
+        <text v-if="dynInfo.theme" class="tag-type">#{{ dynInfo.theme }}#</text
+        >{{ dynInfo.content }}
       </view>
-      <view class="list-row-pic">
+      <view class="list-row-pic" v-if="dynInfo.picUrl">
         <image
-          v-for="(item, index) in imgList"
+          v-for="(item, index) in dynInfo.picUrl"
           :key="index"
           class="list-row-pic-item"
           mode="center"
-          src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77cd95ab46b5478eb8327a450f36e5c1~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
-          @error="imageError"
+          :src="item"
         ></image>
       </view>
-      <view class="tag-type">#下班打卡#</view>
     </view>
     <!-- 评论区部分 -->
-    <view class="content-comment">
+    <view class="content-comment" v-if="commentsList.length > 0">
       <view
         class="comment-item"
         v-for="(item, index) in commentsList"
         :key="index"
       >
         <view class="avatar" @click="toAuthorPage">
-          <cl-avatar
-            src="https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/avatar/1.jpg"
-          ></cl-avatar>
+          <cl-avatar :src="item.userInfo && item.userInfo.avatar"></cl-avatar>
         </view>
         <view class="comment-item-content">
           <view class="head">
             <view class="head-left">
-              <view class="name">橘猫哼方</view>
-              <view class="time">前端开发 · 1小时前</view>
+              <view class="name">{{
+                item.userInfo && item.userInfo.nickname
+              }}</view>
+              <view class="time"
+                >{{ item.userInfo && item.userInfo.profession }}&nbsp;·&nbsp;{{
+                  item.created_at | relativeTime
+                }}</view
+              >
             </view>
             <view class="head-right">
-              <text class="iconfont icon-dianzan"></text>
-              <text @click="chat" class="iconfont icon-pinglun"></text>
+              <text
+                @click="likeComment(item.id)"
+                :class="[
+                  'iconfont',
+                  item.isLike ? 'icon-dianzan_' : 'icon-dianzan',
+                ]"
+                :style="{ color: item.isLike ? '#00c58e' : '#96909c' }"
+                >{{ item.likeNum ? item.likeNum : "" }}</text
+              >
+              <text
+                class="iconfont icon-pinglun"
+                @click="
+                  chat(dynInfo.id, item.id, item.userInfo && item.userInfo.id)
+                "
+              ></text>
             </view>
           </view>
           <view class="body">
-            行文风格很像阿里行文风格很像阿里行文风格很像阿里行文风格很像阿里行文风格很像阿里
+            {{ item.content }}
           </view>
-          <view class="reply">
+          <view class="reply" v-if="item.child.length">
             <view
               class="reply-item"
-              v-for="(item, index) in [1, 1]"
-              :key="index"
+              v-for="(item2, index2) in item.child"
+              :key="index2"
+              @click="replyToReply(dynInfo.id, item.id, item2)"
             >
-              <text @click="toAuthorPage" class="reply-item-name"
-                >手撕红黑树(作者)：</text
+              <text @click.stop="toAuthorPage" class="reply-item-name"
+                >{{ item2.from.nickname
+                }}<text
+                  v-if="
+                    item.userInfo &&
+                      item2.from &&
+                      item.userInfo.id === item2.from.id
+                  "
+                  >(作者)</text
+                ></text
+              >回复<text @click.stop="toAuthorPage" class="reply-item-name"
+                >{{ item2.to.nickname }}：</text
               >
-              <text>这样回答这样回答这样回答这样回答这样回答这样回答</text>
+              <text>{{ item2.content }}</text>
             </view>
           </view>
         </view>
       </view>
     </view>
     <!-- 评论组件 -->
-    <Comment />
+    <Comment @makeLike="makeLike" :infoData="dynInfo" type="dynComment" />
   </view>
 </template>
 
 <script>
 import Comment from "@/components/Comment/index.vue";
+import request from "@/http/request";
 
 export default {
   name: "interaction-detail",
   data() {
     return {
-      imgList: [1, 1, 1],
-      commentsList: [1, 1, 1, 1, 1],
+      commentsList: [],
+      dynId: "", // dynamicId
+      dynInfo: {}, // 动态信息
     };
   },
   components: {
     Comment,
   },
+  onLoad(options) {
+    this.dynId = options.id;
+  },
+  onShow() {
+    // 获取动态详情
+    this.getDynInfo();
+
+    // 获取动态评论数据
+    this.getDynCommenData();
+  },
   methods: {
-    imageError(e) {
-      console.log(e);
+    // 获取动态评论数据
+    async getDynCommenData() {
+      const data = await request({
+        url: "/dcomment/list",
+        method: "GET",
+        data: {
+          dynamicId: this.dynId,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "获取动态评论数据失败！",
+        });
+      }
+
+      this.commentsList = data.data.data; // 评论列表
     },
+    // 获取动态详情
+    async getDynInfo() {
+      const data = await request({
+        url: "/dynamic/dynamic",
+        method: "GET",
+        data: {
+          id: this.dynId,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "获取动态信息失败！",
+        });
+      }
+
+      if (data.data.data.picUrl) {
+        data.data.data.picUrl = JSON.parse(data.data.data.picUrl);
+      }
+
+      this.dynInfo = data.data.data;
+    },
+
+    // 点赞动态
+    async makeLike() {
+      const data = await request({
+        url: "/dlike/like",
+        method: "POST",
+        data: { dynamicId: this.dynId },
+      });
+
+      if (data.data.error_code === 0) {
+        if (data.data.data === "ok") {
+          this.dynInfo.isLike = true;
+          this.dynInfo.likeNum += 1;
+        } else if (data.data.data === "cancel") {
+          this.dynInfo.isLike = false;
+          this.dynInfo.likeNum -= 1;
+        }
+      } else {
+        this.$refs["toast"].open({
+          message: "点赞失败！",
+        });
+      }
+    },
+
+    // 点赞评论
+    async likeComment(id) {
+      const data = await request({
+        url: "/cDlike/like",
+        method: "POST",
+        data: { commentId: id },
+      });
+
+      if (data.data.error_code === 0) {
+        if (data.data.data === "ok") {
+          this.commentsList.forEach((item) => {
+            if (item.id === id) {
+              item.isLike = true;
+              item.likeNum++;
+            }
+          });
+        } else if (data.data.data === "cancel") {
+          this.commentsList.forEach((item) => {
+            if (item.id === id) {
+              item.isLike = false;
+              item.likeNum--;
+            }
+          });
+        }
+      } else {
+        this.$refs["toast"].open({
+          message: "点赞失败！",
+        });
+      }
+    },
+
+    // 评论"评论"
+    chat(dynInfo, commentId, toCommentId) {
+      uni.navigateTo({
+        url: `/pages/publishComment/index?id=${dynInfo}&type=replyToDynComment&cId=${commentId}&toId=${toCommentId}`,
+      });
+    },
+
+    // 回复评论
+    replyToReply(id, commentId, toCommentId) {
+      uni.navigateTo({
+        url: `/pages/publishComment/index?id=${id}&type=replyToDynComment&cId=${commentId}&toId=${toCommentId.from.id}`,
+      });
+    },
+
+    toAuthorPage(id) {
+      uni.navigateTo({
+        url: `/pages/articlePage/index?id=${id}`,
+      });
+    },
+
     share() {
       this.$emit("share", true);
     },
@@ -108,7 +262,7 @@ export default {
   margin-bottom: 16rpx;
   padding-bottom: 100rpx;
   box-sizing: border-box;
-  background-color: #f9f9f9;
+  // background-color: #f9f9f9;
 
   .list-row-top {
     box-sizing: border-box;
@@ -139,6 +293,11 @@ export default {
     .list-row-content {
       margin-bottom: 24rpx;
       @include setArticleInfo();
+
+      .tag-type {
+        color: $primary-color;
+        font-size: 28rpx;
+      }
     }
 
     .list-row-pic {
@@ -150,12 +309,6 @@ export default {
         width: 220rpx;
         height: 220rpx;
       }
-    }
-
-    .tag-type {
-      margin: 6rpx 0;
-      color: $primary-color;
-      font-size: 28rpx;
     }
   }
 

@@ -32,13 +32,11 @@
           class="pic"
           v-if="item.pic == 'pic1'"
           src="../../../static/img/ranking-list01.png"
-          @error="imageError"
         ></image>
         <image
           class="pic"
           v-else
           src="../../../static/img/ranking-list02.png"
-          @error="imageError"
         ></image>
       </view>
     </view>
@@ -56,8 +54,7 @@
             v-for="(item, index) in groupList"
             :key="index"
             class="group-item"
-            src="https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/62e7ebab4c6c4546492a231a1619ce2c~300x300.image"
-            @error="imageError"
+            :src="item.avatar"
           ></image>
         </view>
       </view>
@@ -71,10 +68,12 @@
 </template>
 
 <script>
+import request from "@/http/request";
+
 export default {
   data() {
     return {
-      groupList: [1, 1, 1, 1, 1, 1], // 推荐技术团队
+      groupList: [], // 推荐技术大牛
       headerData: {
         activityType: [
           {
@@ -111,9 +110,28 @@ export default {
       },
     };
   },
+  created() {
+    // 获取推荐大牛数据
+    this.getRecommList();
+  },
   methods: {
-    imageError(e) {
-      console.log(e);
+    async getRecommList() {
+      const data = await request({
+        url: "/author/ranking",
+        method: "GET",
+        data: {
+          pageIndex: 1,
+          pageSize: 6,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "获取推荐用户数据失败！",
+        });
+      }
+
+      this.groupList = data.data.data.rows;
     },
     toPage(path) {
       uni.navigateTo({ url: path });

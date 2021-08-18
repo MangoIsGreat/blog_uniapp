@@ -18,7 +18,6 @@
         class="item-wrapper-content-pic"
         mode="center"
         :src="listData.titlePic"
-        @error="imageError"
       ></image>
     </view>
     <view class="bottom-line">
@@ -46,11 +45,7 @@ export default {
   props: {
     listData: Object,
   },
-  methods: {
-    imageError(e) {
-      console.log(e);
-    },
-  },
+  methods: {},
 };
 </script>
 
