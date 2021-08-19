@@ -48,9 +48,6 @@ export default {
     register() {
       uni.navigateTo({
         url: "/pages/register/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
       });
     },
     async login() {

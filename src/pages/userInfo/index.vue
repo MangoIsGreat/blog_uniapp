@@ -19,26 +19,30 @@
     <view class="detailInfo">
       <view class="nameLine">
         <view>
-          <view class="name">橘猫很方</view>
-          <view class="job">前端开发工程师</view>
+          <view class="name">{{ userInfo.nickname }}</view>
+          <view class="job">{{ userInfo.profession }}</view>
         </view>
         <view align="end">
           <cl-button size="small" type="primary" plain>编辑</cl-button>
         </view>
       </view>
-      <view class="desc">你会变强的！</view>
+      <view class="desc">{{ userInfo.signature }}</view>
       <view class="fansBox">
         <view class="item like">
-          <view class="num">25</view>
+          <view class="num">{{ userInfo.idolNum }}</view>
           <view class="word">关注</view>
         </view>
         <view class="item fans">
-          <view class="num">25</view>
+          <view class="num">{{ userInfo.fansNum }}</view>
           <view class="word">关注者</view>
         </view>
         <view class="item value">
-          <view class="num">1</view>
-          <view class="word">活跃值</view>
+          <view class="num">{{ userInfo.blogLikeNum }}</view>
+          <view class="word">获赞</view>
+        </view>
+        <view class="item value">
+          <view class="num">{{ userInfo.blogReadNum }}</view>
+          <view class="word">被阅读</view>
         </view>
       </view>
     </view>
@@ -66,13 +70,21 @@
             >
               <cl-loading-mask :loading="loading" text="加载中">
                 <view
-                  @click="toArtPage"
                   v-for="(item2, index2) in item.data"
                   :key="index2"
                   class="scroll-view-item"
                 >
-                  <ListItem />
+                  <HisListItem v-if="item.value === 1" :listData="item2" />
+                  <ListItem v-if="item.value === 2" :listData="item2" />
+                  <DynListItem
+                    v-if="item.value === 3"
+                    :infoData="item2"
+                    @likeDyn="likeDyn"
+                    @share="toggleShare"
+                  />
                 </view>
+
+                <More v-if="current === 3" />
 
                 <cl-loadmore
                   v-if="item.data.length > 0"
@@ -88,11 +100,16 @@
     </cl-tabs>
     <!-- 分享 -->
     <Share :visible="isShare" @share="toggleShare" />
+    <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
 
 <script>
+import request from "@/http/request";
 import ListItem from "./components/ListItem.vue";
+import DynListItem from "./components/DynListItem.vue";
+import HisListItem from "./components/HisListItem.vue";
+import More from "./components/More.vue";
 import Share from "@/components/Share/index.vue";
 
 export default {
@@ -125,8 +142,8 @@ export default {
         finished: false,
         loading: false,
         pagination: {
-          page: 1,
-          size: 20,
+          pageIndex: 1,
+          pageSize: 20,
         },
       };
     });
@@ -139,19 +156,49 @@ export default {
       isRefresh: true, // 是否开启下拉刷新
       statusBarHeight: 0, // 状态栏高度
       isShare: false, // 是否分享
+      uid: "", // 用户id
+      userInfo: {}, // 用户信息
     };
   },
   components: {
     ListItem,
+    DynListItem,
+    HisListItem,
+    More,
     Share,
   },
-  onLoad() {
-    this.refresh();
+  onLoad(options) {
+    // 获取uid
+    this.uid = options.id;
 
     // 获取状态栏高度
     this.getStatusBarHeight();
   },
+  onShow() {
+    // 获取用户信息
+    this.getUserInfo();
+
+    this.refresh();
+  },
   methods: {
+    // 获取用户信息
+    async getUserInfo() {
+      const data = await request({
+        url: "/author/userinfo",
+        method: "GET",
+        data: {
+          uid: this.uid,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "用户信息请求失败！",
+        });
+      }
+
+      this.userInfo = data.data.data;
+    },
     toggleShare(value) {
       this.isShare = value;
     },
@@ -159,18 +206,46 @@ export default {
       const systemInfo = uni.getSystemInfoSync();
       this.statusBarHeight = systemInfo.statusBarHeight;
     },
-    toArtPage() {
-      uni.navigateTo({ url: "/pages/articlePage/index" });
-    },
     goback() {
-      console.log("goBack0000")
       uni.navigateBack();
+    },
+    // 点赞动态
+    async likeDyn(id) {
+      const data = await request({
+        url: "/dlike/like",
+        method: "POST",
+        data: {
+          dynamicId: id,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "点赞失败！",
+        });
+      }
+
+      if (data.data.data === "ok") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = true;
+            item.likeNum++;
+          }
+        });
+      } else if (data.data.data === "cancel") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = false;
+            item.likeNum--;
+          }
+        });
+      }
     },
     onDown() {
       console.log("====>");
       console.log("down");
       this.refresh({
-        page: 1,
+        pageIndex: 1,
       }).done(() => {
         this.$refs[`scroller-${this.current}`][0].end();
       });
@@ -183,13 +258,15 @@ export default {
 
       if (!finished) {
         this.refresh({
-          page: pagination.page + 1,
+          pageIndex: pagination.pageIndex + 1,
         });
       }
     },
 
     onChangeSwiper(e) {
       this.current = e.detail.current;
+
+      if (this.current === 3) return;
 
       if (!this.list[this.current].loaded) {
         this.loading = true;
@@ -198,30 +275,64 @@ export default {
 
       setTimeout(() => {
         this.refresh({
-          page: 1,
+          pageIndex: 1,
         });
       }, 500);
     },
 
-    refresh(params = {}) {
+    async refresh(params = {}) {
+      if (this.current === 3) return;
+
+      let path = "";
       const item = this.list[this.current];
 
       let data = {
         ...item.pagination,
-        status: item.status,
-        sort: "desc",
-        order: "createTime",
         ...params,
+        uid: this.uid,
       };
+
+      switch (item.value) {
+        case 2:
+          data.type = "new";
+          path = "/author/artlist"; // 文章列表 - 新
+          break;
+        case 3:
+          path = "/author/dynlist"; // 动态列表
+          break;
+        case 1:
+          path = "/author/dynamic"; // 作者动态记录
+          break;
+        default:
+          break;
+      }
+
+      const listData = await request({
+        url: path,
+        method: "GET",
+        data,
+      });
+
+      if (listData.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "列表数据请求失败！",
+        });
+      }
+
+      listData.data.data.list.forEach((item) => {
+        if (item.picUrl) {
+          item.picUrl = JSON.parse(item.picUrl);
+        }
+      });
 
       return new Promise((resolve) => {
         item.loading = true;
 
-        console.log("Refresh");
-
         setTimeout(() => {
-          item.data = new Array(data.page == 1 ? 12 : data.page * 12).fill(1);
-          item.pagination.page = data.page;
+          data.pageIndex == 1
+            ? (item.data = listData.data.data.list)
+            : item.data.push(...listData.data.data.list);
+          item.pagination.pageIndex = data.pageIndex;
           item.finished = false;
           item.loading = false;
           this.loading = false;
@@ -300,7 +411,7 @@ export default {
       display: flex;
 
       .item {
-        padding: 0 60rpx;
+        padding: 0 50rpx;
 
         .num {
           text-align: center;

@@ -93,17 +93,11 @@ export default {
     toArtPage(id) {
       uni.navigateTo({
         url: `/pages/articlePage/index?id=${id}`,
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
       });
     },
     toPage() {
       uni.navigateTo({
         url: "/pages/ArtRanking/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
       });
     },
   },

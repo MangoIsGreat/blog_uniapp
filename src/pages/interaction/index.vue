@@ -204,9 +204,6 @@ export default {
     publishIdea() {
       uni.navigateTo({
         url: "/pages/publishIdea/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
       });
     },
     toInteractionPage(id) {

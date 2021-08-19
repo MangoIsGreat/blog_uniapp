@@ -28,12 +28,12 @@
             >
               <cl-loading-mask :loading="loading" text="加载中">
                 <view
-                  @click="toArtPage"
+                  @click="toArtPage(item2.id)"
                   v-for="(item2, index2) in item.data"
                   :key="index2"
                   class="scroll-view-item"
                 >
-                  <ListItem />
+                  <ListItem :listData="item2" />
                 </view>
 
                 <cl-loadmore
@@ -48,53 +48,21 @@
         </swiper-item>
       </swiper>
     </cl-tabs>
+    <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
 
 <script>
+import request from "@/http/request";
 import ListItem from "./components/ListItem.vue";
 
 export default {
   name: "news",
   data() {
-    const labels = [
-      {
-        label: "热门",
-        value: 1,
-        loaded: true,
-      },
-      {
-        label: "猜你喜欢",
-        value: 2,
-      },
-      {
-        label: "女装",
-        value: 3,
-      },
-      {
-        label: "美妆个护",
-        value: 4,
-      },
-    ];
-
-    const list = labels.map((e) => {
-      return {
-        ...e,
-        status: e.value,
-        data: [],
-        finished: false,
-        loading: false,
-        pagination: {
-          page: 1,
-          size: 20,
-        },
-      };
-    });
-
     return {
       current: 0,
-      labels,
-      list,
+      labels: [],
+      list: [],
       loading: true,
       isRefresh: true, // 是否开启下拉刷新
     };
@@ -103,18 +71,55 @@ export default {
     ListItem,
   },
   onLoad() {
-    this.refresh();
-
     // 获取状态栏高度
     this.getStatusBarHeight();
   },
+  onShow() {
+    // 获取labels数据
+    this.getLabels();
+  },
   methods: {
-    toArtPage() {
+    // 获取labels数据
+    async getLabels() {
+      const data = await request({
+        url: "/newstype/list",
+        method: "GET",
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "标签类型数据请求失败！",
+        });
+      }
+
+      data.data.data.rows.forEach((item) => {
+        item.label = item.tag_name;
+        item.value = item.tag_type;
+      });
+
+      this.labels = data.data.data.rows;
+
+      const list = this.labels.map((e) => {
+        return {
+          ...e,
+          status: e.value,
+          data: [],
+          finished: false,
+          loading: false,
+          pagination: {
+            pageIndex: 1,
+            pageSize: 20,
+          },
+        };
+      });
+
+      this.list = list;
+
+      this.refresh();
+    },
+    toArtPage(id) {
       uni.navigateTo({
-        url: "/pages/articlePage/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
+        url: `/pages/newsPage/index?id=${id}`,
       });
     },
     getStatusBarHeight() {
@@ -142,7 +147,7 @@ export default {
       console.log("====>");
       console.log("down");
       this.refresh({
-        page: 1,
+        pageIndex: 1,
       }).done(() => {
         this.$refs[`scroller-${this.current}`][0].end();
       });
@@ -155,7 +160,7 @@ export default {
 
       if (!finished) {
         this.refresh({
-          page: pagination.page + 1,
+          pageIndex: pagination.pageIndex + 1,
         });
       }
     },
@@ -170,30 +175,41 @@ export default {
 
       setTimeout(() => {
         this.refresh({
-          page: 1,
+          pageIndex: 1,
         });
       }, 500);
     },
 
-    refresh(params = {}) {
+    async refresh(params = {}) {
       const item = this.list[this.current];
 
       let data = {
         ...item.pagination,
-        status: item.status,
-        sort: "desc",
-        order: "createTime",
         ...params,
+        tag: item.status,
+        rankingType: "new",
       };
+
+      const list = await request({
+        url: "/news/list",
+        method: "GET",
+        data,
+      });
+
+      if (list.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "列表数据请求失败！",
+        });
+      }
 
       return new Promise((resolve) => {
         item.loading = true;
 
-        console.log("Refresh");
-
         setTimeout(() => {
-          item.data = new Array(data.page == 1 ? 12 : data.page * 12).fill(1);
-          item.pagination.page = data.page;
+          data.pageIndex == 1
+            ? (item.data = list.data.data.rows)
+            : item.data.push(...list.data.data.rows);
+          item.pagination.pageIndex = data.pageIndex;
           item.finished = false;
           item.loading = false;
           this.loading = false;
