@@ -13,6 +13,7 @@
       :style="{ border: 'none' }"
       v-model="value"
       placeholder="输入评论..."
+      :focus="true"
     ></cl-textarea>
     <cl-toast ref="toast"></cl-toast>
   </view>
@@ -44,10 +45,6 @@ export default {
     this.commentId = options.cId;
     // 要回复的目标评论Id
     this.targetId = options.toId;
-  },
-  onReady() {
-    // 输入框自动获取焦点
-    this.$refs.input.focus = true;
   },
   methods: {
     // 评论博客

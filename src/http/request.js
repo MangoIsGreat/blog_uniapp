@@ -21,6 +21,11 @@ const request = async (options) => {
   let result = await uni.request(options);
 
   if (result[1].statusCode == 403) {
+    //   清除缓存token
+    uni.removeStorageSync("user_token");
+    //   清除缓存用户信息
+    uni.removeStorageSync("user_info");
+
     uni.navigateTo({
       url: "/pages/login/index",
     });

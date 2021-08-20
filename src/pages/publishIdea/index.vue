@@ -11,6 +11,7 @@
     <!-- 输入框 -->
     <cl-textarea
       ref="input"
+      :focus="true"
       v-model="value"
       :style="{ border: 'none', marginBottom: '20rpx' }"
       placeholder="告诉你一个秘密，发布动态不能少于5个字哦，另外添加合适的话题会被更多的人看见~"
@@ -25,9 +26,9 @@
       name="file"
       :data="{ type: 'circle' }"
     ></cl-upload> -->
-    <view @click="uploadImg" class="upload-pic">
+    <!-- <view @click="uploadImg" class="upload-pic">
       <text class="iconfont icon-jiahao"></text>
-    </view>
+    </view> -->
     <!-- 添加话题 -->
     <cl-button @click="addTheme" class="publish-btn" type="success" plain round>
       <text v-if="selected">{{ selected }}</text>
@@ -61,11 +62,6 @@ export default {
     // 获取选中的话题
     uni.$on("selectedTheme", (res) => {
       this.selected = res.theme;
-    });
-  },
-  onReady() {
-    this.$nextTick(() => {
-      this.$refs.input.focus = true;
     });
   },
   methods: {

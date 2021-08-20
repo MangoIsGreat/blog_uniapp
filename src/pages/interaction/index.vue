@@ -94,7 +94,7 @@ export default {
     ScrollX,
     Share,
   },
-  onShow() {
+  onLoad() {
     // 获取状态栏高度
     this.getStatusBarHeight();
 

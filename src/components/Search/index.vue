@@ -9,10 +9,6 @@
         @focus="focus"
         @blur="blur"
       ></cl-search>
-      <view class="tag" @click="tagClick">
-        <i class="iconfont icon-shezhi"></i>
-        <text>标签</text>
-      </view>
     </view>
     <view class="top-box"></view>
   </view>
@@ -59,23 +55,6 @@ export default {
     .search-wrapper-input {
       flex: 1;
       background-color: #f9f9f9;
-    }
-
-    .tag {
-      box-sizing: border-box;
-      padding-left: 22rpx;
-      // #ifdef APP-PLUS
-      padding-top: 38rpx;
-      // #endif
-      width: 148rpx;
-      display: flex;
-      align-items: center;
-      color: #abb3bd;
-      font-size: 32rpx;
-
-      .icon-shezhi {
-        margin-right: 6rpx;
-      }
     }
   }
 

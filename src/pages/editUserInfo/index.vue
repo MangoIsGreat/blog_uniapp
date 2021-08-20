@@ -9,7 +9,11 @@
         <cl-avatar class="avatar" :src="userinfo.avatar"></cl-avatar>
       </view>
     </cl-list-item>
-    <cl-list-item class="list-item" label="用户名">
+    <cl-list-item
+      @click="edit(userinfo.nickname, 'nickname')"
+      class="list-item"
+      label="用户名"
+    >
       <view class="append" slot="append">
         <text>{{ userinfo.nickname }}</text>
       </view>
@@ -17,7 +21,11 @@
         <text class="iconfont icon-xiangyou"></text>
       </view>
     </cl-list-item>
-    <cl-list-item class="list-item" label="职位">
+    <cl-list-item
+      @click="edit(userinfo.profession, 'profession')"
+      class="list-item"
+      label="职位"
+    >
       <view class="append" slot="append">
         <text>{{ userinfo.profession }}</text>
       </view>
@@ -25,7 +33,11 @@
         <text class="iconfont icon-xiangyou"></text>
       </view>
     </cl-list-item>
-    <cl-list-item class="list-item" label="简介">
+    <cl-list-item
+      @click="edit(userinfo.signature, 'signature')"
+      class="list-item"
+      label="简介"
+    >
       <view class="append" slot="append">
         <text>{{ userinfo.signature }}</text>
       </view>
@@ -33,10 +45,23 @@
         <text class="iconfont icon-xiangyou"></text>
       </view>
     </cl-list-item>
-    <cl-list-item justify="center" class="list-item-config">
+    <cl-list-item @click="save" justify="center" class="list-item-config">
       <text class="logout">保存</text>
     </cl-list-item>
-    <cl-action-sheet ref="action-sheet"></cl-action-sheet>
+    <cl-popup :visible.sync="visible" direction="bottom">
+      <cl-textarea
+        ref="input"
+        class="edit-textarea"
+        v-model="value"
+        :maxlength="20"
+        :focus="true"
+      ></cl-textarea>
+      <view class="edit-box">
+        <view class="edit-box-btn">
+          <cl-button @click="makeSure" type="primary" round>确认</cl-button>
+        </view>
+      </view>
+    </cl-popup>
     <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
@@ -49,6 +74,10 @@ export default {
     return {
       userinfo: {},
       uid: "", // 用户id
+      visible: false, // 是否展示编辑框
+      value: "", // 编辑框内容
+      textLength: 20, // 文本长度
+      checkedType: "", // 选中的输入类型
     };
   },
   onLoad(options) {
@@ -76,6 +105,46 @@ export default {
       }
 
       this.userinfo = data.data.data;
+    },
+
+    async save() {
+      const data = await request({
+        url: "/author/updateUserInfo",
+        method: "POST",
+        data: {
+          uid: this.uid,
+          nickname: this.userinfo.nickname,
+          profession: this.userinfo.profession,
+          signature: this.userinfo.signature,
+          avatar: this.userinfo.avatar,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "用户信息获取失败！",
+        });
+      }
+
+      this.$refs["toast"].open({
+        message: "用户信息修改成功！",
+      });
+
+      this.getUserInfo();
+    },
+
+    edit(value, type) {
+      this.visible = true;
+
+      this.value = value;
+
+      this.checkedType = type;
+    },
+
+    makeSure() {
+      this.userinfo[this.checkedType] = this.value;
+
+      this.visible = false;
     },
   },
 };
@@ -139,6 +208,27 @@ export default {
     .iconfont {
       font-size: 36rpx;
       color: #acb4be;
+    }
+  }
+
+  .edit-textarea {
+    border: none;
+    background-color: #efefef;
+  }
+
+  .edit-box {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20rpx;
+
+    .edit-box-btn {
+      display: flex;
+      align-items: center;
+
+      .edit-box-btn-text {
+        margin-right: 10rpx;
+        font-size: 24rpx;
+      }
     }
   }
 }

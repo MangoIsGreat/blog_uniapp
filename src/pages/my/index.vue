@@ -39,7 +39,9 @@
       </view>
     </cl-list-item>
     <cl-list-item
-      @click="toPage('/pages/messageCenter/index')"
+      @click="
+        toPage(userinfo ? '/pages/messageCenter/index' : '/pages/login/index')
+      "
       class="list-item"
       label="消息中心"
     >
@@ -48,7 +50,9 @@
       </view>
     </cl-list-item>
     <cl-list-item
-      @click="toPage('/pages/likeListPage/index')"
+      @click="
+        toPage(userinfo ? '/pages/likeListPage/index' : '/pages/login/index')
+      "
       class="list-item"
       label="我赞过的"
     >
@@ -57,7 +61,11 @@
       </view>
     </cl-list-item>
     <cl-list-item
-      @click="toPage('/pages/collectionArtPage/index')"
+      @click="
+        toPage(
+          userinfo ? '/pages/collectionArtPage/index' : '/pages/login/index'
+        )
+      "
       class="list-item"
       label="收藏集"
     >
@@ -66,7 +74,9 @@
       </view>
     </cl-list-item>
     <cl-list-item
-      @click="toPage('/pages/readedArticle/index')"
+      @click="
+        toPage(userinfo ? '/pages/readedArticle/index' : '/pages/login/index')
+      "
       class="list-item"
       label="阅读过的文章"
     >
@@ -75,7 +85,9 @@
       </view>
     </cl-list-item>
     <cl-list-item
-      @click="toPage('/pages/tagManagement/index')"
+      @click="
+        toPage(userinfo ? '/pages/tagManagement/index' : '/pages/login/index')
+      "
       class="list-item"
       label="标签管理"
     >

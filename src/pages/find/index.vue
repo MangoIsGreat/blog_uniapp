@@ -67,8 +67,6 @@ export default {
     this.onDown();
   },
 
-  onShow() {},
-
   methods: {
     // 获取热门推荐博客
     async getHotBlogList() {

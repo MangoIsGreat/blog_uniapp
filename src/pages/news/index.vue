@@ -73,8 +73,7 @@ export default {
   onLoad() {
     // 获取状态栏高度
     this.getStatusBarHeight();
-  },
-  onShow() {
+
     // 获取labels数据
     this.getLabels();
   },

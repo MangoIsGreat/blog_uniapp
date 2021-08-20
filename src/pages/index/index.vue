@@ -76,7 +76,7 @@ export default {
     ListItem,
     HeaderList,
   },
-  onShow() {
+  onLoad() {
     // 获取labels数据
     this.getLabels();
   },
