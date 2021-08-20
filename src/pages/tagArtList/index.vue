@@ -28,9 +28,9 @@
                   v-for="(item2, index2) in item.data"
                   :key="index2"
                   class="scroll-view-item"
-                  @click="toArtPage"
+                  @click="toArtPage(item2.id)"
                 >
-                  <ListItem />
+                  <ListItem :listData="item2" />
                 </view>
 
                 <cl-loadmore
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import request from "@/http/request";
 import ListItem from "./components/ListItem.vue";
 
 export default {
@@ -57,12 +58,12 @@ export default {
     const labels = [
       {
         label: "最新",
-        value: 1,
+        value: "new",
         loaded: true,
       },
       {
         label: "最热",
-        value: 2,
+        value: "hot",
       },
     ];
 
@@ -74,8 +75,8 @@ export default {
         finished: false,
         loading: false,
         pagination: {
-          page: 1,
-          size: 20,
+          pageIndex: 1,
+          pageSize: 20,
         },
       };
     });
@@ -86,21 +87,22 @@ export default {
       list,
       loading: true,
       isRefresh: true, // 是否开启下拉刷新
+      tagId: "", // tag
     };
   },
   components: {
     ListItem,
   },
-  onLoad() {
+  onLoad(options) {
+    this.tagId = options.id;
+  },
+  onShow() {
     this.refresh();
   },
   methods: {
-    toArtPage() {
+    toArtPage(id) {
       uni.navigateTo({
-        url: "/pages/articlePage/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
+        url: `/pages/articlePage/index?id=${id}`,
       });
     },
 
@@ -113,7 +115,7 @@ export default {
       console.log("====>");
       console.log("down");
       this.refresh({
-        page: 1,
+        pageIndex: 1,
       }).done(() => {
         this.$refs[`scroller-${this.current}`][0].end();
       });
@@ -126,7 +128,7 @@ export default {
 
       if (!finished) {
         this.refresh({
-          page: pagination.page + 1,
+          pageIndex: pagination.pageIndex + 1,
         });
       }
     },
@@ -141,30 +143,41 @@ export default {
 
       setTimeout(() => {
         this.refresh({
-          page: 1,
+          pageIndex: 1,
         });
       }, 500);
     },
 
-    refresh(params = {}) {
+    async refresh(params = {}) {
       const item = this.list[this.current];
 
       let data = {
         ...item.pagination,
-        status: item.status,
-        sort: "desc",
-        order: "createTime",
+        tag: this.tagId,
+        rankingType: item.status,
         ...params,
       };
+
+      const list = await request({
+        url: "/blog/list",
+        method: "GET",
+        data,
+      });
+
+      if (list.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "列表数据请求失败！",
+        });
+      }
 
       return new Promise((resolve) => {
         item.loading = true;
 
-        console.log("Refresh");
-
         setTimeout(() => {
-          item.data = new Array(data.page == 1 ? 12 : data.page * 12).fill(1);
-          item.pagination.page = data.page;
+          data.pageIndex == 1
+            ? (item.data = list.data.data.rows)
+            : item.data.push(...list.data.data.rows);
+          item.pagination.pageIndex = data.pageIndex;
           item.finished = false;
           item.loading = false;
           this.loading = false;

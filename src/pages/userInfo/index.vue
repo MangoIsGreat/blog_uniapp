@@ -23,7 +23,24 @@
           <view class="job">{{ userInfo.profession }}</view>
         </view>
         <view align="end">
-          <cl-button size="small" type="primary" plain>编辑</cl-button>
+          <cl-button
+            @click="toEditPage(userInfo.id)"
+            v-if="userInfo.isSelf"
+            size="small"
+            type="primary"
+            plain
+            >编辑</cl-button
+          >
+          <cl-button
+            @click="followUser(userInfo.id)"
+            v-else
+            size="small"
+            type="primary"
+            plain
+          >
+            <text v-if="!userInfo.isAttention">+ 关注</text>
+            <text v-else>已关注</text>
+          </cl-button>
         </view>
       </view>
       <view class="desc">{{ userInfo.signature }}</view>
@@ -84,7 +101,7 @@
                   />
                 </view>
 
-                <More v-if="current === 3" />
+                <More :userInfo="userInfo" v-if="current === 3" />
 
                 <cl-loadmore
                   v-if="item.data.length > 0"
@@ -181,6 +198,38 @@ export default {
     this.refresh();
   },
   methods: {
+    toEditPage(id) {
+      uni.navigateTo({
+        url: `/pages/editUserInfo/index?id=${id}`,
+      });
+    },
+
+    // 关注当前用户
+    async followUser(id) {
+      const data = await request({
+        url: "/fans/follow",
+        method: "POST",
+        data: {
+          leader: id,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "用户信息请求失败！",
+        });
+      }
+
+      if (data.data.data === "ok") {
+        this.userInfo.isAttention = true;
+
+        this.userInfo.fansNum++;
+      } else if (data.data.data === "cancel") {
+        this.userInfo.isAttention = false;
+
+        this.userInfo.fansNum--;
+      }
+    },
     // 获取用户信息
     async getUserInfo() {
       const data = await request({

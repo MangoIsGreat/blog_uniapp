@@ -5,24 +5,29 @@
       class="list-item"
       label="赞过的"
     >
-      <text slot="append" class="right">176篇</text>
+      <view class="append" slot="append">
+        <text class="iconfont icon-xiangyou"></text>
+      </view>
     </cl-list-item>
     <cl-list-item
       @click="toPage('/pages/collectionArtPage/index')"
       class="list-item"
       label="收藏集"
     >
-      <text slot="append" class="right">20个</text>
+      <view class="append" slot="append">
+        <text class="iconfont icon-xiangyou"></text>
+      </view>
     </cl-list-item>
   </view>
 </template>
 
 <script>
 export default {
+  props: ["userInfo"],
   methods: {
     toPage(path) {
       uni.navigateTo({
-        url: path,
+        url: `${path}?id=${this.userInfo.id}`,
       });
     },
   },

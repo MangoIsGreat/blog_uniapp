@@ -35,7 +35,7 @@
                   class="scroll-view-item"
                   @click="toArtPage(item2.id)"
                 >
-                  <ListItem :listData="item2" />
+                  <ListItem @likeBlog="likeBlog" :listData="item2" />
                 </view>
 
                 <cl-loadmore
@@ -81,6 +81,38 @@ export default {
     this.getLabels();
   },
   methods: {
+    // 点赞博客
+    async likeBlog(id) {
+      const data = await request({
+        url: "/blike/like",
+        method: "POST",
+        data: {
+          blog: id,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "点赞失败！",
+        });
+      }
+
+      if (data.data.data === "ok") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = true;
+            item.blogLikeNum++;
+          }
+        });
+      } else if (data.data.data === "cancel") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = false;
+            item.blogLikeNum--;
+          }
+        });
+      }
+    },
     // 获取热门推荐数据
     async getHotList() {
       if (this.current !== 0) return;

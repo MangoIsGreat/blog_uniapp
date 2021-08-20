@@ -13,12 +13,12 @@
     >
       <cl-loading-mask :loading="pageLoading" text="加载中">
         <view
-          @click="toArtPage"
+          @click="toArtPage(item.id)"
           v-for="(item, index) in list"
           :key="index"
           class="scroll-view-item"
         >
-          <ListItem />
+          <ListItem :listData="item" />
         </view>
 
         <cl-loadmore
@@ -30,10 +30,12 @@
         ></cl-loadmore>
       </cl-loading-mask>
     </scroll-view>
+    <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
 
 <script>
+import request from "@/http/request";
 import ListItem from "./components/ListItem.vue";
 
 export default {
@@ -44,6 +46,9 @@ export default {
       loading: false,
       isFinish: true,
       pageLoading: true,
+      uid: "", // 用户id
+      pageIndex: 1,
+      pageSize: 20,
     };
   },
 
@@ -51,35 +56,73 @@ export default {
     ListItem,
   },
 
-  onLoad() {
+  onLoad(options) {
+    this.uid = options.id;
+  },
+
+  onShow() {
     this.onDown();
   },
 
   methods: {
-    toArtPage() {
+    toArtPage(id) {
       uni.navigateTo({
-        url: "/pages/articlePage/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
+        url: `/pages/articlePage/index?id=${id}`,
       });
     },
-    onUp() {
+    async onUp() {
       this.loading = true;
       this.isFinish = false;
 
+      let data = {
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize,
+      };
+
+      const list = await request({
+        url: "/readhistory/list",
+        method: "GET",
+        data,
+      });
+
+      if (list.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "列表数据请求失败！",
+        });
+      }
+
       setTimeout(() => {
-        this.list.push(...new Array(20).fill(1));
+        this.list.push(...list.data.data);
         this.loading = false;
         this.isFinish = true;
-      }, 1000);
+        this.pageIndex++;
+      }, 500);
     },
 
-    onDown() {
+    async onDown() {
+      this.pageIndex = 1;
+
+      let data = {
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize,
+      };
+
+      const list = await request({
+        url: "/readhistory/list",
+        method: "GET",
+        data,
+      });
+
+      if (list.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "列表数据请求失败！",
+        });
+      }
+
       setTimeout(() => {
-        this.list = new Array(20).fill(1);
+        this.list = list.data.data;
         this.pageLoading = false;
-      }, 1000);
+      }, 500);
     },
   },
 };

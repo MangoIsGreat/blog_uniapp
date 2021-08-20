@@ -1,44 +1,62 @@
 <template>
   <view class="list-item-wrapper">
-    <view class="list-item-wrapper-title"
-      >一款阿里开源解析excel框架插件"easy-excel"一款阿里开源解析excel框架插件一款阿里开源解析excel框架插件</view
-    >
+    <view class="list-item-wrapper-title">{{ listData.title }}</view>
     <view class="list-item-wrapper-content">
       <view class="item-wrapper-content-article">
         <view class="author-line">
-          <text class="author-line-name">橘颂Java</text>
-          <text class="author-line-time">1小时前</text>
+          <text class="author-line-name">{{
+            listData.User && listData.User.nickname
+          }}</text>
+          <text class="author-line-time">{{
+            listData.created_at | relativeTime
+          }}</text>
         </view>
         <view class="article">
-          背景 面试题:后台传给前端十万条数据,你作为前端如何渲染到页面上?
-          回答者A：我有句话不知当讲不当讲,这什么鬼需求。 背景
-          面试题:后台传给前端十万条数据,你作为前端如何渲染到页面上?
-          回答者A：我有句话不知当讲不当讲,这什么鬼需求。
+          {{ listData.description }}
         </view>
       </view>
       <image
+        v-if="listData.titlePic"
         class="item-wrapper-content-pic"
         mode="center"
-        src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/77cd95ab46b5478eb8327a450f36e5c1~tplv-k3u1fbpfcp-zoom-mark-crop-v2:0:0:360:240.awebp"
+        :src="listData.titlePic"
       ></image>
     </view>
     <view class="bottom-line">
       <view class="operate">
+        <view class="operate-read"
+          ><text class="iconfont icon-yanjing"></text
+          ><text>{{ listData.blogReadNum }}</text></view
+        >
         <view class="operate-dianzan"
-          ><text class="iconfont icon-dianzan"></text><text>20</text></view
+          ><text
+            @click.stop="likeBlog(listData.id)"
+            :class="[
+              'iconfont',
+              listData.isLike ? 'icon-dianzan_' : 'icon-dianzan',
+            ]"
+            :style="{ color: listData.isLike ? '#00c58e' : '#96909c' }"
+          ></text
+          ><text>{{ listData.blogLikeNum }}</text></view
         >
         <view class="operate-pinglun"
-          ><text class="iconfont icon-pinglun"></text><text>2</text></view
+          ><text class="iconfont icon-pinglun"></text
+          ><text>{{ listData.commentNum }}</text></view
         >
       </view>
-      <text class="lang-type">后端</text>
+      <text class="lang-type">{{ listData.Tag && listData.Tag.tagName }}</text>
     </view>
   </view>
 </template>
 
 <script>
 export default {
-  methods: {},
+  props: ["listData"],
+  methods: {
+    likeBlog(id) {
+      this.$emit("likeBlog", id);
+    },
+  },
 };
 </script>
 
@@ -100,9 +118,10 @@ export default {
 
     .operate {
       display: flex;
-      .operate-dianzan {
+      .operate-dianzan,
+      .operate-read {
         margin-right: 20rpx;
-        color: $primary-color;
+        // color: $primary-color;
       }
 
       .iconfont {

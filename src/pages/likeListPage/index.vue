@@ -24,23 +24,14 @@
               @scrolltolower="onUp"
             >
               <cl-loading-mask :loading="loading" text="加载中">
-                <!-- <view
-                  v-for="(item2, index2) in item.data"
-                  :key="index2"
-                  class="scroll-view-item"
-                >
-                  <ArtListItem />
-                  <ActListItem />
-                </view> -->
-
                 <view v-if="current == 0">
                   <view
-                    @click="toArtPage"
+                    @click="toArtPage(item2.id)"
                     v-for="(item2, index2) in item.data"
                     :key="index2"
                     class="scroll-view-item"
                   >
-                    <ArtListItem />
+                    <ArtListItem @likeBlog="likeBlog" :listData="item2" />
                   </view>
                 </view>
                 <view v-if="current == 1">
@@ -48,8 +39,13 @@
                     v-for="(item2, index2) in item.data"
                     :key="index2"
                     class="scroll-view-item"
+                    @click="toActPage(item2.id)"
                   >
-                    <ActListItem />
+                    <ActListItem
+                      :infoData="item2"
+                      @likeDyn="likeDyn"
+                      @share="toggleShare"
+                    />
                   </view>
                 </view>
 
@@ -65,10 +61,15 @@
         </swiper-item>
       </swiper>
     </cl-tabs>
+    <!-- 分享 -->
+    <Share :visible="isShare" @share="toggleShare" />
+    <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
 
 <script>
+import request from "@/http/request";
+import Share from "@/components/Share/index.vue";
 import ArtListItem from "./components/ArtListItem.vue";
 import ActListItem from "./components/ActListItem.vue";
 
@@ -95,8 +96,8 @@ export default {
         finished: false,
         loading: false,
         pagination: {
-          page: 1,
-          size: 20,
+          pageIndex: 1,
+          pageSize: 20,
         },
       };
     });
@@ -107,23 +108,97 @@ export default {
       list,
       loading: true,
       isRefresh: true, // 是否开启下拉刷新
+      uid: "", // 用户id
+      isShare: false, // 是否分享
     };
   },
   components: {
     ArtListItem,
     ActListItem,
+    Share,
   },
-  onLoad() {
+  onLoad(options) {
+    this.uid = options.id;
+
     this.refresh();
   },
   methods: {
-    toArtPage() {
+    toArtPage(id) {
       uni.navigateTo({
-        url: "/pages/articlePage/index",
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
+        url: `/pages/articlePage/index?id=${id}`,
       });
+    },
+    toActPage(id) {
+      uni.navigateTo({
+        url: `/pages/interactionPage/index?id=${id}`,
+      });
+    },
+    toggleShare(value) {
+      this.isShare = value;
+    },
+    // 点赞动态
+    async likeDyn(id) {
+      const data = await request({
+        url: "/dlike/like",
+        method: "POST",
+        data: {
+          dynamicId: id,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "点赞失败！",
+        });
+      }
+
+      if (data.data.data === "ok") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = true;
+            item.likeNum++;
+          }
+        });
+      } else if (data.data.data === "cancel") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = false;
+            item.likeNum--;
+          }
+        });
+      }
+    },
+    // 点赞博客
+    async likeBlog(id) {
+      const data = await request({
+        url: "/blike/like",
+        method: "POST",
+        data: {
+          blog: id,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "点赞失败！",
+        });
+      }
+
+      if (data.data.data === "ok") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = true;
+            item.blogLikeNum++;
+          }
+        });
+      } else if (data.data.data === "cancel") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = false;
+            item.blogLikeNum--;
+          }
+        });
+      }
     },
     // refresherrefresh() {
     //   this.isRefresh = true;
@@ -146,7 +221,7 @@ export default {
       console.log("====>");
       console.log("down");
       this.refresh({
-        page: 1,
+        pageIndex: 1,
       }).done(() => {
         this.$refs[`scroller-${this.current}`][0].end();
       });
@@ -159,7 +234,7 @@ export default {
 
       if (!finished) {
         this.refresh({
-          page: pagination.page + 1,
+          pageIndex: pagination.pageIndex + 1,
         });
       }
     },
@@ -174,30 +249,58 @@ export default {
 
       setTimeout(() => {
         this.refresh({
-          page: 1,
+          pageIndex: 1,
         });
       }, 500);
     },
 
-    refresh(params = {}) {
+    async refresh(params = {}) {
+      let path = "";
       const item = this.list[this.current];
 
       let data = {
         ...item.pagination,
-        status: item.status,
-        sort: "desc",
-        order: "createTime",
         ...params,
+        uid: this.uid,
       };
+
+      switch (item.status) {
+        case 1:
+          path = "/author/likeBlog";
+          break;
+        case 2:
+          path = "/author/likeDyn";
+          break;
+        default:
+          break;
+      }
+
+      const listData = await request({
+        url: path,
+        method: "GET",
+        data,
+      });
+
+      if (listData.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "列表数据请求失败！",
+        });
+      }
+
+      listData.data.data.list.forEach((item) => {
+        if (item.picUrl) {
+          item.picUrl = JSON.parse(item.picUrl);
+        }
+      });
 
       return new Promise((resolve) => {
         item.loading = true;
 
-        console.log("Refresh");
-
         setTimeout(() => {
-          item.data = new Array(data.page == 1 ? 12 : data.page * 12).fill(1);
-          item.pagination.page = data.page;
+          data.pageIndex == 1
+            ? (item.data = listData.data.data.list)
+            : item.data.push(...listData.data.data.list);
+          item.pagination.pageIndex = data.pageIndex;
           item.finished = false;
           item.loading = false;
           this.loading = false;

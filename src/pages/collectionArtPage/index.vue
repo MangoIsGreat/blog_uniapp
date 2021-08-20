@@ -18,13 +18,13 @@
           class="scroll-view-item"
         >
           <cl-list-item
-            @click="toPage('/pages/collectionArtList/index')"
+            @click="toPage(item.id)"
             class="scroll-view-item-list"
             justify="start"
           >
             <view class="cs-block">
-              <view class="name">git</view>
-              <view class="desc">1篇 · 0人关注 · 橘猫很方</view>
+              <view class="name">{{ item.type }}</view>
+              <view class="desc">({{ item.number }}篇)</view>
             </view>
 
             <text slot="append" class="cl-icon-arrow-right"></text>
@@ -40,10 +40,13 @@
         ></cl-loadmore>
       </cl-loading-mask>
     </scroll-view>
+    <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
 
 <script>
+import request from "@/http/request";
+
 export default {
   name: "collection",
   data() {
@@ -52,36 +55,77 @@ export default {
       loading: false,
       isFinish: true,
       pageLoading: true,
+      uid: "", // 用户id
+      pageSize: 20,
+      pageIndex: 1,
     };
   },
 
-  onLoad() {
+  onLoad(options) {
+    this.uid = options.id;
+  },
+
+  onShow() {
     this.onDown();
   },
 
   methods: {
-    toPage(path) {
+    toPage(id) {
       uni.navigateTo({
-        url: path,
-        success: (res) => {},
-        fail: () => {},
-        complete: () => {},
+        url: `/pages/collectionArtList/index?id=${id}`,
       });
     },
-    onUp() {
+    async onUp() {
       this.loading = true;
       this.isFinish = false;
 
+      const data = {
+        uid: this.uid,
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize,
+      };
+
+      const listData = await request({
+        url: "/author/collection",
+        method: "GET",
+        data,
+      });
+
+      if (listData.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "列表数据请求失败！",
+        });
+      }
+
       setTimeout(() => {
-        this.list.push(...new Array(20).fill(1));
+        this.list.push(...listData.data.data.list);
         this.loading = false;
         this.isFinish = true;
+        this.pageIndex++;
       }, 1000);
     },
 
-    onDown() {
+    async onDown() {
+      const data = {
+        uid: this.uid,
+        pageIndex: 1,
+        pageSize: this.pageSize,
+      };
+
+      const listData = await request({
+        url: "/author/collection",
+        method: "GET",
+        data,
+      });
+
+      if (listData.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "列表数据请求失败！",
+        });
+      }
+
       setTimeout(() => {
-        this.list = new Array(20).fill(1);
+        this.list = listData.data.data.list;
         this.pageLoading = false;
       }, 1000);
     },
@@ -107,12 +151,16 @@ page,
         padding: 10rpx 0;
 
         .cs-block {
+          display: flex;
           .name {
+            font-size: 54rpx;
+            font-weight: 700;
             margin-bottom: 8rpx;
             @include setSmallTitle($title-color, 36rpx, 28rpx);
           }
 
           .desc {
+            margin-left: 10rpx;
             color: $article-desc-color;
           }
         }

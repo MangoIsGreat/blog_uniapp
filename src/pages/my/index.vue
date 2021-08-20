@@ -55,7 +55,6 @@
       <view slot="icon">
         <text class="iconfont icon-dianzan1"></text>
       </view>
-      <text slot="append" class="right">176篇</text>
     </cl-list-item>
     <cl-list-item
       @click="toPage('/pages/collectionArtPage/index')"
@@ -63,9 +62,8 @@
       label="收藏集"
     >
       <view slot="icon">
-        <text class="iconfont icon-dianzan1"></text>
+        <text class="iconfont icon-xingxingmianxing"></text>
       </view>
-      <text slot="append" class="right">20个</text>
     </cl-list-item>
     <cl-list-item
       @click="toPage('/pages/readedArticle/index')"
@@ -75,7 +73,6 @@
       <view slot="icon">
         <text class="iconfont icon-yanjing"></text>
       </view>
-      <text slot="append" class="right">633篇</text>
     </cl-list-item>
     <cl-list-item
       @click="toPage('/pages/tagManagement/index')"
@@ -85,7 +82,6 @@
       <view slot="icon">
         <text class="iconfont icon-biaoqian"></text>
       </view>
-      <text slot="append" class="right">12个</text>
     </cl-list-item>
     <cl-list-item
       v-if="userinfo"
@@ -96,6 +92,7 @@
       <text class="logout">退出账号</text>
     </cl-list-item>
     <cl-action-sheet ref="action-sheet"></cl-action-sheet>
+    <cl-toast ref="toast"></cl-toast>
   </view>
 </template>
 
@@ -117,7 +114,7 @@ export default {
     },
     toPage(path) {
       uni.navigateTo({
-        url: path,
+        url: `${path}?id=${this.userinfo.id}`,
       });
     },
     toAuthorPage(id) {
@@ -211,6 +208,10 @@ export default {
 
     .icon-dianzan1 {
       color: #66c439;
+    }
+
+    .icon-xingxingmianxing {
+      color: #ffc347;
     }
 
     .icon-yanjing,
