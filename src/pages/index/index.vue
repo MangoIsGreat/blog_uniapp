@@ -12,21 +12,26 @@
     >
       <!-- 自定义内容区域 -->
       <swiper class="container" @change="onChangeSwiper" :current="current">
-        <swiper-item v-for="(item, index) in list" :key="index">
+        <swiper-item
+          class="container-item"
+          v-for="(item, index) in list"
+          :key="index"
+        >
           <!-- 是否预加载 -->
           <template v-if="item.loaded || index == current">
             <scroll-view
               class="scroll-view-wrapper"
               :scroll-y="true"
-              :refresher-enabled="isRefresh"
+              :refresher-enabled="true"
               refresher-default-style="black"
               :upper-threshold="150"
               :lower-threshold="150"
+              :refresher-triggered="isRefreshed"
               @scrolltoupper="onDown"
               @scrolltolower="onUp"
+              @refresherpulling="onPulling"
             >
               <cl-loading-mask :loading="loading" text="加载中">
-                <!-- 热门推荐 -->
                 <HeaderList :hotList="hotList" v-if="current === 0" />
 
                 <view
@@ -39,6 +44,7 @@
                 </view>
 
                 <cl-loadmore
+                  v-if="showFooter"
                   :loading="item.loading"
                   :finish="item.finished"
                   :divider="false"
@@ -67,8 +73,9 @@ export default {
       labels: [],
       list: [],
       loading: true,
-      isRefresh: true, // 是否开启下拉刷新
       hotList: [], // 热门推荐数据
+      isRefreshed: false, // 是否下拉刷新
+      showFooter: false, // 是否显示下拉加载更多组件
     };
   },
   components: {
@@ -81,6 +88,14 @@ export default {
     this.getLabels();
   },
   methods: {
+    onPulling() {
+      if (!this.isRefreshed) {
+        this.isRefreshed = true;
+        setTimeout(() => {
+          this.isRefreshed = false;
+        }, 1000);
+      }
+    },
     // 点赞博客
     async likeBlog(id) {
       const data = await request({
@@ -204,6 +219,9 @@ export default {
     onUp() {
       const { pagination, finished } = this.list[this.current];
 
+      // 展示上拉加载更多
+      this.showFooter = true;
+
       if (!finished) {
         this.refresh({
           pageIndex: pagination.pageIndex + 1,
@@ -259,6 +277,7 @@ export default {
           item.finished = false;
           item.loading = false;
           this.loading = false;
+          this.showFooter = false; // 隐藏上拉加载更多组件
           resolve();
         }, 500);
       });
@@ -288,6 +307,11 @@ page {
     .container {
       height: 100%;
       background-color: #f7f7f7;
+
+      .container-item {
+        height: 100%;
+        overflow: hidden;
+      }
 
       .scroll-view-wrapper {
         height: calc(100% - 140rpx);

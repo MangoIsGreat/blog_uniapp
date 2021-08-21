@@ -6,7 +6,10 @@
       <view class="content-article">
         <view class="content-article-author">
           <view class="content-article-author-name">
-            <view @click="toAuthorPage" class="avatar">
+            <view
+              @click="toAuthorPage(blogInfo.User && blogInfo.User.id)"
+              class="avatar"
+            >
               <cl-avatar
                 :src="blogInfo.User && blogInfo.User.avatar"
               ></cl-avatar>
@@ -77,7 +80,10 @@
           v-for="(item, index) in commentsList"
           :key="index"
         >
-          <view class="avatar" @click="toAuthorPage">
+          <view
+            class="avatar"
+            @click="toAuthorPage(item.comment && item.comment.id)"
+          >
             <cl-avatar :src="item.comment && item.comment.avatar"></cl-avatar>
           </view>
           <view class="comment-item-content">
@@ -120,7 +126,9 @@
                 :key="index2"
                 @click="replyToReply(blogInfo.id, item.id, item2)"
               >
-                <text @click.stop="toAuthorPage" class="reply-item-name"
+                <text
+                  @click.stop="toAuthorPage(item2.from && item2.from.id)"
+                  class="reply-item-name"
                   >{{ item2.from.nickname
                   }}<text
                     v-if="
@@ -130,7 +138,9 @@
                     "
                     >(作者)</text
                   ></text
-                >回复<text @click.stop="toAuthorPage" class="reply-item-name"
+                >回复<text
+                  @click.stop="toAuthorPage(item2.to && item2.to.id)"
+                  class="reply-item-name"
                   >{{ item2.to.nickname }}：</text
                 >
                 <text>{{ item2.content }}</text>
@@ -319,8 +329,8 @@ export default {
     toPage(id) {
       uni.navigateTo({ url: `/pages/articlePage/index?id=${id}` });
     },
-    toAuthorPage() {
-      uni.navigateTo({ url: "/pages/userInfo/index" });
+    toAuthorPage(id) {
+      uni.navigateTo({ url: `/pages/userInfo/index?id=${id}` });
     },
     chat(blogId, commentId, toCommentId) {
       uni.navigateTo({

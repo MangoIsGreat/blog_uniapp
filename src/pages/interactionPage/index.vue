@@ -6,6 +6,7 @@
           class="avatar"
           mode="center"
           :src="dynInfo.User && dynInfo.User.avatar"
+          @click="toAuthorPage(dynInfo.User && dynInfo.User.id)"
         ></image>
         <view class="list-row-header-content">
           <view class="list-row-header-content-tit">{{
@@ -39,7 +40,10 @@
         v-for="(item, index) in commentsList"
         :key="index"
       >
-        <view class="avatar" @click="toAuthorPage">
+        <view
+          class="avatar"
+          @click="toAuthorPage(item.userInfo && item.userInfo.id)"
+        >
           <cl-avatar :src="item.userInfo && item.userInfo.avatar"></cl-avatar>
         </view>
         <view class="comment-item-content">
@@ -82,7 +86,9 @@
               :key="index2"
               @click="replyToReply(dynInfo.id, item.id, item2)"
             >
-              <text @click.stop="toAuthorPage" class="reply-item-name"
+              <text
+                @click.stop="toAuthorPage(item2.from && item2.from.id)"
+                class="reply-item-name"
                 >{{ item2.from.nickname
                 }}<text
                   v-if="
@@ -92,7 +98,9 @@
                   "
                   >(作者)</text
                 ></text
-              >回复<text @click.stop="toAuthorPage" class="reply-item-name"
+              >回复<text
+                @click.stop="toAuthorPage(item2.to && item2.to.id)"
+                class="reply-item-name"
                 >{{ item2.to.nickname }}：</text
               >
               <text>{{ item2.content }}</text>
@@ -244,7 +252,7 @@ export default {
 
     toAuthorPage(id) {
       uni.navigateTo({
-        url: `/pages/articlePage/index?id=${id}`,
+        url: `/pages/userInfo/index?id=${id}`,
       });
     },
 

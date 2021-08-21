@@ -9,7 +9,7 @@
           <view class="content-line-author-name">{{ listData.nickname }}</view>
           <view class="content-line-author-job">{{ listData.profession }}</view>
         </view>
-        <cl-button type="success" plain round @click="follow(listData.id)">
+        <cl-button type="success" plain round @click.stop="follow(listData.id)">
           <text class="attention" v-if="listData.isAttention">已关注</text>
           <text v-else>+ 关注</text>
         </cl-button>

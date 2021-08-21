@@ -50,7 +50,7 @@
       <view class="recommend-group-body">
         <view class="recommend-group-body-innerBox">
           <image
-            @click="toPage('/pages/userInfo/index')"
+            @click="toPage('/pages/userInfo/index', item.id)"
             v-for="(item, index) in groupList"
             :key="index"
             class="group-item"
@@ -133,14 +133,17 @@ export default {
 
       this.groupList = data.data.data.rows;
     },
-    toPage(path) {
-      uni.navigateTo({ url: path });
+    toPage(path, id) {
+      uni.navigateTo({ url: `${path}?id=${id}` });
     },
     toast() {
       this.$refs["toast"].open({
         message: "需求正在开发中,敬请期待~",
         position: "middle",
       });
+    },
+    toAuthorPage(id) {
+      uni.navigateTo({ url: `/pages/userInfo/index?id=${id}` });
     },
   },
 };

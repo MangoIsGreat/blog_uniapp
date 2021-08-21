@@ -6,7 +6,10 @@
       <view class="content-article">
         <view class="content-article-author">
           <view class="content-article-author-name">
-            <view @click="toAuthorPage" class="avatar">
+            <view
+              @click="toAuthorPage(blogInfo.User && blogInfo.User.id)"
+              class="avatar"
+            >
               <cl-avatar
                 :src="blogInfo.User && blogInfo.User.avatar"
               ></cl-avatar>
@@ -137,8 +140,8 @@ export default {
     toPage(id) {
       uni.navigateTo({ url: `/pages/newsPage/index?id=${id}` });
     },
-    toAuthorPage() {
-      uni.navigateTo({ url: "/pages/userInfo/index" });
+    toAuthorPage(id) {
+      uni.navigateTo({ url: `/pages/userInfo/index?id=${id}` });
     },
     toggleShare(value) {
       this.isShare = value;

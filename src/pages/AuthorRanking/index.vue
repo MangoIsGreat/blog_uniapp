@@ -2,7 +2,7 @@
   <view class="author-ranking-wrapper">
     <cl-scroller ref="scroller" @up="onUp" @down="onDown">
       <view
-        @click="toUserInfo"
+        @click="toUserInfo(item.id)"
         class="item"
         v-for="(item, index) in list"
         :key="index"
@@ -42,9 +42,9 @@ export default {
     this.getAuthorList();
   },
   methods: {
-    toUserInfo() {
+    toUserInfo(id) {
       uni.navigateTo({
-        url: "/pages/userInfo/index",
+        url: `/pages/userInfo/index?id=${id}`,
       });
     },
 

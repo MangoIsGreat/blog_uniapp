@@ -62,7 +62,7 @@ export default {
     };
   },
 
-  onShow() {
+  onLoad() {
     this.getLabels();
   },
 

@@ -3,6 +3,7 @@
     <view class="list-row-top">
       <view class="list-row-header">
         <image
+          @click.stop="toAuthorPage(infoData.userInfo && infoData.userInfo.id)"
           class="avatar"
           mode="center"
           :src="infoData.userInfo && infoData.userInfo.avatar"
@@ -66,6 +67,9 @@ export default {
     },
     likeDyn(id) {
       this.$emit("likeDyn", id);
+    },
+    toAuthorPage(id) {
+      uni.navigateTo({ url: `/pages/userInfo/index?id=${id}` });
     },
   },
 };

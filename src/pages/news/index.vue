@@ -125,26 +125,7 @@ export default {
       const systemInfo = uni.getSystemInfoSync();
       this.statusBarHeight = systemInfo.statusBarHeight;
     },
-    // refresherrefresh() {
-    //   this.isRefresh = true;
-    // },
-
-    // refresherrestore() {
-    //   this.isRefresh = false;
-    // },
-
-    // refresherabort() {
-    //   this.isRefresh = false;
-    // },
-
     onDown() {
-      // this.isRefresh = true;
-      // setTimeout(() => {
-      //   this.isRefresh = false;
-      // }, 1500);
-
-      console.log("====>");
-      console.log("down");
       this.refresh({
         pageIndex: 1,
       }).done(() => {
@@ -153,8 +134,6 @@ export default {
     },
 
     onUp() {
-      console.log("====>");
-      console.log("up");
       const { pagination, finished } = this.list[this.current];
 
       if (!finished) {

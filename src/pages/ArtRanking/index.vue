@@ -65,7 +65,7 @@ export default {
   components: {
     ListItem,
   },
-  onShow() {
+  onLoad() {
     this.getLabels();
   },
   methods: {
