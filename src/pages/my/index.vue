@@ -38,7 +38,7 @@
         <text class="iconfont icon-xiangyou"></text>
       </view>
     </cl-list-item>
-    <cl-list-item
+    <!-- <cl-list-item
       @click="
         toPage(userinfo ? '/pages/messageCenter/index' : '/pages/login/index')
       "
@@ -48,7 +48,7 @@
       <view slot="icon">
         <text class="iconfont icon-xiaoxi"></text>
       </view>
-    </cl-list-item>
+    </cl-list-item> -->
     <cl-list-item
       @click="
         toPage(userinfo ? '/pages/likeListPage/index' : '/pages/login/index')

@@ -216,6 +216,14 @@
                 "enablePullDownRefresh": false
             }
             
+        },{
+            "path" : "pages/SearchPage/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "搜索页",
+                "enablePullDownRefresh": false
+            }
+            
         }
     ],
 	"globalStyle": {

@@ -4,7 +4,9 @@
     <view class="list-item-wrapper-content">
       <view class="item-wrapper-content-article">
         <view class="author-line">
-          <text class="author-line-name">{{ listData.User.nickname }}</text>
+          <text class="author-line-name">{{
+            listData.User && listData.User.nickname
+          }}</text>
           <text class="author-line-time">{{
             listData.created_at | relativeTime
           }}</text>
@@ -22,27 +24,11 @@
     </view>
     <view class="bottom-line">
       <view class="operate">
-        <view class="operate-dianzan"
-          ><text class="iconfont icon-yanjing"></text
-          ><text>{{ listData.blogReadNum }}</text></view
-        >
-        <view class="operate-dianzan"
-          ><text
-            @click.stop="likeBlog(listData.id)"
-            :class="[
-              'iconfont',
-              listData.isLike ? 'icon-dianzan_' : 'icon-dianzan',
-            ]"
-            :style="{ color: listData.isLike ? '#00c58e' : '#96909c' }"
-          ></text
-          ><text>{{ listData.blogLikeNum }}</text></view
-        >
-        <view class="operate-pinglun"
-          ><text class="iconfont icon-pinglun"></text
-          ><text>{{ listData.commentNum }}</text></view
-        >
+        {{ listData.blogReadNum }}阅读&nbsp;·&nbsp;{{
+          listData.blogLikeNum
+        }}赞&nbsp;·&nbsp;{{ listData.commentNum }}&nbsp;评论
       </view>
-      <text class="lang-type">{{ listData.Tag.tagName }}</text>
+      <text class="lang-type">{{ listData.Tag && listData.Tag.tagName }}</text>
     </view>
   </view>
 </template>
@@ -52,11 +38,7 @@ export default {
   props: {
     listData: Object,
   },
-  methods: {
-    likeBlog(id) {
-      this.$emit("likeBlog", id);
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -124,7 +106,6 @@ export default {
 
       .iconfont {
         margin-right: 6rpx;
-        color: #96909c;
       }
     }
 

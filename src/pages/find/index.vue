@@ -1,12 +1,12 @@
 <template>
   <view class="find-wrapper">
     <!-- 搜索框 -->
-    <Search @openTagPage="openTagPage" />
+    <Search @openTagPage="openTagPage" @search="search" />
     <!-- 列表 -->
     <scroll-view
       class="scroll-view-wrapper"
       :scroll-y="true"
-      :refresher-enabled="true"
+      :refresher-enabled="false"
       refresher-default-style="black"
       :upper-threshold="100"
       :lower-threshold="100"
@@ -22,7 +22,7 @@
           :key="index"
           class="scroll-view-item"
         >
-          <ListItem :listData="item" />
+          <ListItem @likeBlog="likeBlog" :listData="item" />
         </view>
 
         <cl-loadmore
@@ -68,6 +68,44 @@ export default {
   },
 
   methods: {
+    // 搜索
+    async search(value) {
+      uni.navigateTo({
+        url: `/pages/SearchPage/index?value=${value}`,
+      });
+    },
+    // 点赞博客
+    async likeBlog(id) {
+      const data = await request({
+        url: "/blike/like",
+        method: "POST",
+        data: {
+          blog: id,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "点赞失败！",
+        });
+      }
+
+      if (data.data.data === "ok") {
+        this.list.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = true;
+            item.blogLikeNum++;
+          }
+        });
+      } else if (data.data.data === "cancel") {
+        this.list.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = false;
+            item.blogLikeNum--;
+          }
+        });
+      }
+    },
     // 获取热门推荐博客
     async getHotBlogList() {
       let data = {
@@ -107,7 +145,6 @@ export default {
     },
 
     async onUp() {
-      console.log("up====>");
       this.loading = true;
       this.isFinish = false;
 
@@ -118,11 +155,9 @@ export default {
     },
 
     async onDown() {
-      console.log("down===>");
       this.pageIndex = 1;
 
       const listData = await this.getHotBlogList();
-      console.log(444, listData);
       this.list = listData;
       this.pageLoading = false;
     },

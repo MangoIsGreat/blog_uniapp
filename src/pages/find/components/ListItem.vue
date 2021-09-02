@@ -27,7 +27,14 @@
           ><text>{{ listData.blogReadNum }}</text></view
         >
         <view class="operate-dianzan"
-          ><text class="iconfont icon-dianzan"></text
+          ><text
+            @click.stop="likeBlog(listData.id)"
+            :class="[
+              'iconfont',
+              listData.isLike ? 'icon-dianzan_' : 'icon-dianzan',
+            ]"
+            :style="{ color: listData.isLike ? '#00c58e' : '#96909c' }"
+          ></text
           ><text>{{ listData.blogLikeNum }}</text></view
         >
         <view class="operate-pinglun"
@@ -43,7 +50,11 @@
 <script>
 export default {
   props: ["listData"],
-  methods: {},
+  methods: {
+    likeBlog(id) {
+      this.$emit("likeBlog", id);
+    },
+  },
 };
 </script>
 

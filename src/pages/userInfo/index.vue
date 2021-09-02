@@ -11,8 +11,7 @@
     </view>
     <view
       :style="{
-        backgroundImage:
-          'url(https://user-gold-cdn.xitu.io/2020/1/18/16fb901f1bac3975?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1)',
+        backgroundImage: `url(${userInfo.avatar})`,
       }"
       class="avatar"
     ></view>
@@ -170,7 +169,7 @@ export default {
       labels,
       list,
       loading: true,
-      isRefresh: true, // 是否开启下拉刷新
+      isRefresh: false, // 是否开启下拉刷新
       statusBarHeight: 0, // 状态栏高度
       isShare: false, // 是否分享
       uid: "", // 用户id
@@ -291,8 +290,6 @@ export default {
       }
     },
     onDown() {
-      console.log("====>");
-      console.log("down");
       this.refresh({
         pageIndex: 1,
       }).done(() => {
@@ -301,8 +298,6 @@ export default {
     },
 
     onUp() {
-      console.log("====>");
-      console.log("up");
       const { pagination, finished } = this.list[this.current];
 
       if (!finished) {

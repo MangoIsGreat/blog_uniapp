@@ -4,7 +4,7 @@
     <scroll-view
       class="scroll-view-wrapper"
       :scroll-y="true"
-      :refresher-enabled="true"
+      :refresher-enabled="false"
       refresher-default-style="black"
       :upper-threshold="100"
       :lower-threshold="100"

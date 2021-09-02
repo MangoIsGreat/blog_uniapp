@@ -128,7 +128,7 @@ export default {
         url: "/dcomment/reply",
         method: "POST",
         data: {
-          dynamicId: this.id, // 博客id
+          dynamicId: this.id, // 动态id
           content: this.value, // 评论内容
           commentId: this.commentId, // 评论id
           toUid: this.targetId, // 要回复的"评论"&"评论回复"的id

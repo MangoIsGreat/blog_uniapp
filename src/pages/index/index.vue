@@ -1,7 +1,7 @@
 <template>
   <view class="home-content">
     <!-- 搜索框 -->
-    <search @openTagPage="openTagPage" />
+    <search @openTagPage="openTagPage" @search="search" />
     <!-- Tabs选项卡 -->
     <cl-tabs
       color="#00c58e"
@@ -22,7 +22,7 @@
             <scroll-view
               class="scroll-view-wrapper"
               :scroll-y="true"
-              :refresher-enabled="true"
+              :refresher-enabled="false"
               refresher-default-style="black"
               :upper-threshold="150"
               :lower-threshold="150"
@@ -88,6 +88,12 @@ export default {
     this.getLabels();
   },
   methods: {
+    // 搜索
+    async search(value) {
+      uni.navigateTo({
+        url: `/pages/SearchPage/index?value=${value}`,
+      });
+    },
     onPulling() {
       if (!this.isRefreshed) {
         this.isRefreshed = true;

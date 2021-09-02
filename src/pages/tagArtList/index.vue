@@ -86,7 +86,7 @@ export default {
       labels,
       list,
       loading: true,
-      isRefresh: true, // 是否开启下拉刷新
+      isRefresh: false, // 是否开启下拉刷新
       tagId: "", // tag
     };
   },

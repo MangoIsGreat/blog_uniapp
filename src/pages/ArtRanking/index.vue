@@ -30,7 +30,7 @@
                   class="scroll-view-item"
                   @click="toArtPage(item2.id)"
                 >
-                  <ListItem :listData="item2" />
+                  <ListItem @likeBlog="likeBlog" :listData="item2" />
                 </view>
 
                 <cl-loadmore
@@ -59,7 +59,7 @@ export default {
       labels: [],
       list: [],
       loading: true,
-      isRefresh: true, // 是否开启下拉刷新
+      isRefresh: false, // 是否开启下拉刷新
     };
   },
   components: {
@@ -69,6 +69,38 @@ export default {
     this.getLabels();
   },
   methods: {
+    // 点赞博客
+    async likeBlog(id) {
+      const data = await request({
+        url: "/blike/like",
+        method: "POST",
+        data: {
+          blog: id,
+        },
+      });
+
+      if (data.data.error_code !== 0) {
+        return this.$refs["toast"].open({
+          message: "点赞失败！",
+        });
+      }
+
+      if (data.data.data === "ok") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = true;
+            item.blogLikeNum++;
+          }
+        });
+      } else if (data.data.data === "cancel") {
+        this.list[this.current].data.forEach((item) => {
+          if (item.id === id) {
+            item.isLike = false;
+            item.blogLikeNum--;
+          }
+        });
+      }
+    },
     // 获取labels数据
     async getLabels() {
       const data = await request({
@@ -126,13 +158,6 @@ export default {
     },
 
     onDown() {
-      // this.isRefresh = true;
-      // setTimeout(() => {
-      //   this.isRefresh = false;
-      // }, 1500);
-
-      console.log("====>");
-      console.log("down");
       this.refresh({
         pageIndex: 1,
       }).done(() => {
@@ -141,8 +166,6 @@ export default {
     },
 
     onUp() {
-      console.log("====>");
-      console.log("up");
       const { pagination, finished } = this.list[this.current];
 
       if (!finished) {

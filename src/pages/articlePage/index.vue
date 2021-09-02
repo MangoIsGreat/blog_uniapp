@@ -132,16 +132,23 @@
                   >{{ item2.from.nickname
                   }}<text
                     v-if="
-                      item.userInfo &&
+                      blogInfo.User &&
                         item2.from &&
-                        item.userInfo.id === item2.from.id
+                        blogInfo.User.id === item2.from.id
                     "
                     >(作者)</text
                   ></text
                 >回复<text
                   @click.stop="toAuthorPage(item2.to && item2.to.id)"
                   class="reply-item-name"
-                  >{{ item2.to.nickname }}：</text
+                  >{{ item2.to.nickname
+                  }}{{
+                    blogInfo.User &&
+                    item2.to &&
+                    blogInfo.User.id === item2.to.id
+                      ? "(作者)"
+                      : ""
+                  }}：</text
                 >
                 <text>{{ item2.content }}</text>
               </view>

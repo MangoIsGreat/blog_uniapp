@@ -2,12 +2,14 @@
   <view class="search-wrapper">
     <view class="serach-box">
       <cl-search
+        v-model="value"
         :style="{ paddingTop: statusBarHeight * 2 + 10 + 'rpx' }"
         class="search-wrapper-input"
         :show-search-button="false"
         placeholder="搜索得到"
         @focus="focus"
         @blur="blur"
+        @search="search"
       ></cl-search>
     </view>
     <view class="top-box"></view>
@@ -20,6 +22,7 @@ export default {
   data() {
     return {
       statusBarHeight: 0,
+      value: "", // 搜索值
     };
   },
   created() {
@@ -35,6 +38,9 @@ export default {
     },
     tagClick() {
       this.$emit("openTagPage");
+    },
+    search() {
+      this.$emit("search", this.value);
     },
   },
 };

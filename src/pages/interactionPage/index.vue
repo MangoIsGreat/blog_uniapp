@@ -243,7 +243,7 @@ export default {
       });
     },
 
-    // 回复评论
+    // 回复评论回复
     replyToReply(id, commentId, toCommentId) {
       uni.navigateTo({
         url: `/pages/publishComment/index?id=${id}&type=replyToDynComment&cId=${commentId}&toId=${toCommentId.from.id}`,

@@ -16,12 +16,13 @@
         <view class="iconfont icon-haibaofenxiang"></view>
         <view class="text">分享二维码</view>
       </view>
-      <view class="share-box-item">
+      <view class="share-box-item" @click="more">
         <view class="iconfont icon-shenglvehao"></view>
         <view class="text">更多</view>
       </view>
     </view>
     <view @click="close" class="cancel">取消</view>
+    <cl-toast ref="toast"></cl-toast>
   </cl-popup>
 </template>
 
@@ -50,6 +51,11 @@ export default {
   methods: {
     close() {
       this.$emit("share", false);
+    },
+    more() {
+      this.$refs["toast"].open({
+        message: "更多功能正在开发中，敬请期待！",
+      });
     },
   },
 };

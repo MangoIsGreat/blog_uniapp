@@ -36,7 +36,7 @@
     <cl-list-item
       @click="edit(userinfo.signature, 'signature')"
       class="list-item"
-      label="简介"
+      label="签名"
     >
       <view class="append" slot="append">
         <text>{{ userinfo.signature }}</text>

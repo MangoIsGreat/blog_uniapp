@@ -80,7 +80,7 @@ export default {
   data() {
     return {
       hotList: [], // 热门留言
-      isRefresh: true, // 能否下拉刷新
+      isRefresh: false, // 能否下拉刷新
       current: 0,
       labels: [],
       list: [],
