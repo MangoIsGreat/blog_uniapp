@@ -24,8 +24,9 @@
           >#{{ infoData.theme }}#</text
         >&nbsp;{{ infoData.content }}
       </view>
-      <view class="list-row-pic">
+      <view class="list-row-pic" v-if="infoData.picUrl">
         <image
+          @click.stop="show(infoData.picUrl, index)"
           v-for="(item, index) in infoData.picUrl"
           :key="index"
           class="list-row-pic-item"
@@ -58,10 +59,13 @@ export default {
   props: {
     infoData: Object,
   },
-  data() {
-    return {};
-  },
   methods: {
+    show(urls, index) {
+      uni.previewImage({
+        urls: urls,
+        current: index,
+      });
+    },
     share() {
       this.$emit("share", true);
     },

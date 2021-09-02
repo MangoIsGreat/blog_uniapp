@@ -135,7 +135,8 @@ page,
   overflow: hidden;
 
   .scroll-view-wrapper {
-    height: 100%;
+    // height: 100%;
+    height: calc(100% + 80rpx);
   }
 
   .item {

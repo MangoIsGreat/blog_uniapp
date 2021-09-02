@@ -222,7 +222,8 @@ page {
       background-color: #f7f7f7;
 
       .scroll-view-wrapper {
-        height: calc(100% - 80rpx);
+        // height: calc(100% - 80rpx);
+        height: 100%;
         padding-top: 16rpx;
       }
     }
