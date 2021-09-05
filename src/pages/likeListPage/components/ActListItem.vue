@@ -4,7 +4,6 @@
       <view class="list-row-header">
         <image
           class="avatar"
-          mode="center"
           :src="infoData.userInfo && infoData.userInfo.avatar"
         ></image>
         <view class="list-row-header-content">
@@ -28,7 +27,6 @@
           v-for="(item, index) in infoData.picUrl"
           :key="index"
           class="list-row-pic-item"
-          mode="center"
           :src="item"
         ></image>
       </view>

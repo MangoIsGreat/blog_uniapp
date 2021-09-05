@@ -18,7 +18,6 @@
       <image
         v-if="listData.titlePic"
         class="item-wrapper-content-pic"
-        mode="center"
         :src="listData.titlePic"
       ></image>
     </view>

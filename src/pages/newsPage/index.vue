@@ -30,7 +30,7 @@
             :src="blogInfo.titlePic"
           ></image>
         </view>
-        <view class="content-article-body" v-html="mdContent"></view>
+        <view class="content-article-body" v-html="compiledMarkdown"></view>
         <view class="content-article-footer">
           <view class="tag">
             <text class="tag-item">{{
@@ -67,7 +67,28 @@
 import NavBar from "@/components/NavBar/index.vue";
 import Share from "@/components/Share/index.vue";
 import request from "@/http/request";
-import marked from "marked";
+// import marked from "marked";
+
+let marked = require("marked");
+let hljs = require("highlight.js");
+
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  // sanitize: false,
+  smartLists: true,
+  smartypants: false,
+  highlight: function(code, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      return hljs.highlight(lang, code, true).value;
+    } else {
+      return hljs.highlightAuto(code).value;
+    }
+  },
+});
 
 export default {
   data() {
@@ -83,6 +104,11 @@ export default {
   components: {
     NavBar,
     Share,
+  },
+  computed: {
+    compiledMarkdown() {
+      return marked(this.mdContent || "");
+    },
   },
   onLoad(options) {
     this.newsId = options.id;
@@ -112,7 +138,8 @@ export default {
         });
       }
 
-      this.mdContent = marked(blog.data.data.content || "");
+      // this.mdContent = marked(blog.data.data.content || "");
+      this.mdContent = blog.data.data.content || "";
 
       this.blogInfo = blog.data.data;
     },
@@ -152,11 +179,20 @@ export default {
 
 <style lang="scss">
 @import "@/static/css/common/common.scss";
+@import "highlight.js/styles/default.css";
 
 page,
 .article-page-wrapper {
   background-color: #fff;
   height: 100%;
+
+  img {
+    width: 100%;
+  }
+
+  pre {
+    overflow-x: scroll;
+  }
 
   .content {
     padding-bottom: 90rpx;

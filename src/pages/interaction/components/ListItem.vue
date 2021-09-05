@@ -5,7 +5,6 @@
         <image
           @click.stop="toAuthorPage(infoData.userInfo && infoData.userInfo.id)"
           class="avatar"
-          mode="center"
           :src="infoData.userInfo && infoData.userInfo.avatar"
         ></image>
         <view class="list-row-header-content">
@@ -15,7 +14,7 @@
           <view class="list-row-header-content-desc">
             {{
               infoData.userInfo && infoData.userInfo.profession
-            }}&nbsp;·&nbsp;{{ infoData.created_at | relativeTime }}
+            }}&nbsp;&nbsp;{{ infoData.created_at | relativeTime }}
           </view>
         </view>
       </view>
@@ -25,14 +24,21 @@
         >&nbsp;{{ infoData.content }}
       </view>
       <view class="list-row-pic" v-if="infoData.picUrl">
-        <image
+        <!-- <image
           @click.stop="show(infoData.picUrl, index)"
           v-for="(item, index) in infoData.picUrl"
           :key="index"
           class="list-row-pic-item"
           mode="center"
           :src="item"
-        ></image>
+        ></image> -->
+        <view
+          @click.stop="show(infoData.picUrl, index)"
+          v-for="(item, index) in infoData.picUrl"
+          :key="index"
+          class="list-row-pic-item"
+          :style="{ backgroundImage: `url(${item})` }"
+        ></view>
       </view>
     </view>
     <view class="list-row-bottom">
@@ -127,8 +133,9 @@ export default {
       margin-bottom: 24rpx;
 
       .list-row-pic-item {
-        width: 220rpx;
-        height: 220rpx;
+        // width: 220rpx;
+        // height: 220rpx;
+        @include setBgImg2(220rpx, 220rpx);
       }
     }
   }

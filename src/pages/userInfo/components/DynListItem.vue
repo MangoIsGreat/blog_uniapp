@@ -21,14 +21,20 @@
           >#{{ infoData.theme }}#</text
         >&nbsp;{{ infoData.content }}
       </view>
-      <view class="list-row-pic">
-        <image
+      <view v-if="infoData.picUrl" class="list-row-pic">
+        <!-- <image
           v-for="(item, index) in infoData.picUrl"
           :key="index"
           class="list-row-pic-item"
           mode="center"
           :src="item"
-        ></image>
+        ></image> -->
+        <view
+          v-for="(item, index) in infoData.picUrl"
+          :key="index"
+          class="list-row-pic-item"
+          :style="{ backgroundImage: `url(${item})` }"
+        ></view>
       </view>
     </view>
     <view class="list-row-bottom">
@@ -122,8 +128,9 @@ export default {
       margin-bottom: 24rpx;
 
       .list-row-pic-item {
-        width: 220rpx;
-        height: 220rpx;
+        // width: 220rpx;
+        // height: 220rpx;
+        @include setBgImg2(220rpx, 220rpx);
       }
     }
   }

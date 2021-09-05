@@ -4,7 +4,6 @@
       <view class="list-row-header">
         <image
           class="avatar"
-          mode="center"
           :src="dynInfo.User && dynInfo.User.avatar"
           @click="toAuthorPage(dynInfo.User && dynInfo.User.id)"
         ></image>
@@ -28,7 +27,6 @@
           v-for="(item, index) in dynInfo.picUrl"
           :key="index"
           class="list-row-pic-item"
-          mode="center"
           :src="item"
         ></image>
       </view>

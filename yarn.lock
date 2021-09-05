@@ -2520,6 +2520,11 @@ ast-types@0.14.2:
   dependencies:
     tslib "^2.0.1"
 
+ast-types@0.9.6:
+  version "0.9.6"
+  resolved "https://registry.nlark.com/ast-types/download/ast-types-0.9.6.tgz#102c9e9e9005d3e7e3829bf0c4fa24ee862ee9b9"
+  integrity sha1-ECyenpAF0+fjgpvwxPok7oYu6bk=
+
 astral-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.nlark.com/astral-regex/download/astral-regex-1.0.0.tgz#6c8c3fb827dd43ee3918f27b82782ab7658a6fd9"
@@ -4571,6 +4576,14 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
+es6-templates@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.nlark.com/es6-templates/download/es6-templates-0.2.3.tgz#5cb9ac9fb1ded6eb1239342b81d792bbb4078ee4"
+  integrity sha1-XLmsn7He1usSOTQrgdeSu7QHjuQ=
+  dependencies:
+    recast "~0.11.12"
+    through "~2.3.6"
+
 escalade@^3.1.1:
   version "3.1.1"
   resolved "https://registry.nlark.com/escalade/download/escalade-3.1.1.tgz#d8cfdc7000965c5a0174b4a82eaa5c0552742e40"
@@ -4615,6 +4628,11 @@ esprima@^4.0.0, esprima@^4.0.1, esprima@~4.0.0:
   version "4.0.1"
   resolved "https://registry.nlark.com/esprima/download/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
   integrity sha1-E7BM2z5sXRnfkatph6hpVhmwqnE=
+
+esprima@~3.1.0:
+  version "3.1.3"
+  resolved "https://registry.nlark.com/esprima/download/esprima-3.1.3.tgz#fdca51cee6133895e3c88d535ce49dbff62a4633"
+  integrity sha1-/cpRzuYTOJXjyI1TXOSdv/YqRjM=
 
 esrecurse@^4.1.0:
   version "4.3.0"
@@ -4858,6 +4876,11 @@ fast-levenshtein@~2.0.6:
   version "2.0.6"
   resolved "https://registry.nlark.com/fast-levenshtein/download/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
+
+fastparse@^1.1.1:
+  version "1.1.2"
+  resolved "https://registry.npm.taobao.org/fastparse/download/fastparse-1.1.2.tgz#91728c5a5942eced8531283c79441ee4122c35a9"
+  integrity sha1-kXKMWllC7O2FMSg8eUQe5BIsNak=
 
 faye-websocket@^0.11.3:
   version "0.11.4"
@@ -5426,6 +5449,11 @@ highlight.js@^10.7.1:
   resolved "https://registry.nlark.com/highlight.js/download/highlight.js-10.7.3.tgz#697272e3991356e40c3cac566a74eef681756531"
   integrity sha1-aXJy45kTVuQMPKxWanTu9oF1ZTE=
 
+highlight@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.npm.taobao.org/highlight/download/highlight-0.2.4.tgz#8ac02875b03f5935e0675852b76cfe1fd58e0dff"
+  integrity sha1-isAodbA/WTXgZ1hSt2z+H9WODf8=
+
 hmac-drbg@^1.0.1:
   version "1.0.1"
   resolved "https://registry.nlark.com/hmac-drbg/download/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
@@ -5482,7 +5510,18 @@ html-escaper@^2.0.0:
   resolved "https://registry.npm.taobao.org/html-escaper/download/html-escaper-2.0.2.tgz?cache=0&sync_timestamp=1613643546928&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhtml-escaper%2Fdownload%2Fhtml-escaper-2.0.2.tgz#dfd60027da36a36dfcbe236262c00a5822681453"
   integrity sha1-39YAJ9o2o238viNiYsAKWCJoFFM=
 
-html-minifier@^3.2.3:
+html-loader@0.5.5:
+  version "0.5.5"
+  resolved "https://registry.npm.taobao.org/html-loader/download/html-loader-0.5.5.tgz#6356dbeb0c49756d8ebd5ca327f16ff06ab5faea"
+  integrity sha1-Y1bb6wxJdW2OvVyjJ/Fv8Gq1+uo=
+  dependencies:
+    es6-templates "^0.2.3"
+    fastparse "^1.1.1"
+    html-minifier "^3.5.8"
+    loader-utils "^1.1.0"
+    object-assign "^4.1.1"
+
+html-minifier@^3.2.3, html-minifier@^3.5.8:
   version "3.5.21"
   resolved "https://registry.nlark.com/html-minifier/download/html-minifier-3.5.21.tgz#d0040e054730e354db008463593194015212d20c"
   integrity sha1-0AQOBUcw41TbAIRjWTGUAVIS0gw=
@@ -7170,6 +7209,19 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+markdown-loader@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.npm.taobao.org/markdown-loader/download/markdown-loader-6.0.0.tgz#7f8d40ee98b32d3bb8c5387d58e679600d3edeaa"
+  integrity sha1-f41A7pizLTu4xTh9WOZ5YA0+3qo=
+  dependencies:
+    loader-utils "^1.2.3"
+    marked "^0.7.0"
+
+marked@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.nlark.com/marked/download/marked-0.7.0.tgz?cache=0&sync_timestamp=1629858356453&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fmarked%2Fdownload%2Fmarked-0.7.0.tgz#b64201f051d271b1edc10a04d1ae9b74bb8e5c0e"
+  integrity sha1-tkIB8FHScbHtwQoE0a6bdLuOXA4=
+
 marked@^3.0.0:
   version "3.0.0"
   resolved "https://registry.nlark.com/marked/download/marked-3.0.0.tgz?cache=0&sync_timestamp=1629083780780&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fmarked%2Fdownload%2Fmarked-3.0.0.tgz#ac8369b7ddeef15fbbce870d14f321bdb20ca4e2"
@@ -8719,6 +8771,11 @@ pretty-format@^25.5.0:
     ansi-styles "^4.0.0"
     react-is "^16.12.0"
 
+private@~0.1.5:
+  version "0.1.8"
+  resolved "https://registry.nlark.com/private/download/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"
+  integrity sha1-I4Hts2ifelPWUxkAYPz4ItLzaP8=
+
 process-nextick-args@~2.0.0:
   version "2.0.1"
   resolved "https://registry.npm.taobao.org/process-nextick-args/download/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
@@ -9027,6 +9084,16 @@ recast@*:
     esprima "~4.0.0"
     source-map "~0.6.1"
     tslib "^2.0.1"
+
+recast@~0.11.12:
+  version "0.11.23"
+  resolved "https://registry.nlark.com/recast/download/recast-0.11.23.tgz?cache=0&sync_timestamp=1626993935347&other_urls=https%3A%2F%2Fregistry.nlark.com%2Frecast%2Fdownload%2Frecast-0.11.23.tgz#451fd3004ab1e4df9b4e4b66376b2a21912462d3"
+  integrity sha1-RR/TAEqx5N+bTktmN2sqIZEkYtM=
+  dependencies:
+    ast-types "0.9.6"
+    esprima "~3.1.0"
+    private "~0.1.5"
+    source-map "~0.5.0"
 
 rechoir@^0.6.2:
   version "0.6.2"
@@ -9829,7 +9896,7 @@ source-map@^0.4.2:
   dependencies:
     amdefine ">=0.0.4"
 
-source-map@^0.5.0, source-map@^0.5.6:
+source-map@^0.5.0, source-map@^0.5.6, source-map@~0.5.0:
   version "0.5.7"
   resolved "https://registry.nlark.com/source-map/download/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
@@ -10315,11 +10382,6 @@ throat@^5.0.0:
   resolved "https://registry.nlark.com/throat/download/throat-5.0.0.tgz#c5199235803aad18754a667d659b5e72ce16764b"
   integrity sha1-xRmSNYA6rRh1SmZ9ZZtecs4Wdks=
 
-throttle-debounce@^2.0.1:
-  version "2.3.0"
-  resolved "https://registry.nlark.com/throttle-debounce/download/throttle-debounce-2.3.0.tgz#fd31865e66502071e411817e241465b3e9c372e2"
-  integrity sha1-/TGGXmZQIHHkEYF+JBRls+nDcuI=
-
 through2@^2.0.0:
   version "2.0.5"
   resolved "https://registry.npm.taobao.org/through2/download/through2-2.0.5.tgz#01c1e39eb31d07cb7d03a96a70823260b23132cd"
@@ -10327,6 +10389,11 @@ through2@^2.0.0:
   dependencies:
     readable-stream "~2.3.6"
     xtend "~4.0.1"
+
+through@~2.3.6:
+  version "2.3.8"
+  resolved "https://registry.npm.taobao.org/through/download/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
+  integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
 thunky@^1.0.2:
   version "1.1.0"
@@ -10742,14 +10809,6 @@ uuid@^3.3.2, uuid@^3.4.0:
   resolved "https://registry.nlark.com/uuid/download/uuid-3.4.0.tgz?cache=0&sync_timestamp=1622213136953&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fuuid%2Fdownload%2Fuuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha1-sj5DWK+oogL+ehAK8fX4g/AgB+4=
 
-v-viewer@^1.6.4:
-  version "1.6.4"
-  resolved "https://registry.nlark.com/v-viewer/download/v-viewer-1.6.4.tgz#39e36b534baab34076fb816704c6a734de0dc72f"
-  integrity sha1-OeNrU0uqs0B2+4FnBManNN4Nxy8=
-  dependencies:
-    throttle-debounce "^2.0.1"
-    viewerjs "^1.5.0"
-
 v8-to-istanbul@^4.1.3:
   version "4.1.4"
   resolved "https://registry.nlark.com/v8-to-istanbul/download/v8-to-istanbul-4.1.4.tgz#b97936f21c0e2d9996d4985e5c5156e9d4e49cd6"
@@ -10785,11 +10844,6 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
-
-viewerjs@^1.5.0:
-  version "1.10.1"
-  resolved "https://registry.nlark.com/viewerjs/download/viewerjs-1.10.1.tgz?cache=0&sync_timestamp=1627826614625&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fviewerjs%2Fdownload%2Fviewerjs-1.10.1.tgz#07499ed043d0a29e3002b90f55c5b228bd1a742c"
-  integrity sha1-B0me0EPQop4wArkPVcWyKL0adCw=
 
 vm-browserify@^1.0.1:
   version "1.1.2"

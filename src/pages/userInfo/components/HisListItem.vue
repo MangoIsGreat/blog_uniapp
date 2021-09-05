@@ -184,13 +184,19 @@
           class="list-row-pic"
           v-if="listData.Dynamic && listData.Dynamic.picUrl"
         >
-          <image
+          <!-- <image
             v-for="(item, index) in listData.Dynamic.picUrl"
             :key="index"
             class="list-row-pic-item"
             mode="center"
             :src="item"
-          ></image>
+          ></image> -->
+          <view
+            v-for="(item, index) in listData.Dynamic.picUrl"
+            :key="index"
+            class="list-row-pic-item"
+            :style="{ backgroundImage: `url(${item})` }"
+          ></view>
         </view>
       </view>
     </view>
@@ -217,13 +223,19 @@
           >&nbsp;{{ listData.content }}
         </view>
         <view class="list-row-pic" v-if="listData.picUrl">
-          <image
+          <!-- <image
             v-for="(item, index) in listData.picUrl"
             :key="index"
             class="list-row-pic-item"
             mode="center"
             :src="item"
-          ></image>
+          ></image> -->
+          <view
+            v-for="(item, index) in listData.picUrl"
+            :key="index"
+            class="list-row-pic-item"
+            :style="{ backgroundImage: `url(${item})` }"
+          ></view>
         </view>
       </view>
     </view>
@@ -413,8 +425,9 @@ export default {
       margin-bottom: 24rpx;
 
       .list-row-pic-item {
-        width: 220rpx;
-        height: 220rpx;
+        // width: 220rpx;
+        // height: 220rpx;
+        @include setBgImg2(220rpx, 220rpx);
       }
     }
   }

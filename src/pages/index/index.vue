@@ -320,7 +320,7 @@ page {
       }
 
       .scroll-view-wrapper {
-        height: calc(100% - 140rpx);
+        height: calc(100% - 174rpx);
         padding-top: 16rpx;
       }
     }

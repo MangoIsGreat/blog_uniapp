@@ -8,12 +8,12 @@
     direction="bottom"
   >
     <view class="share-box">
-      <view class="share-box-item">
+      <view class="share-box-item" @click="more">
         <view class="iconfont icon-lianjie"></view>
         <view class="text">复制链接</view>
       </view>
-      <view class="share-box-item">
-        <view class="iconfont icon-haibaofenxiang"></view>
+      <view class="share-box-item" @click="more">
+        <view class="iconfont icon-ico"></view>
         <view class="text">分享二维码</view>
       </view>
       <view class="share-box-item" @click="more">
@@ -54,7 +54,7 @@ export default {
     },
     more() {
       this.$refs["toast"].open({
-        message: "更多功能正在开发中，敬请期待！",
+        message: "功能正在开发中，敬请期待！",
       });
     },
   },
