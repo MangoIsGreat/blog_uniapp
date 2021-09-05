@@ -90,6 +90,15 @@ $border-line: 2rpx solid #dedfe6;
   background-size: $bgSize;
 }
 
+// 设置背景图片
+@mixin setBgImg2($width, $height) {
+  width: $width;
+  height: $height;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 // 设置头像
 @mixin setAvatar($width, $height, $marginRight: 20rpx, $borderRadious: 50%) {
   width: $width;

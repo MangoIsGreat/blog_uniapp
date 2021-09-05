@@ -103,7 +103,7 @@
                 <More :userInfo="userInfo" v-if="current === 3" />
 
                 <cl-loadmore
-                  v-if="item.data.length > 0"
+                  v-if="item.loading"
                   :loading="item.loading"
                   :finish="item.finished"
                   :divider="false"
@@ -473,7 +473,7 @@ export default {
     margin-bottom: 16rpx;
 
     .container {
-      height: 740rpx;
+      height: 844rpx;
       background-color: #f7f7f7;
 
       .scroll-view-wrapper {

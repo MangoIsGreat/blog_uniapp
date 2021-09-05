@@ -17,12 +17,17 @@
           {{ listData.Blog && listData.Blog.description }}
         </view>
       </view>
-      <image
+      <!-- <image
         v-if="listData.Blog && listData.Blog.titlePic"
         class="item-wrapper-content-pic"
         mode="center"
         :src="listData.Blog && listData.Blog.titlePic"
-      ></image>
+      ></image> -->
+      <view
+        v-if="listData.Blog && listData.Blog.titlePic"
+        class="item-wrapper-content-pic"
+        :style="{ backgroundImage: `url(${listData.Blog && listData.Blog.titlePic})` }"
+      ></view>
     </view>
     <view class="bottom-line">
       <view class="operate">
@@ -94,8 +99,7 @@ export default {
     }
 
     .item-wrapper-content-pic {
-      width: 168rpx;
-      height: 128rpx;
+      @include setBgImg2(168rpx, 128rpx);
     }
   }
 

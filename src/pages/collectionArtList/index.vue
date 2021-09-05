@@ -22,7 +22,7 @@
         </view>
 
         <cl-loadmore
-          v-if="list.length > 0"
+          v-if="loading"
           :loading="loading"
           background-color="#EFF2F5"
           :finish="isFinish"

@@ -37,7 +37,7 @@
                 </view>
 
                 <cl-loadmore
-                  v-if="item.data.length > 0"
+                  v-if="item.loading"
                   :loading="item.loading"
                   :finish="item.finished"
                   :divider="false"

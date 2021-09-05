@@ -15,7 +15,7 @@
       </view>
 
       <cl-loadmore
-        v-if="list.length > 0"
+        v-if="loading"
         :loading="loading"
         background-color="#fff"
         :finish="isFinish"

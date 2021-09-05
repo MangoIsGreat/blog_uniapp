@@ -11,7 +11,7 @@
       </view>
 
       <cl-loadmore
-        v-if="list.length > 0"
+        v-if="loading"
         :loading="loading"
         :divider="false"
       ></cl-loadmore>
@@ -38,7 +38,7 @@ export default {
   components: {
     ListItem,
   },
-  onShow() {
+  onLoad() {
     this.getAuthorList();
   },
   methods: {

@@ -34,6 +34,7 @@
                 </view>
 
                 <cl-loadmore
+                  v-if="item.loading"
                   :loading="item.loading"
                   :finish="item.finished"
                   :divider="false"

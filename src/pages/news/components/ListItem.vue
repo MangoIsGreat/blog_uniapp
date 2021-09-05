@@ -16,11 +16,11 @@
           <text class="author-line-zan">{{ listData.newsReadNum }}阅读</text>
         </view>
       </view>
-      <image
+       <view
+        v-if="listData.titlePic"
         class="item-wrapper-content-pic"
-        mode="center"
-        :src="listData.User && listData.User.avatar"
-      ></image>
+        :style="{ backgroundImage: `url(${listData.titlePic})` }"
+      ></view>
     </view>
     <cl-toast ref="toast"></cl-toast>
   </view>
@@ -83,8 +83,7 @@ export default {
     }
 
     .item-wrapper-content-pic {
-      width: 168rpx;
-      height: 128rpx;
+      @include setBgImg2(168rpx, 128rpx);
     }
   }
 

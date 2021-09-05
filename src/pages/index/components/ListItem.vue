@@ -4,7 +4,9 @@
     <view class="list-item-wrapper-content">
       <view class="item-wrapper-content-article">
         <view class="author-line">
-          <text class="author-line-name">{{ listData.User && listData.User.nickname }}</text>
+          <text class="author-line-name">{{
+            listData.User && listData.User.nickname
+          }}</text>
           <text class="author-line-time">{{
             listData.created_at | relativeTime
           }}</text>
@@ -13,12 +15,11 @@
           {{ listData.description }}
         </view>
       </view>
-      <image
+      <view
         v-if="listData.titlePic"
         class="item-wrapper-content-pic"
-        mode="center"
-        :src="listData.titlePic"
-      ></image>
+        :style="{ backgroundImage: `url(${listData.titlePic})` }"
+      ></view>
     </view>
     <view class="bottom-line">
       <view class="operate">
@@ -106,8 +107,7 @@ export default {
     }
 
     .item-wrapper-content-pic {
-      width: 168rpx;
-      height: 128rpx;
+      @include setBgImg2(168rpx, 128rpx);
     }
   }
 

@@ -5,11 +5,6 @@
   >
     <view class="list-row-top">
       <view class="list-row-header">
-        <image
-          class="avatar"
-          mode="center"
-          :src="infoData.userInfo && infoData.userInfo.avatar"
-        ></image>
         <view class="list-row-header-content">
           <view class="list-row-header-content-tit">{{
             infoData.userInfo && infoData.userInfo.nickname
@@ -17,7 +12,7 @@
           <view class="list-row-header-content-desc">
             {{
               infoData.userInfo && infoData.userInfo.profession
-            }}&nbsp;·&nbsp;{{ infoData.created_at | relativeTime }}
+            }}&nbsp;&nbsp;{{ infoData.created_at | relativeTime }}
           </view>
         </view>
       </view>

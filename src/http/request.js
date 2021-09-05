@@ -20,7 +20,7 @@ const request = async (options) => {
 
   let result = await uni.request(options);
 
-  if (result[1].statusCode == 403) {
+  if (result[1].data.error_code == 10006) {
     //   清除缓存token
     uni.removeStorageSync("user_token");
     //   清除缓存用户信息

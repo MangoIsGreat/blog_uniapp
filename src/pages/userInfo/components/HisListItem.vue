@@ -38,19 +38,18 @@
             {{ listData.Blog && listData.Blog.description }}
           </view>
         </view>
-        <image
+        <view
           v-if="listData.Blog && listData.Blog.titlePic"
           class="item-wrapper-content-pic"
-          mode="center"
-          :src="listData.Blog && listData.Blog.titlePic"
-        ></image>
+          :style="{
+            backgroundImage: `url(${listData.Blog && listData.Blog.titlePic})`,
+          }"
+        ></view>
       </view>
       <view class="bottom-line">
-        {{
-          listData.Blog && listData.Blog.blogReadNum
-        }}&nbsp;阅读&nbsp;·&nbsp;{{
+        {{ listData.Blog && listData.Blog.blogReadNum }}&nbsp;阅读&nbsp;&nbsp;{{
           listData.Blog && listData.Blog.blogLikeNum
-        }}&nbsp;赞&nbsp;·&nbsp;{{
+        }}&nbsp;赞&nbsp;&nbsp;{{
           listData.Blog && listData.Blog.commentNum
         }}评论
       </view>
@@ -71,12 +70,11 @@
             {{ listData.description }}
           </view>
         </view>
-        <image
+        <view
           v-if="listData.titlePic"
           class="item-wrapper-content-pic"
-          mode="center"
-          :src="listData.titlePic"
-        ></image>
+          :style="{ backgroundImage: `url(${listData.titlePic})` }"
+        ></view>
       </view>
       <view class="bottom-line">
         <text
@@ -105,12 +103,11 @@
             {{ listData.description }}
           </view>
         </view>
-        <image
+        <view
           v-if="listData.titlePic"
           class="item-wrapper-content-pic"
-          mode="center"
-          :src="listData.titlePic"
-        ></image>
+          :style="{ backgroundImage: `url(${listData.titlePic})` }"
+        ></view>
       </view>
       <view class="bottom-line">
         <text>
@@ -141,12 +138,13 @@
             {{ listData.News && listData.News.description }}
           </view>
         </view>
-        <image
+        <view
           v-if="listData.News && listData.News.titlePic"
           class="item-wrapper-content-pic"
-          mode="center"
-          :src="listData.News && listData.News.titlePic"
-        ></image>
+          :style="{
+            backgroundImage: `url(${listData.News && listData.News.titlePic})`,
+          }"
+        ></view>
       </view>
       <view class="bottom-line">
         <text>
@@ -164,17 +162,12 @@
     >
       <view class="list-row-top">
         <view class="list-row-header">
-          <image
-            class="avatar"
-            mode="center"
-            :src="listData.User && listData.User.avatar"
-          ></image>
           <view class="list-row-header-content">
             <view class="list-row-header-content-tit">{{
               listData.User && listData.User.nickname
             }}</view>
             <view class="list-row-header-content-desc">
-              {{ listData.User && listData.User.profession }}&nbsp;·&nbsp;{{
+              {{ listData.User && listData.User.profession }}&nbsp;&nbsp;{{
                 listData.created_at | relativeTime
               }}
             </view>
@@ -207,11 +200,6 @@
     >
       <view class="list-row-top">
         <view class="list-row-header">
-          <image
-            class="avatar"
-            mode="center"
-            :src="listData.userInfo && listData.userInfo.avatar"
-          ></image>
           <view class="list-row-header-content">
             <view class="list-row-header-content-tit">{{
               listData.userInfo && listData.userInfo.nickname
@@ -245,11 +233,6 @@
     >
       <view class="list-row-top" style="paddingBottom: 0">
         <view class="list-row-header">
-          <image
-            class="avatar"
-            mode="center"
-            :src="listData.attention && listData.attention.avatar"
-          ></image>
           <view class="list-row-header-content">
             <view style="display: flex; fontSize: 28rpx;">
               <view class="list-row-header-content-tit">{{
@@ -369,8 +352,7 @@ export default {
     }
 
     .item-wrapper-content-pic {
-      width: 168rpx;
-      height: 128rpx;
+      @include setBgImg2(168rpx, 128rpx);
     }
   }
 

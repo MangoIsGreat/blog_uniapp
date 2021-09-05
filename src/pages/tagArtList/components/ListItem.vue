@@ -15,12 +15,11 @@
           {{ listData.description }}
         </view>
       </view>
-      <image
+      <view
         v-if="listData.titlePic"
         class="item-wrapper-content-pic"
-        mode="center"
-        :src="listData.titlePic"
-      ></image>
+        :style="{ backgroundImage: `url(${listData.titlePic})` }"
+      ></view>
     </view>
     <view class="bottom-line">
       <view class="operate">
@@ -88,8 +87,7 @@ export default {
     }
 
     .item-wrapper-content-pic {
-      width: 168rpx;
-      height: 128rpx;
+      @include setBgImg2(168rpx, 128rpx);
     }
   }
 

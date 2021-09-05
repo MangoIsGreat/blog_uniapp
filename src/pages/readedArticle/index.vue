@@ -22,7 +22,7 @@
         </view>
 
         <cl-loadmore
-          v-if="list.length > 0"
+          v-if="loading"
           :loading="loading"
           background-color="#EFF2F5"
           :finish="isFinish"
@@ -112,6 +112,8 @@ export default {
         method: "GET",
         data,
       });
+
+      console.log(777, list)
 
       if (list.data.error_code !== 0) {
         return this.$refs["toast"].open({
