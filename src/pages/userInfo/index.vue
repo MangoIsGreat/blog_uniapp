@@ -393,6 +393,7 @@ export default {
 
 .userInfo {
   position: relative;
+  height: 100vh;
 
   .bgImg {
     height: 300rpx;

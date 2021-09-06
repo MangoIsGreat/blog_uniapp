@@ -191,7 +191,7 @@ page,
   }
 
   pre {
-    overflow-x: scroll;
+    overflow-x: auto;
   }
 
   .content {
